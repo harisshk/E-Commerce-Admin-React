@@ -12,9 +12,12 @@ export const VariantForm = (props) => {
     const [variants, setVariants] = useState({})
     const [preVariant, setPreVariant] = useState([])
     const [imageArray, setImageArray] = useState([])
-    const [image, setImage] = useState({})
+    const [imageUrl, setImageUrl] = useState('')
     const [open, setOpen] = useState(false);
+    const [nullUrl, setNullUrl] = useState(false);
+    const [nullType, setNullType] = useState('');
 
+    const [imageType, setImageType] = useState('')
     const setField = (field, value) => {
         setVariants({
             ...variants,
@@ -22,21 +25,42 @@ export const VariantForm = (props) => {
         })
 
     }
+    console.log(imageArray)
     const setImgArray = () => {
-        console.log(image)
-        setImageArray([
-            ...imageArray,
-            image
-
-        ])
+        console.log('---',imageUrl)
+        console.log('---',imageType)
+        if(imageType===''){
+            setNullType(true)
+        }
+        if(imageUrl===''){
+            setNullUrl(true)
+        }
+        if(imageUrl!=='' && imageType!=='')
+        {
+            setNullType(false)
+            setNullUrl(false)
+            setImageArray([
+                ...imageArray,
+                {imageUrl,
+                imageType}
+    
+            ])
+            setImageUrl({url:''})
+        }
         setImageValidation(false)
     }
-    const setImg = (field, value) => {
-        console.log(value)
-        setImage({
-            ...image,
-            [field]: value
+    const setImgUrl = ( value) => {
+        console.log('')
+        setImageUrl({
+            url: value
         })
+        setNullUrl(false)
+    }
+    const setImgType = (value) => {
+        setImageType({
+            type: value
+        })
+        setNullType(false)
     }
     const [isEdit, setIsEdit] = useState(null)
     const [validated, setValidated] = useState(false);
@@ -129,6 +153,9 @@ export const VariantForm = (props) => {
         setValidated(false)
         setImageValidation(false)
         setUpdate(false)
+        setNullType(false)
+        setNullUrl(false)
+        
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props])
@@ -153,24 +180,27 @@ export const VariantForm = (props) => {
                                 <Form.Group as={Col} >
                                     <Form.Label>Variant images</Form.Label>
 
-                                    <Form.Control type="text" onChange={(e) => setImg('url', e.target.value)} placeholder="Enter Variant Image URL" />
+                                    <Form.Control type="text" value={imageUrl.value} onChange={(e) => setImgUrl(e.target.value)} placeholder="Enter Variant Image URL" />
                                 </Form.Group>
+                                {nullUrl && <p style={{color:'red'}}>Null value cannot be accepted</p>}
                                 <Form.Group as={Col} >
                                     <Form.Check
+                                    
                                         type="radio"
                                         label="Image"
                                         name="formHorizontalRadios"
-                                        onClick={() => setImg('type', 'image')}
+                                        onClick={() => setImgType('image')}
                                         id="formHorizontalRadios1"
                                     />
                                     <Form.Check
                                         type="radio"
                                         label="Video"
-                                        onClick={() => setImg('type', 'video')}
+                                        onClick={() => setImgType( 'video')}
                                         name="formHorizontalRadios"
                                         id="formHorizontalRadios2"
                                     />
                                 </Form.Group>
+                                {nullType && <p style={{color:'red'}}>Null type cannot be accepted</p>}
                                 <Button style={{ marginTop: '30px', height: '40px' }} onClick={() => { setImgArray() }}>Add</Button>
                             </Form.Row>
                             {imageValidation && <p style={{color:'red'}}>Atleast one image should be added</p>}
@@ -216,7 +246,6 @@ export const VariantForm = (props) => {
                                                 width="100px"
                                                 alt="added_image"
                                             />
-
 
                                         </div>
                                         )}

@@ -177,7 +177,7 @@ export const ProductForm = (props) => {
                     setTimeout(() => {
                         props.history.push('/product/')
                       
-                    }, 2000);                   
+                    }, 1000);                   
                 }
                 else {
                     setStoreError(true)
@@ -518,14 +518,14 @@ export const ProductForm = (props) => {
                     <Form.Row>
                         <Form.Group as={Col} >
                             <Form.Label> Model number</Form.Label>
-                            <Form.Control required type="text" value={formf.modelName} onChange={(e) => setField('modelName', e.target.value)} placeholder="Enter Model Number" />
+                            <Form.Control required type="text" value={formf.modelNumber} onChange={(e) => setField('modelNumber', e.target.value)} placeholder="Enter Model Number" />
                             <Form.Control.Feedback type="invalid">
                                 Please Enter the model number.
             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col} >
                             <Form.Label> Model Name</Form.Label>
-                            <Form.Control required type="text" value={formf.modelNumber} onChange={(e) => setField('modelNumber', e.target.value)} placeholder="Enter Model Name" />
+                            <Form.Control required type="text" value={formf.modelName} onChange={(e) => setField('modelName', e.target.value)} placeholder="Enter Model Name" />
                             <Form.Control.Feedback type="invalid">
                                 Please Enter the model name.
             </Form.Control.Feedback>

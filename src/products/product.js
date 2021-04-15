@@ -6,9 +6,15 @@ import Snackbar from '@material-ui/core/Snackbar'
 export const Product = (props) => {
     const [product,setProduct] = useState(null)
     const [barOpen,setBarOpen]= useState(false)
+    const [dbError,setDbError]= useState(false)
     const  getProduct = async()=>  {
             const data = await getAllProducts()
             // console.log('p',data)
+            if(!data){
+                setTimeout(() => {
+                    setDbError(true)
+                }, 2000);
+            }
             setProduct(data)
     }
     const handleClose=()=>{
@@ -53,6 +59,7 @@ export const Product = (props) => {
        <MaterialTable style={{marginTop:'15px'}} title="Products" data={product} columns={columns} 
        actions={[
         {
+
           icon: 'edit',
           tooltip: 'Edit User',
           onClick:async (event, rowData) => {
@@ -82,7 +89,7 @@ export const Product = (props) => {
        
          options={{
            actionsColumnIndex:-1,
-
+            showFirstLastPageButtons:false,
            pageSizeOptions:[5,10,20,50]
        }} 
        
@@ -90,14 +97,23 @@ export const Product = (props) => {
         
             </MaterialTable>
 
-          :<div style={{width:'100%',height:'100px',marginTop:'300px'
-      }} >
-            <Spinner  style={{display:'block',marginLeft:'auto',
-          marginRight:'auto',height:'50px',width:'50px'}} animation="border" variant="primary" />
-          <p style={{display:'block',marginLeft:'auto',
-          marginRight:'auto',textAlign:'center'}}>Loading</p>
-            </div>
-        }     
+          :
+              dbError ? 
+              <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
+              
+            <p style={{display:'block',marginLeft:'auto',
+            marginRight:'auto',textAlign:'center'}}>Looks like Server Down!!</p>
+              </div>
+              :
+               <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
+              <Spinner  style={{display:'block',marginLeft:'auto',
+            marginRight:'auto',height:'50px',width:'50px'}} animation="border" variant="primary" />
+            <p style={{display:'block',marginLeft:'auto',
+            marginRight:'auto',textAlign:'center'}}>Loading</p>
+              </div>
+              
+          }
+             
         <Snackbar open={barOpen} message="Successfully Deleted" autoHideDuration={3500} onClose={handleClose}>
         
       </Snackbar>
