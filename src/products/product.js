@@ -1,20 +1,27 @@
 import React,{useEffect, useState} from 'react';
 import MaterialTable from 'material-table'
-import { Button,Spinner } from 'react-bootstrap';
+import { Button,Spinner, } from 'react-bootstrap';
 import {getAllProducts,deleteProduct,editProductFormatter} from './../services/productService'
+import Snackbar from '@material-ui/core/Snackbar'
 export const Product = (props) => {
     const [product,setProduct] = useState(null)
+    const [barOpen,setBarOpen]= useState(false)
     const  getProduct = async()=>  {
             const data = await getAllProducts()
             // console.log('p',data)
             setProduct(data)
     }
+    const handleClose=()=>{
+        setBarOpen(false
+            )
+    }
+   
     const columns=[{title:"Product Name",field:'name'},
                      {title:"Brand Name",field:'brand.brandName'},
                  {title:'Model Name',field:"manufactureDetails.modelName"},
                      {title:"Category",field:'category.name'},
                      {title:"Variants",field:'variants.length'},
-                     {title:"Tags",field:'tags[0].tag'},
+                     {title:"Tags",field:'tags.length'},
                     // {title:"Stock",field:'variants[0].stock'},
                     // {title:"Price",field:'variants[0].price'},
                     {title:"Is Active",field:'isActive',
@@ -40,7 +47,7 @@ export const Product = (props) => {
     return(
        
         <div style={{margin:'10px 20px'}}>
-            <Button onClick={()=>{props.history.replace('/product/add')}}>Add Product</Button>
+            <Button onClick={()=>{props.history.push('/product/add')}}>Add Product</Button>
             
        {product ? 
        <MaterialTable style={{marginTop:'15px'}} title="Products" data={product} columns={columns} 
@@ -59,14 +66,17 @@ export const Product = (props) => {
         },
       ]}
        editable={{
-            onRowDelete:selectedRow => new Promise((resolve,reject)=>{
+            onRowDelete:selectedRow => new Promise(async(resolve,reject)=>{
                 const id=selectedRow._id
                 console.log(id)
-                deleteProduct(id)
-                setTimeout(()=>{
-                    getProduct()
-                    resolve()
-                },2000)
+                const data = await deleteProduct(id)
+                if(data){
+                    setBarOpen(true)
+                    setTimeout(()=>{
+                        getProduct()
+                        resolve()
+                    },2000)
+                }
             }),
        }}
        
@@ -88,6 +98,9 @@ export const Product = (props) => {
           marginRight:'auto',textAlign:'center'}}>Loading</p>
             </div>
         }     
+        <Snackbar open={barOpen} message="Successfully Deleted" autoHideDuration={3500} onClose={handleClose}>
+        
+      </Snackbar>
         </div>
 
     )

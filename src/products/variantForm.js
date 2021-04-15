@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Button, Modal, Form, Col, Collapse } from 'react-bootstrap'
 import { addVariant, updateVariant } from './../services/productService'
 import { BsTrashFill } from "react-icons/bs";
+import Snackbar from '@material-ui/core/Snackbar'
+
 export const VariantForm = (props) => {
+    const [snackBarOpen,setSnackBarOpen] = useState(false)
+    const handleCloseSnack=()=>{
+        setSnackBarOpen(false)
+    }
     const [variants, setVariants] = useState({})
     const [preVariant, setPreVariant] = useState([])
     const [imageArray, setImageArray] = useState([])
@@ -50,7 +56,10 @@ export const VariantForm = (props) => {
                 console.log('add')
                 const data = await addVariant(variants, imageArray)
                 if (data) {
-                    props.onSave(data)
+                    setSnackBarOpen(true)
+                    setTimeout(() => {
+                        props.onSave(data)
+                    }, 1000);
                 }
                 else {
                     setStoreError(true)
@@ -91,8 +100,11 @@ export const VariantForm = (props) => {
     //     console.log('Prevar',preVariant)
     // }
     const updateV = () => {
-        console.log()
+       setSnackBarOpen(true)
+       setTimeout(() => {
+           
         props.updatevariant(preVariant)
+       }, 1000);
     }
 
     useEffect(() => {
@@ -267,11 +279,16 @@ export const VariantForm = (props) => {
                         {storeError && <p style={{ color: 'red' }}>Error in { isEdit ? 'Updating' : 'Saving'}!!</p>}
                         {!update && <Button onClick={props.onHide}>Close</Button>}
                         {update && <Button onClick={() => { updateV() }}>Close</Button>}
+                        
+                        <Snackbar open={snackBarOpen} message={isEdit?"Successfully Updated Variants":"Successfully Added Variants"} 
+             autoHideDuration={3500} onClose={handleCloseSnack}>
+                
+        </Snackbar>
                         {/* <Button onClick={()=>{view()}}>View</Button> */}
                     </Modal.Footer>
                 </Modal>
             }
-
+    
         </div>
 
     );

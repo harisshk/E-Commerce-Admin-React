@@ -6,9 +6,11 @@ const userId = '60703d3736520febd350c14c'
 export const getAllProducts = async () => {
     try {
         const data = await axios.get('http://localhost:5050/api/all/product/60703d3736520febd350c14c')
+        console.log(data)
         if (!data.data.error) {
             return data.data.products
         }
+        
     }
     catch (error) {
         console.log(error)
@@ -54,11 +56,11 @@ export const getAllVariants = async () => {
     }
 }
 // Upload/Addd formatter
-export const adduploadFormatter = (formf,variantId) =>{
+export const adduploadFormatter = (formf,variantId,tagId) =>{
     const final = {
         name: formf.name,
         category: formf.category,
-        tags: formf.tags,
+        tags: tagId,
         variants: variantId,
         brand: { brandName: formf.brandName },
         shortDescription: formf.shortDescription,
@@ -85,8 +87,8 @@ export const adduploadFormatter = (formf,variantId) =>{
 }
 
 //Add Product
-export const addProduct = async (formf,variantId) => {
-    const final = await adduploadFormatter(formf,variantId)
+export const addProduct = async (formf,variantId,tagId) => {
+    const final = await adduploadFormatter(formf,variantId,tagId)
     try {
         const data = await axios.post('http://localhost:5050/api/add/product/'+userId, final)
 
@@ -99,7 +101,7 @@ export const addProduct = async (formf,variantId) => {
 
         console.log(error)
     }
-    console.log('final', final)
+    // console.log('final', final)
 }
 
 //Deleting a product
@@ -113,7 +115,9 @@ export const deleteProduct = async (id) => {
                 "jwtToken": jwt
             }
         })
-        console.log('deele', data.message)
+        if(!data.data.error){
+            return true
+        }
     }
     catch (error) {
         console.log('del', error)
@@ -121,18 +125,26 @@ export const deleteProduct = async (id) => {
 }
 //edit values  are formatted for props 
 export const editProductFormatter = (data) => {
-    // console.log('data', data)
+    console.log('data', data)
     const arrayId = []
+    const tagId =[]
+    
+    
     data.variants.map((edit)=>{
         arrayId.push(edit._id)
         // console.log(arrayId)
+        return null;
+    })
+    data.tags.map((edit)=>{
+        tagId.push(edit._id)
         return null;
     })
     const edit = {
         id:data._id,
         name: data.name,
         category: data.category._id,
-        tags: data.tags[0]._id,
+        tags: data.tags,
+        tagId:tagId,
         variants: data.variants,
         variantId:arrayId,
         brandName: data.brand.brandName,
@@ -155,8 +167,9 @@ export const editProductFormatter = (data) => {
     return edit
 }
 
-export const editProduct=async(formf,id,variantId)=>{
-    const final = await adduploadFormatter(formf,variantId)
+export const editProduct=async(formf,id,variantId,tagId)=>{
+    const final = await adduploadFormatter(formf,variantId,tagId
+        )
     console.log('final',final,id)
     try {
         const data = await axios.put('http://localhost:5050/api/update/product/'+userId+'/'+id,final)

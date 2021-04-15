@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Col, Button ,Spinner} from 'react-bootstrap';
+import { Form, Col, Button, Spinner } from 'react-bootstrap';
 import { getAllCategories, getAllTags, addProduct, editProduct } from './../services/productService'
 import { VariantForm } from './variantForm'
 import MaterialTable from 'material-table'
-
+import { addTag } from './../services/tagService'
+import Snackbar from '@material-ui/core/Snackbar'
 
 export const ProductForm = (props) => {
+    
     const styles = {
         margin: "20px 50px"
     }
@@ -14,9 +16,15 @@ export const ProductForm = (props) => {
     { title: "Price", field: 'price' },
     { title: "Stock", field: 'stock' },
     ]
+    const [snackBarOpen,setSnackBarOpen] = useState(false)
+    const handleCloseSnack=()=>{
+        setSnackBarOpen(false)
+    }
     const [editImage, setEditImage] = useState([])
     const [editVariant, setEditVariant] = useState({})
-    const [tag, setTag] = useState(null)
+    const [tag, setTag] = useState([])
+    const [tagNew, setTagNew] = useState([])
+    const [tagInput, setTagInput] = useState('')
     const [isVariantEdit, setIsVariantEdit] = useState(false)
     const [modalShow, setModalShow] = React.useState(false);
     const [category, setCategory] = useState(null)
@@ -24,8 +32,36 @@ export const ProductForm = (props) => {
     const [variantId, setVariantId] = useState([])
     const [formf, setForm] = useState({})
     const [isEdit, setIsEdit] = useState(false)
+    const [tagId, setTagId] = useState([])
+    const [nullTag, setNullTag] = useState(false)
+    const [tagRequired, setTagRequired] = useState(false)
     // const {edit} = props.location.state
     const getValues = async () => {
+
+        try {
+            const category = await getAllCategories()
+            setCategory(category)
+            const tag = await getAllTags()
+            if (props.location.state) {
+                setTagId(props.location.state.tagId)
+
+                const data = await tag.filter(item => {
+                    return props.location.state.tagId.indexOf(item._id) === -1
+                })
+                setTag(data)
+            }
+            else {
+
+                setTag(tag)
+            }
+
+
+
+        }
+        catch (err) {
+            console.log(err)
+
+        }
         if (!props.location.state) {
 
             setIsEdit(false)
@@ -34,30 +70,24 @@ export const ProductForm = (props) => {
             setForm(props.location.state)
             setVariant(props.location.state.variants)
 
+            setTagNew(props.location.state.tags)
             setVariantId(props.location.state.variantId)
             setIsEdit(true)
-
-        }
-        try {
-            const category = await getAllCategories()
-            setCategory(category)
-            const tag = await getAllTags()
-            setTag(tag)
-
-        }
-        catch (err) {
-            console.log(err)
-
         }
     }
     useEffect(() => {
         getValues()
         setVariantRequired(false)
+        setTagRequired(false)
         setValidated(false)
         setStoreError(false)
 
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    // const tageditor=async(data)=>{
+    //    setTag(data)
+    // }
     const dataChooser = () => {
 
         return variant
@@ -68,8 +98,19 @@ export const ProductForm = (props) => {
             [field]: value
         })
     }
+    const tagEvent = (e) => {
+        setTagInput(
+            e
+        )
+        setNullTag(false)
+
+    }
+    // const view = ()=>{
+    //     console.log('newtag',tagNew)
+    //     console.log('tagid',tagId)
+    //     console.log('oldtag',tag)
+    // }
     const ss = (data) => {
-        console.log('===', data)
         setVariantRequired(false)
         setVariant(
             data
@@ -88,42 +129,89 @@ export const ProductForm = (props) => {
             data._id])
         setModalShow(false)
     }
-
+    const addTagHandler = async () => {
+        if (tagInput !== '') {
+            const data = await addTag(tagInput)
+            setTagNew([
+                ...tagNew,
+                data
+            ])
+            setTagId([
+                ...tagId,
+                data._id
+            ])
+            setTagInput('')
+            setNullTag(false)
+        }
+        else {
+            setNullTag(true)
+        }
+    }
+    const reduceTag = (id) => {
+        setTagId([
+            ...tagId,
+            id
+        ])
+        setTag(tag.filter(item => item._id !== id))
+    }
+    const popTag = (id) => {
+        setTagId(tagId.filter(item => item !== id))
+        setTagNew(tagNew.filter(item => item._id !== id))
+    }
     const [validated, setValidated] = useState(false);
-    const [storeError,setStoreError] = useState(false);
+    const [storeError, setStoreError] = useState(false);
     const [variantRequired, setVariantRequired] = useState(false)
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
-        if (variantId.length !== 0 && form.checkValidity() === true) {
+        if (tagId.length !== 0 && variantId.length !== 0 && form.checkValidity() === true) {
 
             event.preventDefault();
             setVariantRequired(false)
+            setTagRequired(false)
             if (isEdit) {
-                console.log('update')
-                const data = await editProduct(formf, props.location.state.id, variantId)
+                // console.log('update')
+                const data = await editProduct(formf, props.location.state.id, variantId, tagId)
                 if (data) {
-                    props.history.push('/product/')
+                    console.log('hi')
+                    setSnackBarOpen(true)
+                    setTimeout(() => {
+                        props.history.push('/product/')
+                      
+                    }, 2000);                   
                 }
-                else{
+                else {
                     setStoreError(true)
                 }
             }
             else {
-                const data = await addProduct(formf, variantId)
+
+                const data = await addProduct(formf, variantId, tagId)
                 if (data) {
-                    props.history.push('/product')
+                    setSnackBarOpen(true)
+                    setTimeout(() => {
+                        props.history.push('/product')
+                        
+                    }, 1000);
+                   
                 }
-                else{
+                else {
                     setStoreError(true)
                 }
             }
-      }
-        else if (variantId.length !== 0) {
+        }
+        else if (variantId.length !== 0 && tagId.length !== 0) {
             setVariantRequired(false)
+            setTagRequired(false)
+            event.preventDefault();
+        }
+        else if (tagId.length !== 0) {
+            setVariantRequired(false)
+            setTagRequired(true)
             event.preventDefault();
         }
         else {
             event.preventDefault();
+            setTagRequired(false)
             setVariantRequired(true)
         }
         setValidated(true);
@@ -134,18 +222,23 @@ export const ProductForm = (props) => {
         <div>{!isEdit && <p>Add Product</p>}
             {isEdit && <p>Update Product</p>}
             <Button style={{ margin: '0px 5px' }} onClick={() => {
-                        props.history.push('/product')
-                    }}>
-                        Back
+                props.history.push('/product')
+            }}>
+                Back
                     </Button>
-            {!category && !tag && 
-            <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
-            <Spinner style={{display:'block',marginLeft:'auto',height:'50px',width:'50px',
-          marginRight:'auto'}} animation="border" variant="primary" />
-          <p style={{display:'block',marginLeft:'auto',
-          marginRight:'auto',textAlign:'center'}}>Loading</p>
-            </div>
-        }     
+            {/* <Button onClick={()=>{view()}}>view</Button> */}
+            {!category && !tag &&
+                <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
+                    <Spinner style={{
+                        display: 'block', marginLeft: 'auto', height: '50px', width: '50px',
+                        marginRight: 'auto'
+                    }} animation="border" variant="primary" />
+                    <p style={{
+                        display: 'block', marginLeft: 'auto',
+                        marginRight: 'auto', textAlign: 'center'
+                    }}>Loading</p>
+                </div>
+            }
             {category && tag &&
                 <Form style={styles} noValidate validated={validated} onSubmit={handleSubmit}>
                     <Form.Row>
@@ -170,24 +263,15 @@ export const ProductForm = (props) => {
                             <Form.Control required as="select" value={formf.category} defaultValue='' onChange={e => setField('category', e.target.value)}>
                                 <option value=''>Select a Category</option>
                                 {category.map((team) => <option key={team._id} value={team._id}>{team.name}</option>)}
-            
+
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">
-                              Please  choose a Category.
+                                Please  choose a Category.
             </Form.Control.Feedback>
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
-                        <Form.Group as={Col}>
-                            <Form.Label>Tags</Form.Label>
-                            <Form.Control required as="select" value={formf.tags} onChange={(e) => setField('tags', e.target.value)} >
-                                <option value=''>Select a Tag</option>
-                                {tag.map((team) => <option key={team._id} value={team._id}>{team.tag}</option>)}
-                            </Form.Control>
-                            <Form.Control.Feedback type="invalid">
-                                Please choose tag.
-            </Form.Control.Feedback>
-                        </Form.Group>
+
                         <Form.Group as={Col}>
                             <Form.Label>Short Desription</Form.Label>
                             <Form.Control required type="text" value={formf.shortDescription} onChange={(e) => setField('shortDescription', e.target.value)} placeholder="Enter Short Description" />
@@ -205,74 +289,170 @@ export const ProductForm = (props) => {
                     </Form.Row>
                     <Form.Row>
 
-                        <Form.Group as={Col} style={{ paddingLeft: '10px', alignItems: 'center' }}>
-                            <Form.Label>Variants:</Form.Label>
-                            <div style={{ margin: '50px 0px 0px 100px' }}>
+                        <div style={{ margin: '0px', width: '200px' }}>
+                            <Form.Group as={Col}>
+                                <Form.Label>Tag</Form.Label>
+                                <Form.Control type="text" value={tagInput}
+                                    onChange={(e) => tagEvent(e.target.value)} placeholder="Enter Description" />
+                                {nullTag && <p style={{ color: 'red' }}>Null valuues are not accepted</p>}
+                                <Button onClick={() => addTagHandler()}>Add</Button>
+                                <Form.Control.Feedback type="invalid">
+                                    Please Enter description.
+            </Form.Control.Feedback>
+                            </Form.Group>
+                        </div>
+                        <div style={{ width: '200px' }}>
+                            <Form.Group as={Col}>
+                                <h4>Tags Applied</h4>
+                                <div style={{
+                                    border: '1px solid #000', height: '200px', width: '170px',
+                                    maxHeight: '200px', overflow: 'auto'
+                                }}>
+                                    <ul style={{ padding: '10px', display: 'flex', flexWrap: 'wrap' }}>
+                                        {tagNew && tagNew.map((value, index) => (
+                                            <li key={index} style={{
+                                                width: '100%', height: ' 32px', display: 'flex', alignItems: ' center',
+                                                justifyContent: 'center', color: '#fff',
+                                                fontSize: ' 14px',
+                                                listStyle: 'none',
+                                                borderRadius: '6px',
+                                                margin: '5px 10px',
+                                                background: '#0052cc'
+                                            }}>
+                                                <span style={{ marginTop: '3px' }}>{value.tag}</span>
+                                                <span
+                                                    onClick={() => {
+                                                        setTag([...tag, value])
+                                                        popTag(value._id)
+                                                    }}
+                                                    style={{
+                                                        width: '16px', height: '16px', display: 'block',
+                                                        lineHeight: '16px', fontSize: '14px',
+                                                        textAlign: 'center', position: 'relative', right: '-10px',
+                                                        color: ' #0052cc',
+                                                        borderRadius: '50%', background: '#fff', cursor: 'pointer'
+                                                    }}
+                                                >
+                                                    -
+						</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    {tagRequired && <p style={{ color: 'red' }}>Atleast one tag is required</p>}
 
-                                <Button variant="primary" onClick={() => {
-                                    setEditVariant({})
-                                    setEditImage([])
-                                    setTimeout(() => {
-                                        setIsVariantEdit(false)
-                                        setModalShow(true)
-                                    }, 1);
+                                </div>
+                            </Form.Group>
+                        </div>
+                        <div style={{ width: '200px' }}>
+                            <Form.Group as={Col}>
+                                <h4>Tags availabe</h4>
+                                <div style={{
+                                    border: '1px solid #000', height: '200px', width: '170px',
+                                    maxHeight: '200px', overflow: 'auto'
+                                }}>
 
-                                }
+                                    <ul style={{ padding: '10px', display: 'flex', flexWrap: 'wrap' }}>
+                                        {tag && tag.map((tag, index) => (
+                                            <li key={index} style={{
+                                                width: 'auto', height: ' 32px', display: 'flex', alignItems: ' center',
+                                                justifyContent: 'center', color: '#fff', padding: ' 0 8px',
+                                                fontSize: ' 14px',
+                                                listStyle: 'none',
+                                                borderRadius: '6px',
+                                                margin: '0 8px 8px 0',
+                                                background: '#0052cc'
+                                            }}>
+                                                <span style={{ marginTop: '3px' }}>{tag.tag}</span>
+                                                <span
+                                                    onClick={() => {
+                                                        setTagNew([...tagNew, tag])
+                                                        reduceTag(tag._id)
+                                                    }}
+                                                    style={{
+                                                        display: 'block', flexDirection: 'row-reverse', width: '16px', height: '16px',
+                                                        lineHeight: '16px', textAlign: 'center', fontSize: '14px',
+                                                        marginLeft: '8px', color: ' #0052cc', alignItems: 'right',
+                                                        borderRadius: '50%', background: '#fff', cursor: 'pointer'
+                                                    }}
+                                                >
+                                                    +
+						</span>
+                                            </li>
+                                        ))}
+                                    </ul>
 
-                                }>
-                                    Add Variants
-                              </Button>
-                                {variantRequired && <p style={{ color: 'red' }}>Atleast one variant is required</p>}
-                            </div>
+                                </div>
+                            </Form.Group>
+                        </div>
+                        <div style={{ width: '500px' }}>
+                            {/* <Button onClick={()=>{view()}}>vIeew</Button> */}
+                            <Form.Group as={Col} style={{ paddingLeft: '10px', alignItems: 'center' }}>
 
-                        </Form.Group>
-                        <Form.Group as={Col}>
-                            <div >
-                                {<MaterialTable title='Variants' data={dataChooser()}
-                                    columns={columns}
-                                    options={
-                                        {
+                                <div style={{ margin: '5px' }}>
 
-                                            paging: false, actionsColumnIndex: -1
-                                        }
+                                    <Button variant="primary" onClick={() => {
+                                        setEditVariant({})
+                                        setEditImage([])
+                                        setTimeout(() => {
+                                            setIsVariantEdit(false)
+                                            setModalShow(true)
+                                        }, 1);
+
                                     }
-                                    actions={[
-                                        {
-                                            icon: 'edit',
-                                            tooltip: 'Edit Variant',
-                                            onClick: async (event, rowData) => {
-                                                console.log('Roe', rowData)
-                                                setEditImage(rowData.gallery)
-                                                setEditVariant(rowData)
-                                                setIsVariantEdit(true)
-                                                setModalShow(true)
-                                            }
-                                        },
-                                    ]}
-                                    editable={{
-                                        onRowDelete: selectedRow => new Promise((resolve, reject) => {
-                                            const id = selectedRow._id
 
-                                            setVariantId(variantId.filter(item => item !== id))
-                                            setVariant(variant.filter(item => item._id !== id));
-                                            setTimeout(() => {
-                                                resolve()
-                                            }, 1200)
-                                        }),
-                                    }}>
-                                </MaterialTable>}
-                            </div>
-                            <VariantForm
-                                variant={variant}
-                                updatevariant={(data) => { ss(data) }}
-                                show={modalShow}
-                                editVariant={editVariant}
-                                editImage={editImage}
-                                onHide={() => setModalShow(false)}
-                                onSave={(data) => { s(data) }}
-                                edit={isVariantEdit}
-                            />
-                        </Form.Group>
+                                    }>
+                                        Add Variants
+                              </Button>
+                                    {variantRequired && <p style={{ color: 'red' }}>Atleast one variant is required</p>}
+                                </div>
+
+
+                                <div >
+                                    {<MaterialTable title='Variants' data={dataChooser()}
+                                        columns={columns}
+                                        options={
+                                            {
+
+                                                paging: false, actionsColumnIndex: -1
+                                            }
+                                        }
+                                        actions={[
+                                            {
+                                                icon: 'edit',
+                                                tooltip: 'Edit Variant',
+                                                onClick: async (event, rowData) => {
+                                                    setEditImage(rowData.gallery)
+                                                    setEditVariant(rowData)
+                                                    setIsVariantEdit(true)
+                                                    setModalShow(true)
+                                                }
+                                            },
+                                        ]}
+                                        editable={{
+                                            onRowDelete: selectedRow => new Promise((resolve, reject) => {
+                                                const id = selectedRow._id
+
+                                                setVariantId(variantId.filter(item => item !== id))
+                                                setVariant(variant.filter(item => item._id !== id));
+                                                setTimeout(() => {
+                                                    resolve()
+                                                }, 1200)
+                                            }),
+                                        }}>
+                                    </MaterialTable>}
+                                </div>
+                                <VariantForm
+                                    variant={variant}
+                                    updatevariant={(data) => { ss(data) }}
+                                    show={modalShow}
+                                    editVariant={editVariant}
+                                    editImage={editImage}
+                                    onHide={() => setModalShow(false)}
+                                    onSave={(data) => { s(data) }}
+                                    edit={isVariantEdit}
+                                />
+                            </Form.Group>
+                        </div>
                     </Form.Row>
                     <Form.Row>
                         <Form.Label>Dimensions :</Form.Label>
@@ -381,7 +561,7 @@ export const ProductForm = (props) => {
                         </Form.Row>
                     }
 
-                    {storeError && <p style={{color:'red'}}>Cannot {isEdit ? 'Update' : 'Save'} the data </p>}
+                    {storeError && <p style={{ color: 'red' }}>Cannot {isEdit ? 'Update' : 'Save'} the data </p>}
                     <Button type='submit'>{isEdit ? 'Update' : 'Save'}</Button>
 
 
@@ -391,7 +571,14 @@ export const ProductForm = (props) => {
                         Close
                     </Button>
                 </Form>
+                
             }
+            <Snackbar open={snackBarOpen} message={isEdit?"Successfully Updated":"Successfully Added"} 
+             autoHideDuration={3500} onClose={handleCloseSnack}>
+        
+        </Snackbar>
+        
+
         </div>
     )
 }
