@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./login.css";
@@ -7,6 +7,11 @@ export const  LoginPage = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  useEffect(()=>{
+    console.log(props)
+    
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+},[])
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
@@ -18,6 +23,7 @@ export const  LoginPage = (props) => {
         props.history.push('/home')
         console.log(props.history)
        }
+       
   }
 
   return (

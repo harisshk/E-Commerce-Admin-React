@@ -41,25 +41,25 @@ export const VariantForm = (props) => {
             setNullUrl(false)
             setImageArray([
                 ...imageArray,
-                {imageUrl,
-                imageType}
+                {url:imageUrl,
+                type:imageType}
     
             ])
-            setImageUrl({url:''})
+            setImageUrl('')
         }
         setImageValidation(false)
     }
     const setImgUrl = ( value) => {
         console.log('')
-        setImageUrl({
-            url: value
-        })
+        setImageUrl(
+            value
+        )
         setNullUrl(false)
     }
     const setImgType = (value) => {
-        setImageType({
-            type: value
-        })
+        setImageType(
+            value
+        )
         setNullType(false)
     }
     const [isEdit, setIsEdit] = useState(null)
@@ -180,7 +180,7 @@ export const VariantForm = (props) => {
                                 <Form.Group as={Col} >
                                     <Form.Label>Variant images</Form.Label>
 
-                                    <Form.Control type="text" value={imageUrl.value} onChange={(e) => setImgUrl(e.target.value)} placeholder="Enter Variant Image URL" />
+                                    <Form.Control type="text" value={imageUrl} onChange={(e) => setImgUrl(e.target.value)} placeholder="Enter Variant Image URL" />
                                 </Form.Group>
                                 {nullUrl && <p style={{color:'red'}}>Null value cannot be accepted</p>}
                                 <Form.Group as={Col} >
@@ -238,7 +238,7 @@ export const VariantForm = (props) => {
                                         }}>
                                             <BsTrashFill style={{ marginLeft: '80px' }} size={30} onClick={() => {
                                                 console.log(team._id)
-                                                setImageArray(imageArray.filter(item => item._id !== team._id));
+                                                setImageArray(imageArray.filter(item => item.url !== team.url));
                                             }} />
                                             <img
                                                 src={team.url}

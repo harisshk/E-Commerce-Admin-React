@@ -6,14 +6,17 @@ const userId = '60703d3736520febd350c14c'
 export const getAllProducts = async () => {
     try {
         const data = await axios.get('http://localhost:5050/api/all/product/60703d3736520febd350c14c')
-        console.log(data)
+        // console.log(data)
         if (!data.data.error) {
             return data.data.products
         }
         
     }
     catch (error) {
-        console.log(error)
+        if(error){
+            return false
+        }
+        // console.log(error)
     }
 }
 
@@ -26,7 +29,10 @@ export const getAllCategories = async () => {
         }
     }
     catch (error) {
-        console.log(error)
+        if(error){
+            return false
+        }
+        // console.log(error)
     }
 }
 
@@ -39,7 +45,10 @@ export const getAllTags = async () => {
         }
     }
     catch (error) {
-        console.log(error)
+        if(error){
+            return false
+        }
+        // console.log(error)
     }
 }
 
@@ -52,7 +61,10 @@ export const getAllVariants = async () => {
         }
     }
     catch (error) {
-        console.log(error)
+        if(error){
+            return false
+        }
+        // console.log(error)
     }
 }
 // Upload/Addd formatter
@@ -98,8 +110,10 @@ export const addProduct = async (formf,variantId,tagId) => {
         }
     }
     catch (error) {
-
-        console.log(error)
+        if(error){
+            return false
+        }
+        // console.log(error)
     }
     // console.log('final', final)
 }
@@ -120,7 +134,10 @@ export const deleteProduct = async (id) => {
         }
     }
     catch (error) {
-        console.log('del', error)
+        if(error){
+            return false
+        }
+        // console.log('del', error)
     }
 }
 //edit values  are formatted for props 
@@ -180,7 +197,10 @@ export const editProduct=async(formf,id,variantId,tagId)=>{
         }
     }
     catch(err){
-        console.log("Error in update prouct",err)
+        if(err){
+            return false
+        }
+        // console.log("Error in update prouct",err)
     }
 }
 
@@ -203,7 +223,10 @@ export const addVariant = async(variant,imageArray)=>{
     }
     }
     catch(err){
-        console.log("error in add variant",err)
+        if(err){
+            return false
+        }
+        // console.log("error in add variant",err)
     }
     
 }
@@ -226,7 +249,10 @@ export const updateVariant = async(variant,imageArray,variantId)=>{
         }
     }
     catch(error){
-        console.log("Error in update variant",error)
+        if(error){
+            return false
+        }
+        // console.log("Error in update variant",error)
     }
     
 

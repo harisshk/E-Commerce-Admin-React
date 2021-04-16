@@ -11,7 +11,7 @@ export const addTag = async(tag)=>{
            tag:tag,
             "jwtToken": jwt
     })
-    console.log('Tagd',data)
+    // console.log('Tagd',data)
     
     if(!data.data.error){
     
@@ -19,7 +19,10 @@ export const addTag = async(tag)=>{
     }
     }
     catch(err){
-        console.log("error in add variant",err)
+        if(err){
+            return false
+        }
+        // console.log("error in add variant",err)
     }
     
 }

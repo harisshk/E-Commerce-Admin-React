@@ -53,7 +53,10 @@ export const Product = (props) => {
     return(
        
         <div style={{margin:'10px 20px'}}>
-            <Button onClick={()=>{props.history.push('/product/add')}}>Add Product</Button>
+           { !dbError && <div>
+            <Button onClick={()=>{props.history.push('/product/add')}}>Add Product</Button> 
+            <Button style={{margin:'5px 30px'}} onClick={() => props.history.push('/home')}>Back</Button>
+               </div>}
             
        {product ? 
        <MaterialTable style={{marginTop:'15px'}} title="Products" data={product} columns={columns} 
@@ -102,7 +105,11 @@ export const Product = (props) => {
               <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
               
             <p style={{display:'block',marginLeft:'auto',
-            marginRight:'auto',textAlign:'center'}}>Looks like Server Down!!</p>
+            marginRight:'auto',textAlign:'center'}}>Looks like Server Down!!
+             <br/><a href="/">
+  Try Reloading the page
+</a></p>
+           
               </div>
               :
                <div style={{width:'100%',height:'100px',marginTop:'300px'}} >

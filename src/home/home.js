@@ -10,6 +10,9 @@ export const Home = (props) =>{
             <Button variant="primary" onClick={()=>{
                 props.history.push('/product')
             }}>Products</Button>
+            <Button variant="primary" onClick={()=>{
+                props.history.push('/category')
+            }}>Category</Button>
         </Navbar>
         
     )
