@@ -2,7 +2,6 @@ import React from 'react';
 import { Navbar } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 
-
 export const Home = (props) =>{
     return(
         <Navbar bg="primary">
@@ -13,6 +12,12 @@ export const Home = (props) =>{
             <Button variant="primary" onClick={()=>{
                 props.history.push('/category')
             }}>Category</Button>
+            <Button variant="primary" onClick={()=>{
+                props.history.push('/orders')
+            }}>Orders</Button>
+             <Button variant="primary" onClick={()=>{
+                props.history.push('/tags')
+            }}>Tags</Button>
         </Navbar>
         
     )

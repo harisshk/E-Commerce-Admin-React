@@ -85,7 +85,7 @@ export const Product = (props) => {
                     setTimeout(()=>{
                         getProduct()
                         resolve()
-                    },2000)
+                    },1000)
                 }
             }),
        }}
@@ -106,7 +106,7 @@ export const Product = (props) => {
               
             <p style={{display:'block',marginLeft:'auto',
             marginRight:'auto',textAlign:'center'}}>Looks like Server Down!!
-             <br/><a href="/">
+             <br/><a href="/product">
   Try Reloading the page
 </a></p>
            

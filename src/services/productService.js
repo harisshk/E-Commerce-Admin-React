@@ -217,9 +217,10 @@ export const addVariant = async(variant,imageArray)=>{
             gallery:imageArray,
             "jwtToken": jwt
     })
+    console.log(data)
     if(!data.data.error){
-    
-        return data.data.variants
+        
+        return data.data.data
     }
     }
     catch(err){

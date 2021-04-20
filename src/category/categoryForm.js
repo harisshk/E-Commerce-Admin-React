@@ -49,11 +49,11 @@ export const CategoryForm =(props)=> {
         setValidated(true);
     }
 
-    const view=()=>{
-        console.log('======',name)
-        console.log('=--=-=',props)
-        console.log(editCategoryId)
-    }
+    // const view=()=>{
+    //     console.log('======',name)
+    //     console.log('=--=-=',props)
+    //     console.log(editCategoryId)
+    // }
     const [snackBarOpen,setSnackBarOpen] = useState(false)
     const handleCloseSnack=()=>{
         setSnackBarOpen(false)
@@ -88,7 +88,7 @@ export const CategoryForm =(props)=> {
 
                             <Form.Group as={Col} >
                                 <Form.Label>Category Name</Form.Label>
-                                <Form.Control required type="text" value={name}  onChange={(e) => setField( e.target.value)} placeholder="Enter Product Name" />
+                                <Form.Control required type="text" value={name}  onChange={(e) => setField( e.target.value)} placeholder="Enter Category Name" />
                                 <Form.Control.Feedback type="invalid">
                                     Please Enter a Category Name.
                                     </Form.Control.Feedback>

@@ -1,34 +1,38 @@
 import React, { useState,useEffect } from 'react'
 import MaterialTable from 'material-table'
-import { getAllCategory } from './../services/categoryService'
+import { getAllCategory,deleteCategory } from './../services/categoryService'
 import { Button,Spinner } from 'react-bootstrap'
 import './categoryList.css'
 import CategoryForm from './categoryForm'
+import Snackbar from '@material-ui/core/Snackbar'
+
 export const CategoryList = (props) => {
     const [categoryList, setCategoryList] = useState(null)
     const [modalShow, setModalShow] = useState(false)
     const [isEditCategory, setIsEditCategory] = useState(false)
     const [editCategory, setEditCategory] = useState([])
-
+    const [dbError,setDbError] = useState(false)
+    const [snackBarOpen,setSnackBarOpen] = useState(false)
+    const handleCloseSnack=()=>{
+        setSnackBarOpen(false)
+    }
     const columns= [{ title: "Category Name", field: 'name' },
         {
             title: "Is Active", field: 'isActive',
             render: rowData => {
-    if (rowData.isActive) {
-        return (
-            <p style={{ color: 'green', fontWeight: "bolder" }}>Active</p>
-        )
-    }
-    else {
-        return (
-            <p style={{ color: 'red', fontWeight: "bolder" }}>InActive</p>
-        )
-    }
-}
-            },
-
-            ]
-
+                if (rowData.isActive) {
+                        return (
+                            <p style={{ color: 'green', fontWeight: "bolder" }}>Active</p>
+                                 )
+                }
+                else {
+                    return (
+                        <p style={{ color: 'red', fontWeight: "bolder" }}>InActive</p>
+                            )
+                }
+            }
+        },
+    ]
 
 
 const modalOpen=()=> {
@@ -54,17 +58,25 @@ const editActive=(data)=> {
     setModalShow(true)
 
 }
-const view=()=> {
-    console.log('DB List', categoryList)
-    console.log('Edit List',editCategory)
-    console.log('isEdit', isEditCategory)
-}
+// const view=()=> {
+//     console.log('DB List', categoryList)
+//     console.log('Edit List',editCategory)
+//     console.log('isEdit', isEditCategory)
+// }
 const getCategory=async()=>{
     const data = await getAllCategory()
+   if(data){
     setCategoryList(data)
+    
+   }
+   else{
+       setDbError(true)
+   }
 }
 useEffect(()=>{
     getCategory()
+    setDbError(false)
+    setSnackBarOpen(false)
  // eslint-disable-next-line react-hooks/exhaustive-deps      
 },[props])
 
@@ -91,7 +103,15 @@ useEffect(()=>{
             editable={{
                 onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
                     const id = selectedRow._id
-                    console.log(id)
+                    const data = await deleteCategory(id)
+                    if(data){
+                        setSnackBarOpen(true)
+                        setTimeout(() => {
+                            getCategory()
+                            resolve()
+                        }, 2000);
+                        
+                    }
                 }),
             }}
             options={{
@@ -113,7 +133,22 @@ useEffect(()=>{
     isEdit={isEditCategory}
     editCategory={editCategory}
 ></CategoryForm>
+<Snackbar open={snackBarOpen} message="Successfully Deleted" 
+            autoHideDuration={3500} onClose={handleCloseSnack}>
+       
+       </Snackbar>
                 </div>
+: 
+dbError ? 
+<div style={{width:'100%',height:'100px',marginTop:'300px'}} >
+
+<p style={{display:'block',marginLeft:'auto',
+marginRight:'auto',textAlign:'center'}}>Looks like Server Down!!
+<br/><a href="/category">
+Try Reloading the page
+</a></p>
+
+</div>
 :
 <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
 <Spinner  style={{display:'block',marginLeft:'auto',

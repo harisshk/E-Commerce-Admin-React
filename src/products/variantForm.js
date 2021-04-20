@@ -16,7 +16,6 @@ export const VariantForm = (props) => {
     const [open, setOpen] = useState(false);
     const [nullUrl, setNullUrl] = useState(false);
     const [nullType, setNullType] = useState('');
-
     const [imageType, setImageType] = useState('')
     const setField = (field, value) => {
         setVariants({
@@ -25,10 +24,10 @@ export const VariantForm = (props) => {
         })
 
     }
-    console.log(imageArray)
+    // console.log(imageArray)
     const setImgArray = () => {
-        console.log('---',imageUrl)
-        console.log('---',imageType)
+        // console.log('---',imageUrl)
+        // console.log('---',imageType)
         if(imageType===''){
             setNullType(true)
         }
@@ -50,7 +49,7 @@ export const VariantForm = (props) => {
         setImageValidation(false)
     }
     const setImgUrl = ( value) => {
-        console.log('')
+        // console.log('')
         setImageUrl(
             value
         )
@@ -73,12 +72,13 @@ export const VariantForm = (props) => {
 
         console.log(form.checkValidity())
         if (imageArray.length !== 0 && form.checkValidity() === true) {
-            console.log('valid')
+            // console.log('valid')
             e.preventDefault();
              setImageValidation(false)
             if (!isEdit) {
-                console.log('add')
+                // console.log('add')
                 const data = await addVariant(variants, imageArray)
+                // console.log('dataOfAddVar')
                 if (data) {
                     setSnackBarOpen(true)
                     setTimeout(() => {
@@ -93,7 +93,7 @@ export const VariantForm = (props) => {
                 const data = await updateVariant(variants, imageArray, props.editVariant._id)
         if (data) {
 
-            console.log('datat', data.data.Variant)
+            // console.log('datat', data.data.Variant)
 
             await setPreVariant([
                 ...preVariant,
@@ -101,6 +101,8 @@ export const VariantForm = (props) => {
             ])
 
             setUpdate(true)
+            setSnackBarOpen(true)
+            setStoreError(false)
         }
         else{
             setStoreError(true)
@@ -119,12 +121,12 @@ export const VariantForm = (props) => {
     };
    
     
-    // const view=()=>{
-    //     console.log('Image',imageArray)
-    //     console.log('Prevar',preVariant)
-    // }
+    const view=()=>{
+        console.log('Image',imageArray)
+        console.log('Prevar',preVariant)
+    }
     const updateV = () => {
-       setSnackBarOpen(true)
+       
        setTimeout(() => {
            
         props.updatevariant(preVariant)
@@ -313,7 +315,7 @@ export const VariantForm = (props) => {
              autoHideDuration={3500} onClose={handleCloseSnack}>
                 
         </Snackbar>
-                        {/* <Button onClick={()=>{view()}}>View</Button> */}
+                        <Button onClick={()=>{view()}}>View</Button>
                     </Modal.Footer>
                 </Modal>
             }

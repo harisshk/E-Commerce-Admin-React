@@ -109,6 +109,7 @@ export const ProductForm = (props) => {
     //     console.log('newtag',tagNew)
     //     console.log('tagid',tagId)
     //     console.log('oldtag',tag)
+    //     console.log(variantId)
     // }
     const ss = (data) => {
         setVariantRequired(false)
@@ -119,7 +120,7 @@ export const ProductForm = (props) => {
     }
     const s = (data) => {
         setVariantRequired(false)
-        // console.log('Updated',data)
+        console.log('Saved',data)
         setVariant([
             ...variant,
             data
@@ -136,6 +137,7 @@ export const ProductForm = (props) => {
                 ...tagNew,
                 data
             ])
+            console.log("New Tag",data)
             setTagId([
                 ...tagId,
                 data._id
@@ -163,6 +165,7 @@ export const ProductForm = (props) => {
     const [variantRequired, setVariantRequired] = useState(false)
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
+        console.log(tagId.length !== 0)
         if (tagId.length !== 0 && variantId.length !== 0 && form.checkValidity() === true) {
 
             event.preventDefault();
@@ -204,7 +207,7 @@ export const ProductForm = (props) => {
             setTagRequired(false)
             event.preventDefault();
         }
-        else if (tagId.length !== 0) {
+        else if (tagId.length === 0) {
             setVariantRequired(false)
             setTagRequired(true)
             event.preventDefault();
@@ -384,7 +387,7 @@ export const ProductForm = (props) => {
                                 </div>
                             </Form.Group>
                         </div>
-                        <div style={{ width: '500px' }}>
+                        <div style={{ width: '800px' }}>
                             {/* <Button onClick={()=>{view()}}>vIeew</Button> */}
                             <Form.Group as={Col} style={{ paddingLeft: '10px', alignItems: 'center' }}>
 

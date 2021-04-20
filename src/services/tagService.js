@@ -1,20 +1,19 @@
 import * as axios from 'axios'
+import {url,jwt,userId} from './../constants/auth'
 
-const jwt='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwM2QzNzM2NTIwZmViZDM1MGMxNGMiLCJpYXQiOjE2MTc5Njg4MDl9.UdQj7g7mpczwFTiHKZhKzjgby_nkUbgDGZBwMIAxRYY'
-const userId = '60703d3736520febd350c14c'
 
 export const addTag = async(tag)=>{
     
     try {
-        const data = await axios.post('http://localhost:5050/api/add/tag/'+userId, 
+        const data = await axios.post(url+'/add/tag/'+userId, 
         {
            tag:tag,
             "jwtToken": jwt
     })
-    // console.log('Tagd',data)
+    console.log('Tagd',data)
     
     if(!data.data.error){
-    
+        
         return data.data.tag
     }
     }
@@ -25,4 +24,34 @@ export const addTag = async(tag)=>{
         // console.log("error in add variant",err)
     }
     
+}
+
+export const getAllTag = async()=>{
+    try{
+        const data = await axios.get(url+'/all/tag')
+        if (!data.data.error){
+            return data.data.tags
+        }
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+export const deleteTag=async(tagId)=>{
+    console.log(tagId)
+    try{
+        const data = await axios.put(url+'/delete/tag/'+userId+'/'+tagId,{
+            "jwtToken": jwt
+        })
+        console.log(data)
+        if (!data.data.error){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+    catch(error){
+        console.log(error)
+    }
 }
