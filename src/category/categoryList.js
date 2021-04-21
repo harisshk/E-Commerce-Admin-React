@@ -5,7 +5,7 @@ import { Button,Spinner } from 'react-bootstrap'
 import './categoryList.css'
 import CategoryForm from './categoryForm'
 import Snackbar from '@material-ui/core/Snackbar'
-
+import NavBar from './../components/navBar'
 export const CategoryList = (props) => {
     const [categoryList, setCategoryList] = useState(null)
     const [modalShow, setModalShow] = useState(false)
@@ -82,11 +82,11 @@ useEffect(()=>{
 
     return (
         <div>
+            <NavBar></NavBar>
             {categoryList?
 
                 <div>
                     <Button style={{margin:'10px 30px'}} onClick={() => modalOpen()}>Add Category</Button>
-<Button style={{margin:'5px 30px'}} onClick={() => props.history.push('/home')}>Back</Button>
 {categoryList &&
     <div className='table'>
         <MaterialTable style={{ marginTop: '15px' }} title="Category" data={categoryList}

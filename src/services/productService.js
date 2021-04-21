@@ -1,11 +1,9 @@
 import * as axios from 'axios'
-
-const jwt='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwM2QzNzM2NTIwZmViZDM1MGMxNGMiLCJpYXQiOjE2MTc5Njg4MDl9.UdQj7g7mpczwFTiHKZhKzjgby_nkUbgDGZBwMIAxRYY'
-const userId = '60703d3736520febd350c14c'
+import {url,jwt,userId} from './../constants/auth'
 //Get all Products.
 export const getAllProducts = async () => {
     try {
-        const data = await axios.get('http://localhost:5050/api/all/product/60703d3736520febd350c14c')
+        const data = await axios.get(url+'/all/product/60703d3736520febd350c14c')
         // console.log(data)
         if (!data.data.error) {
             return data.data.products
@@ -23,7 +21,7 @@ export const getAllProducts = async () => {
 //Get Categories.
 export const getAllCategories = async () => {
     try {
-        const data = await axios.get('http://localhost:5050/api/all/category')
+        const data = await axios.get(url+'/all/category')
         if (!data.data.error) {
             return data.data.categories
         }
@@ -39,7 +37,7 @@ export const getAllCategories = async () => {
 //Get Tags
 export const getAllTags = async () => {
     try {
-        const dataTag = await axios.get('http://localhost:5050/api/all/tag')
+        const dataTag = await axios.get(url+'/all/tag')
         if (!dataTag.data.error) {
             return dataTag.data.tags
         }
@@ -55,7 +53,7 @@ export const getAllTags = async () => {
 //Get Variants
 export const getAllVariants = async () => {
     try {
-        const dataVariant = await axios.get('http://localhost:5050/api/all/variants')
+        const dataVariant = await axios.get(url+'/all/variants')
         if (!dataVariant.data.error) {
             return dataVariant.data.variants
         }
@@ -102,7 +100,7 @@ export const adduploadFormatter = (formf,variantId,tagId) =>{
 export const addProduct = async (formf,variantId,tagId) => {
     const final = await adduploadFormatter(formf,variantId,tagId)
     try {
-        const data = await axios.post('http://localhost:5050/api/add/product/'+userId, final)
+        const data = await axios.post(url+'/add/product/'+userId, final)
 
         if (!data.data.error) {
 
@@ -123,7 +121,7 @@ export const deleteProduct = async (id) => {
 
 
     try {
-        const data = await axios.delete('http://localhost:5050/api/delete/product/'+userId+'/' + id, {
+        const data = await axios.delete(url+'/delete/product/'+userId+'/' + id, {
             data:
             {
                 "jwtToken": jwt
@@ -189,7 +187,7 @@ export const editProduct=async(formf,id,variantId,tagId)=>{
         )
     console.log('final',final,id)
     try {
-        const data = await axios.put('http://localhost:5050/api/update/product/'+userId+'/'+id,final)
+        const data = await axios.put(url+'/update/product/'+userId+'/'+id,final)
         // console.log("Data of update",data.data.error)
         if (!data.data.error) {
 
@@ -208,7 +206,7 @@ export const editProduct=async(formf,id,variantId,tagId)=>{
 export const addVariant = async(variant,imageArray)=>{
     
     try {
-        const data = await axios.post('http://localhost:5050/api/add/variant/'+userId, 
+        const data = await axios.post(url+'/add/variant/'+userId, 
         {
             color:variant.color,
             size:variant.size,
@@ -235,7 +233,7 @@ export const addVariant = async(variant,imageArray)=>{
 //Update Variant
 export const updateVariant = async(variant,imageArray,variantId)=>{
     try{
-        const data =await axios.put('http://localhost:5050/api/update/variant/'+userId+'/'+variantId,
+        const data =await axios.put(url+'/update/variant/'+userId+'/'+variantId,
         {
             color:variant.color,
             size:variant.size,
@@ -255,6 +253,35 @@ export const updateVariant = async(variant,imageArray,variantId)=>{
         }
         // console.log("Error in update variant",error)
     }
-    
+}
 
+export const getTotalProducts = async()=>{
+    try{
+        const data = await axios.get(url+'/get/totalProducts')
+        // console.log("TNumber of products",data.data.totalProducts)
+        if(!data.data.error){
+            return data.data.totalProducts
+        }
+        else{
+            return false
+        }
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+export const getActiveProducts = async()=>{
+    try{
+        const data = await axios.get(url+'/get/activeProducts')
+        // console.log("TNumber of products",data.data.totalProducts)
+        if(!data.data.error){
+            return data.data.activeProducts
+        }
+        else{
+            return false
+        }
+    }
+    catch(error){
+        console.log(error)
+    }
 }

@@ -3,6 +3,7 @@ import MaterialTable from 'material-table'
 import { Button,Spinner, } from 'react-bootstrap';
 import {getAllProducts,deleteProduct,editProductFormatter} from './../services/productService'
 import Snackbar from '@material-ui/core/Snackbar'
+import NavBar from '../components/navBar';
 export const Product = (props) => {
     const [product,setProduct] = useState(null)
     const [barOpen,setBarOpen]= useState(false)
@@ -51,11 +52,12 @@ export const Product = (props) => {
           // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     return(
-       
-        <div style={{margin:'10px 20px'}}>
-           { !dbError && <div>
+      
+        <div >
+             <NavBar {...props}></NavBar>
+           { !dbError && <div style={{margin:'10px 20px'}}>
             <Button onClick={()=>{props.history.push('/product/add')}}>Add Product</Button> 
-            <Button style={{margin:'5px 30px'}} onClick={() => props.history.push('/home')}>Back</Button>
+           
                </div>}
             
        {product ? 

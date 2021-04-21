@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Col, Row } from 'react-bootstrap'
+import {  Container, Col, Row } from 'react-bootstrap'
 import './orderDetails.css'
 import { FiTruck } from "react-icons/fi";
 import { BiMessageError } from "react-icons/bi";
@@ -19,7 +19,6 @@ export const OrderDetails = (props) => {
 
     return (
         <div>
-            <Button onClick={() => { props.history.replace('/orders') }}>Back</Button>
             <h2>Order Details</h2>
             <Container >
                 {/* 

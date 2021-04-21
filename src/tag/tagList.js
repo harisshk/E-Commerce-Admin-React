@@ -4,6 +4,7 @@ import {getAllTag,deleteTag} from './../services/tagService'
 import {Spinner,Button} from 'react-bootstrap'
 import Snackbar from '@material-ui/core/Snackbar'
 import TagModal from './tagModal'
+import NavBar from '../components/navBar'
 export const TagList =(props)=>{
     const [tag,SetTag]= useState(null)
     const [modalShow,setModalShow]= useState(false)
@@ -52,10 +53,10 @@ export const TagList =(props)=>{
     },[props])
     return (
         <div>
+            <NavBar></NavBar>
            {tag ?
             <div>
                 <Button onClick={()=>{open()}}>Add Tag</Button>
-                <Button onClick={()=>{props.history.replace('/home')}}>Back</Button>
                 <MaterialTable title="Tag" columns={columns} data={tag}
             actions={ [
             {
@@ -63,6 +64,7 @@ export const TagList =(props)=>{
                 tooltip: 'Edit Tag',
                 onClick: async (event, rowData) => {
                     console.log(rowData)
+                    setIsEdit(true)
                 }
             }
         ]}

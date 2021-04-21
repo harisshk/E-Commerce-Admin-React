@@ -3,7 +3,7 @@ import {getAllOrders} from '../services/orderService'
 import { Button ,Spinner} from 'react-bootstrap'
 import Snackbar from '@material-ui/core/Snackbar'
 import MaterialTable from 'material-table'
-
+import NavBar from './../components/navBar'
 export const OrderList=(props)=>{
     const [orders,SetOrders] = useState(null)
     const [dbError,setDbError] = useState(false)
@@ -64,6 +64,7 @@ export const OrderList=(props)=>{
 
     return(
         <div>
+            <NavBar></NavBar>
             {orders ?
         <div>Orders Page
             <Button onClick={()=>props.history.replace('/home')}>Back</Button>
