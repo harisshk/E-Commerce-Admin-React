@@ -4,6 +4,7 @@ import { Button,Spinner, } from 'react-bootstrap';
 import {getAllProducts,deleteProduct,editProductFormatter} from './../services/productService'
 import Snackbar from '@material-ui/core/Snackbar'
 import NavBar from '../components/navBar';
+
 export const Product = (props) => {
     const [product,setProduct] = useState(null)
     const [barOpen,setBarOpen]= useState(false)
@@ -27,7 +28,8 @@ export const Product = (props) => {
                      {title:"Brand Name",field:'brand.brandName'},
                  {title:'Model Name',field:"manufactureDetails.modelName"},
                      {title:"Category",field:'category.name'},
-                     {title:"Variants",field:'variants.length'},
+                    //  {title:"Variants",field:'variants.length'},
+                     {title:"Images",field:'gallery.length'},
                      {title:"Tags",field:'tags.length'},
                     // {title:"Stock",field:'variants[0].stock'},
                     // {title:"Price",field:'variants[0].price'},
@@ -55,12 +57,14 @@ export const Product = (props) => {
       
         <div >
              <NavBar {...props}></NavBar>
-           { !dbError && <div style={{margin:'10px 20px'}}>
-            <Button onClick={()=>{props.history.push('/product/add')}}>Add Product</Button> 
            
-               </div>}
             
        {product ? 
+       <div>
+           <div style={{margin:'10px 20px'}}>
+       <Button onClick={()=>{props.history.push('/product/add')}}>Add Product</Button> 
+      
+          </div>
        <MaterialTable style={{marginTop:'15px'}} title="Products" data={product} columns={columns} 
        actions={[
         {
@@ -84,10 +88,8 @@ export const Product = (props) => {
                 const data = await deleteProduct(id)
                 if(data){
                     setBarOpen(true)
-                    setTimeout(()=>{
-                        getProduct()
-                        resolve()
-                    },1000)
+                    getProduct()
+                    resolve()
                 }
             }),
        }}
@@ -102,6 +104,7 @@ export const Product = (props) => {
         
             </MaterialTable>
 
+       </div>
           :
               dbError ? 
               <div style={{width:'100%',height:'100px',marginTop:'300px'}} >

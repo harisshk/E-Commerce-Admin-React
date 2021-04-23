@@ -1,7 +1,7 @@
 
 import './App.css';
 import  LoginPage  from './auth/login';
-import {Route,BrowserRouter} from 'react-router-dom'
+import {Route,BrowserRouter, Redirect} from 'react-router-dom'
 import Home from './home/home';
 import { Product } from './products/product';
 import {OrderList} from './orders/orderList'
@@ -9,6 +9,7 @@ import ProductForm from './products/productForm';
 import VariantForm from './products/variantForm';
 import {TagList} from './tag/tagList'
 // import { useState } from 'react';
+import SubCategoryForm from './category/subCategory/subCategoryForm'
 import CategoryList from './category/categoryList';
 import OrderDetails from './orders/orderDetails';
 function App() {
@@ -18,8 +19,8 @@ function App() {
   // }
   return (
     <BrowserRouter>
-    
-    
+    <Redirect to='/home' />
+    <Route path='/category/addSubCategory' component={SubCategoryForm} />
     <Route  path='/login' component={()=><LoginPage   />} />
     <Route  path='/home' component={Home} />
     <Route exact path='/product' component={Product} />

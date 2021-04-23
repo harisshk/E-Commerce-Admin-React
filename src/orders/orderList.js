@@ -66,9 +66,9 @@ export const OrderList=(props)=>{
         <div>
             <NavBar></NavBar>
             {orders ?
-        <div>Orders Page
-            <Button onClick={()=>props.history.replace('/home')}>Back</Button>
-            <MaterialTable style={{ marginTop: '15px' }} title="Orders" data={orders}
+        <div><h3>Orders Page</h3>
+           
+            <MaterialTable style={{ marginTop: '15px' }} title='' data={orders}
         columns={columns}
         // actions={ [
         //     {

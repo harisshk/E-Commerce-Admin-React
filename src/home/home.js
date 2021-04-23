@@ -16,19 +16,25 @@ export const Home = (props) => {
         'TotalOrders':0,
         'loaded':false
     })
+    const[dbError,setDbError]=useState(false)
     const getValues=async()=>{
         const totalProducts = await getTotalProducts()
         const activeProducts = await getActiveProducts()
         const totalOrder = await getTotalOrders()
         const activeOrder = await getActiveOrders()
-        setData({
-            ...data,
-            'TotalProducts':totalProducts,
-            'ActiveProducts':activeProducts,
-            'ActiveOrders':activeOrder,
-            'TotalOrders':totalOrder,
-            'loaded':true
-        })
+        if(totalOrder && totalProducts && activeOrder && activeProducts){
+            setData({
+                ...data,
+                'TotalProducts':totalProducts,
+                'ActiveProducts':activeProducts,
+                'ActiveOrders':activeOrder,
+                'TotalOrders':totalOrder,
+                'loaded':true
+            })
+        }
+        else{
+            setDbError(true)
+        }
     }
     useEffect(()=>{
        getValues()
@@ -92,6 +98,17 @@ export const Home = (props) => {
                     </Row>
                 </div>
             </div> :
+            dbError ? 
+            <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
+            
+          <p style={{display:'block',marginLeft:'auto',
+          marginRight:'auto',textAlign:'center'}}>Looks like Server Down!!
+           <br/><a href="/home">
+        Try Reloading the page
+        </a></p>
+         
+            </div>
+            :
              <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
              <Spinner  style={{display:'block',marginLeft:'auto',
              marginRight:'auto',height:'50px',width:'50px'}} animation="border" variant="primary" />

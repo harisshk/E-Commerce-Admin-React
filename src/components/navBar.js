@@ -5,7 +5,7 @@ import { FaHome ,FaGripVertical,FaShoppingCart,FaTags} from "react-icons/fa";
 import { BiPackage } from "react-icons/bi";
 import './navBar.css'
 export const NavBar = (props) => {
-    console.log("----------", props.history)
+    // console.log("----------", props.history)
     return (
         <Navbar bg="primary">
             <Link  to='/home'>

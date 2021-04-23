@@ -9,6 +9,7 @@ export const CategoryForm =(props)=> {
     const [validated, setValidated] = useState(false);
     const [editCategoryId,setEditCategoryId]= useState('')
     const [errorDb,setErrorDb] = useState(false)
+    const [isEdit,setIsEdit]= useState(false)
    const setField=(value)=>{
         
        setName(value)   
@@ -38,7 +39,7 @@ export const CategoryForm =(props)=> {
                 const data = await addCategory(name)
                 if (data) {
                     setSnackBarOpen(true)
-
+                    setIsEdit(true)
                     props.onSave()
                 }
                 else{
@@ -60,7 +61,7 @@ export const CategoryForm =(props)=> {
     }
     useEffect(()=>{
         if(props.isEdit){
-            console.log('hi')
+            // console.log('hi')
             setName(props.editCategory.name)
             setIsActive(props.editCategory.isActive)
             setEditCategoryId(props.editCategory._id)
@@ -70,14 +71,12 @@ export const CategoryForm =(props)=> {
             setValidated(false)
             setEditCategoryId([])
         }
-        setErrorDb(false)
-          // eslint-disable-next-line react-hooks/exhaustive-deps
+        setErrorDb(false)          // eslint-disable-next-line react-hooks/exhaustive-deps
     },[props])
 
     
         return (
             <div>
-
             <Modal  centered  {...props} >
                 <Modal.Header closeButton>
                     Add Category
@@ -92,12 +91,10 @@ export const CategoryForm =(props)=> {
                                 <Form.Control.Feedback type="invalid">
                                     Please Enter a Category Name.
                                     </Form.Control.Feedback>
-
                             </Form.Group>
                             </Form.Row>
                             <Form.Row>
                             {props.isEdit  &&
-                            
                              <Form.Group as={Col} >
                                  <Form.Check 
                                   checked={isActive === true}
@@ -119,12 +116,12 @@ export const CategoryForm =(props)=> {
                          </Form.Group>
                             }
                         </Form.Row>
-                         <Button type='submit'> { props.isEdit ? 'Update' : 'Save'}</Button>
+                         <Button type='submit'> {props.isEdit ? 'Update' : 'Save'}</Button>
                     </Form>
                     
                 </Modal.Body>
                 <Modal.Footer>
-                    {errorDb && <p><p style={{color:'red'}}>Cannot { props.isEdit ? 'Update' : 'Save'} data</p></p>}
+                    {errorDb && <p><p style={{color:'red'}}>Cannot {isEdit ? 'Update' : 'Save'} data</p></p>}
                 
                 {/* <Button onClick={() => { view() }}>View</Button> */}
                     <Button onClick={() => { props.onHide()
@@ -133,7 +130,7 @@ export const CategoryForm =(props)=> {
                 </Modal.Footer>
             </Modal>
             <Snackbar open={snackBarOpen} message={props.isEdit?"Successfully Updated":"Successfully Added"} 
-            autoHideDuration={3500} onClose={handleCloseSnack}>
+            autoHideDuration={2000} onClose={handleCloseSnack}>
        
        </Snackbar>
             </div>

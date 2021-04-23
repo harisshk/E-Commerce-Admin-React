@@ -42,18 +42,23 @@ const modalOpen=()=> {
 }
 const modalClose=()=> {
     setModalShow(false)
-    setIsEditCategory(false)
+    setTimeout(() => {
+        setIsEditCategory(false)
+    }, 2000);
 
 }
 const onSave = async () => {
    setModalShow(false)
+  setTimeout(() => {
+    setIsEditCategory(false)
+  }, 2000);
    getCategory()
 
 }
 
 const editActive=(data)=> {
     setEditCategory(data)
-    console.log(data)
+    // console.log(data)
     setIsEditCategory(true)
     setModalShow(true)
 
@@ -65,6 +70,7 @@ const editActive=(data)=> {
 // }
 const getCategory=async()=>{
     const data = await getAllCategory()
+    console.log("Cat",data)
    if(data){
     setCategoryList(data)
     
@@ -73,6 +79,23 @@ const getCategory=async()=>{
        setDbError(true)
    }
 }
+const subCategoryColumn=[{ title: "Name", field: 'name' },
+{
+    title: "Is Active", field: 'isActive',
+    render: rowData => {
+        if (rowData.isActive) {
+            return (
+                <p style={{ color: 'green', fontWeight: "bolder" }}>Active</p>
+            )
+        }
+        else {
+            return (
+                <p style={{ color: 'red', fontWeight: "bolder" }}>InActive</p>
+            )
+        }
+    }
+},
+                        ]
 useEffect(()=>{
     getCategory()
     setDbError(false)
@@ -87,6 +110,7 @@ useEffect(()=>{
 
                 <div>
                     <Button style={{margin:'10px 30px'}} onClick={() => modalOpen()}>Add Category</Button>
+                    <Button style={{margin:'10px 30px'}} onClick={() => props.history.push('/category/addSubCategory')}>Add SubCategory</Button>
 {categoryList &&
     <div className='table'>
         <MaterialTable style={{ marginTop: '15px' }} title="Category" data={categoryList}
@@ -117,8 +141,36 @@ useEffect(()=>{
             options={{
                 actionsColumnIndex: -1,
                 showFirstLastPageButtons: false,
-                pageSizeOptions: [5, 10, 20, 50]
+                pageSizeOptions: [5, 10, 20, 50],
+                detailPanelColumnAlignment:'right'
             }}
+            
+            detailPanel={[
+                {
+                    icon:'expand_more',
+                  tooltip: 'Show Sub-Category',
+                  onRowClick: async (event, rowData) => {
+                    console.log(rowData)
+                },
+                  render: rowData => {
+                    return (
+                      <div
+                        style={{
+                        }}
+                      >
+                        <MaterialTable style={{border:"3px solid #067BFD"}} title='Sub Category' columns={subCategoryColumn} data={rowData.subCategories}
+                       options={{
+                        search: false,
+                        toolbar:false,
+                        paging:false
+                      }}
+                        ></MaterialTable>
+                      </div>
+                    )
+                  },
+                },
+               
+              ]}
         >
         </MaterialTable>
     </div>

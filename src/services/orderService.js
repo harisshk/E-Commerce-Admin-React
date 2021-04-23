@@ -4,7 +4,6 @@ import {url,userId} from '../constants/auth'
 export const getAllOrders=async()=>{
     try{
         const data = await axios.get(url+'/get/all/orders/'+userId+'/false')
-        console.log('Result',data.data.orders)
         if(!data.data.error){
             return data.data.orders
         }
@@ -16,7 +15,6 @@ export const getAllOrders=async()=>{
 export const getTotalOrders=async()=>{
     try{
         const data = await axios.get(url+'/all/totalOrder/')
-        console.log('Result',data.data.totalOrders)
         if(!data.data.error){
             return data.data.totalOrders
         }
@@ -28,7 +26,6 @@ export const getTotalOrders=async()=>{
 export const getActiveOrders=async()=>{
     try{
         const data = await axios.get(url+'/all/activeOrder/')
-        console.log('Result',data.data.activeOrders)
         if(!data.data.error){
             return data.data.activeOrders
         }

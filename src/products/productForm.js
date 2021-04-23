@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Col, Button, Spinner } from 'react-bootstrap';
-import { getAllCategories, getAllTags, addProduct, editProduct } from './../services/productService'
-import { VariantForm } from './variantForm'
-import MaterialTable from 'material-table'
+import { Form, Col,Collapse, Button, Spinner } from 'react-bootstrap';
+import {  getAllTags, addProduct, editProduct } from './../services/productService'
+import {getAllCategory,getAllSubCategory} from './../services/categoryService'
+import { BsTrashFill } from "react-icons/bs";
+
+// import { VariantForm } from './variantForm'
+// import MaterialTable from 'material-table'
 import { addTag } from './../services/tagService'
 import Snackbar from '@material-ui/core/Snackbar'
 
@@ -11,26 +14,30 @@ export const ProductForm = (props) => {
     const styles = {
         margin: "20px 50px"
     }
-    const columns = [{ title: "Color", field: 'color' },
-    { title: "Size", field: 'size' },
-    { title: "Price", field: 'price' },
-    { title: "Stock", field: 'stock' },
-    ]
+    const [open, setOpen] = useState(false);
+
+    // const columns = [{ title: "Color", field: 'color' },
+    // { title: "Size", field: 'size' },
+    // { title: "Price", field: 'price' },
+    // { title: "Stock", field: 'stock' },
+    // ]
     const [snackBarOpen,setSnackBarOpen] = useState(false)
     const handleCloseSnack=()=>{
         setSnackBarOpen(false)
     }
-    const [editImage, setEditImage] = useState([])
-    const [editVariant, setEditVariant] = useState({})
+    // const [editImage, setEditImage] = useState([])
+    // const [editVariant, setEditVariant] = useState({})
+    // const [isVariantEdit, setIsVariantEdit] = useState(false)
+    // const [modalShow, setModalShow] = React.useState(false);
+    const [gallery,setGallery]= useState([])
     const [tag, setTag] = useState([])
     const [tagNew, setTagNew] = useState([])
     const [tagInput, setTagInput] = useState('')
-    const [isVariantEdit, setIsVariantEdit] = useState(false)
-    const [modalShow, setModalShow] = React.useState(false);
+    const [subCategory, setSubCategory] = useState(null)
     const [category, setCategory] = useState(null)
-    const [variant, setVariant] = useState([])
-    const [variantId, setVariantId] = useState([])
-    const [formf, setForm] = useState({})
+    // const [variant, setVariant] = useState([])
+    // const [variantId, setVariantId] = useState([])
+    const [formf, setForm] = useState({url:''})
     const [isEdit, setIsEdit] = useState(false)
     const [tagId, setTagId] = useState([])
     const [nullTag, setNullTag] = useState(false)
@@ -39,7 +46,7 @@ export const ProductForm = (props) => {
     const getValues = async () => {
 
         try {
-            const category = await getAllCategories()
+            const category = await getAllCategory()
             setCategory(category)
             const tag = await getAllTags()
             if (props.location.state) {
@@ -51,12 +58,8 @@ export const ProductForm = (props) => {
                 setTag(data)
             }
             else {
-
                 setTag(tag)
             }
-
-
-
         }
         catch (err) {
             console.log(err)
@@ -68,31 +71,39 @@ export const ProductForm = (props) => {
         }
         else {
             setForm(props.location.state)
-            setVariant(props.location.state.variants)
-
+            // setVariant(props.location.state.variants)
+            console.log(props.location.state)
             setTagNew(props.location.state.tags)
-            setVariantId(props.location.state.variantId)
+            setSub(props.location.state.category)
+            setGallery(props.location.state.gallery)
             setIsEdit(true)
         }
     }
     useEffect(() => {
         getValues()
-        setVariantRequired(false)
+        // setVariantRequired(false)
         setTagRequired(false)
         setValidated(false)
         setStoreError(false)
-
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     // const tageditor=async(data)=>{
     //    setTag(data)
     // }
-    const dataChooser = () => {
+    // const dataChooser = () => {
 
-        return variant
+    //     return variant
+    // }
+    const setSub =async(value)=>{
+        const data = await getAllSubCategory(value)
+            console.log('-----------',data)
+            setSubCategory(data)
     }
-    const setField = (field, value) => {
+    const setField = async(field, value) => {
+        if(field==='category'){
+            console.log('foreds',field,value)
+            setSub(value)
+        }
         setForm({
             ...formf,
             [field]: value
@@ -105,34 +116,46 @@ export const ProductForm = (props) => {
         setNullTag(false)
 
     }
-    // const view = ()=>{
-    //     console.log('newtag',tagNew)
-    //     console.log('tagid',tagId)
-    //     console.log('oldtag',tag)
-    //     console.log(variantId)
+    const setImgArray=()=>{
+        if(formf.url!==''){
+            console.log(formf.url)
+            setGallery([...gallery,
+            formf.url])
+            setForm({
+                ...formf,
+                url:''
+            })
+        }
+    }
+    const view = ()=>{
+        console.log('newtag',tagNew)
+        console.log('tagid',tagId)
+        console.log('----',formf)
+        console.log('oldtag',tag)
+        console.log(gallery)
+    }
+    // const ss = (data) => {
+    //     setVariantRequired(false)
+    //     setVariant(
+    //         data
+    //     )
+    //     setModalShow(false)
     // }
-    const ss = (data) => {
-        setVariantRequired(false)
-        setVariant(
-            data
-        )
-        setModalShow(false)
-    }
-    const s = (data) => {
-        setVariantRequired(false)
-        console.log('Saved',data)
-        setVariant([
-            ...variant,
-            data
-        ])
-        setVariantId([
-            ...variantId,
-            data._id])
-        setModalShow(false)
-    }
+    // const s = (data) => {
+    //     setVariantRequired(false)
+    //     console.log('Saved',data)
+    //     setVariant([
+    //         ...variant,
+    //         data
+    //     ])
+    //     setVariantId([
+    //         ...variantId,
+    //         data._id])
+    //     setModalShow(false)
+    // }
     const addTagHandler = async () => {
         if (tagInput !== '') {
-            const data = await addTag(tagInput)
+            const data = await addTag(tagInput,false)
             setTagNew([
                 ...tagNew,
                 data
@@ -162,18 +185,18 @@ export const ProductForm = (props) => {
     }
     const [validated, setValidated] = useState(false);
     const [storeError, setStoreError] = useState(false);
-    const [variantRequired, setVariantRequired] = useState(false)
+    // const [variantRequired, setVariantRequired] = useState(false)
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
         console.log(tagId.length !== 0)
-        if (tagId.length !== 0 && variantId.length !== 0 && form.checkValidity() === true) {
+        if (tagId.length !== 0 && gallery.length !== 0 &&  form.checkValidity() === true) {
 
             event.preventDefault();
-            setVariantRequired(false)
+            // setVariantRequired(false)
             setTagRequired(false)
             if (isEdit) {
                 // console.log('update')
-                const data = await editProduct(formf, props.location.state.id, variantId, tagId)
+                const data = await editProduct(formf, props.location.state.id, gallery, tagId)
                 if (data) {
                     console.log('hi')
                     setSnackBarOpen(true)
@@ -187,8 +210,8 @@ export const ProductForm = (props) => {
                 }
             }
             else {
-
-                const data = await addProduct(formf, variantId, tagId)
+                console.log('hi')
+                const data = await addProduct(formf, gallery, tagId)
                 if (data) {
                     setSnackBarOpen(true)
                     setTimeout(() => {
@@ -202,20 +225,16 @@ export const ProductForm = (props) => {
                 }
             }
         }
-        else if (variantId.length !== 0 && tagId.length !== 0) {
-            setVariantRequired(false)
-            setTagRequired(false)
-            event.preventDefault();
-        }
+        
         else if (tagId.length === 0) {
-            setVariantRequired(false)
+            // setVariantRequired(false)
             setTagRequired(true)
             event.preventDefault();
         }
         else {
             event.preventDefault();
             setTagRequired(false)
-            setVariantRequired(true)
+            // setVariantRequired(true)
         }
         setValidated(true);
     };
@@ -287,6 +306,17 @@ export const ProductForm = (props) => {
                             <Form.Control required type="text" value={formf.description} onChange={(e) => setField('description', e.target.value)} placeholder="Enter Description" />
                             <Form.Control.Feedback type="invalid">
                                 Please Enter description.
+            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Sub Category</Form.Label>
+                            <Form.Control required as="select"  defaultValue='' value={formf.subCategory} onChange={(e) => setField('subCategory', e.target.value)} >
+                                <option value=''>Select a Category</option>
+                                {subCategory && subCategory.map((team) => <option key={team._id} value={team._id}>{team.name}</option>)}
+
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                Please  choose a Category.
             </Form.Control.Feedback>
                         </Form.Group>
                     </Form.Row>
@@ -387,8 +417,74 @@ export const ProductForm = (props) => {
                                 </div>
                             </Form.Group>
                         </div>
-                        <div style={{ width: '800px' }}>
-                            {/* <Button onClick={()=>{view()}}>vIeew</Button> */}
+                        <div>
+                        <Form.Group as={Col}>
+                            <Form.Label>Price</Form.Label>
+                            <Form.Control required type="number" value={formf.price} onChange={(e) => setField('price', e.target.value)} placeholder="Enter Price" />
+                            <Form.Control.Feedback type="invalid">
+                                Please Enter price.
+            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Stock</Form.Label>
+                            <Form.Control required type="number" value={formf.stock} onChange={(e) => setField('stock', e.target.value)} placeholder="Enter Stock" />
+                            <Form.Control.Feedback type="invalid">
+                                Please Enter Stock.
+            </Form.Control.Feedback>
+                        </Form.Group>
+                        
+                       <Form.Group as={Col}>
+                            <Form.Label>Url</Form.Label>
+                            <Form.Control  type="text" value={formf.url} onChange={(e) => setField('url', e.target.value)} placeholder="Enter the url" />
+                            <Form.Control.Feedback type="invalid">
+                                Please Enter the urStock.
+            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button onClick={()=>{setImgArray()}}>Add</Button>
+                      
+                        </div>
+                       <Form.Row>
+                           <Form.Group as={Col}>
+                           <Button
+                                onClick={() => setOpen(!open)}
+                                aria-controls="example-collapse-text"
+                                aria-expanded={open}
+                            >
+                                {!open ? 'Edit Images' : 'close'}
+                            </Button>
+                           </Form.Group>
+                       </Form.Row>
+
+                            <Collapse in={open}>
+                                <div >
+                                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+
+
+                                        {gallery && gallery.map((team) => <div style={{
+                                            width: '120px', borderRadius: '10%', border: '1px solid #777',
+                                            display: 'flex', flexDirection: 'column',
+                                            margin: '10px', padding: "5px"
+                                        }}>
+                                            <BsTrashFill style={{ marginLeft: '80px' }} size={30} onClick={() => {
+                                                console.log(team._id)
+                                                 setGallery(gallery.filter(item => item !== team));
+                                            }} />
+                                            <img
+                                                src={team}
+                                                height="100px"
+                                                width="100px"
+                                                alt="added_image"
+                                            />
+
+                                        </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </Collapse>
+                        
+                        
+                        {/* <div style={{ width: '800px' }}>
+                          
                             <Form.Group as={Col} style={{ paddingLeft: '10px', alignItems: 'center' }}>
 
                                 <div style={{ margin: '5px' }}>
@@ -402,14 +498,11 @@ export const ProductForm = (props) => {
                                         }, 1);
 
                                     }
-
                                     }>
                                         Add Variants
                               </Button>
                                     {variantRequired && <p style={{ color: 'red' }}>Atleast one variant is required</p>}
                                 </div>
-
-
                                 <div >
                                     {<MaterialTable title='Variants' data={dataChooser()}
                                         columns={columns}
@@ -455,7 +548,7 @@ export const ProductForm = (props) => {
                                     edit={isVariantEdit}
                                 />
                             </Form.Group>
-                        </div>
+                        </div> */}
                     </Form.Row>
                     <Form.Row>
                         <Form.Label>Dimensions :</Form.Label>
@@ -566,7 +659,9 @@ export const ProductForm = (props) => {
 
                     {storeError && <p style={{ color: 'red' }}>Cannot {isEdit ? 'Update' : 'Save'} the data </p>}
                     <Button type='submit'>{isEdit ? 'Update' : 'Save'}</Button>
-
+                    <Button onClick={()=>{
+                        view()
+                    }}>View</Button>
 
                     <Button style={{ margin: '10px' }} onClick={() => {
                         props.history.push('/product')
