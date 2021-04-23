@@ -16,7 +16,10 @@ export const getTotalOrders=async()=>{
     try{
         const data = await axios.get(url+'/all/totalOrder/')
         if(!data.data.error){
-            return data.data.totalOrders
+            return {
+                error:false,
+                data:data.data.totalOrders
+            }
         }
     }
     catch(error){
@@ -27,7 +30,10 @@ export const getActiveOrders=async()=>{
     try{
         const data = await axios.get(url+'/all/activeOrder/')
         if(!data.data.error){
-            return data.data.activeOrders
+            return {
+                error:false,
+                data:data.data.activeOrders
+            }
         }
     }
     catch(error){

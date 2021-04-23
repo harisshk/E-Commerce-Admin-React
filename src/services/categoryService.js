@@ -94,12 +94,48 @@ export const updateCategory=async(category)=>{
         }
     }
 }
+export const updateSubCategory=async(subCategory,isActive,id)=>{
+    console.log('=-=-===',subCategory)
+     try{
+         const data= await axios.put(url+'/update/subCategory/'+id,{
+             name:subCategory.subCategoryName,
+             isActive:isActive
+         })
+         console.log('caegoyt',data)
+         if(!data.data.error){
+             return true
+         }
+         else{
+             return false
+         }
+     }
+     catch(error){
+         if(error){
+             return false
+         }
+     }
+ }
 export const deleteCategory=async(categoryId)=>{
     console.log('=-=-===',categoryId)
      try{
          const data= await axios.put(url+'/delete/category/'+userId+'/'+categoryId,{
              "jwtToken": jwt
          })
+        //  console.log('caegoyt',data)
+         if(!data.data.error){
+             return true
+         }
+     }
+     catch(error){
+         if(error){
+             return false
+         }
+     }
+ }
+ export const deleteSubCategory=async(subCategoryId)=>{
+    console.log('=-=-===',subCategoryId)
+     try{
+         const data= await axios.put(url+'/delete/subCategory/'+subCategoryId)
          console.log('caegoyt',data)
          if(!data.data.error){
              return true

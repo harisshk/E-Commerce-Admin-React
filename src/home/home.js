@@ -22,20 +22,28 @@ export const Home = (props) => {
         const activeProducts = await getActiveProducts()
         const totalOrder = await getTotalOrders()
         const activeOrder = await getActiveOrders()
-        if(totalOrder && totalProducts && activeOrder && activeProducts){
+        console.log(totalOrder)
+        console.log(totalProducts)
+        console.log(activeOrder)
+        console.log(activeProducts)
+        if(!totalOrder.error && !totalProducts.error && !activeOrder.error && !activeProducts.error){
             setData({
                 ...data,
-                'TotalProducts':totalProducts,
-                'ActiveProducts':activeProducts,
-                'ActiveOrders':activeOrder,
-                'TotalOrders':totalOrder,
+                'TotalProducts':totalProducts.data,
+                'ActiveProducts':activeProducts.data,
+                'ActiveOrders':activeOrder.data,
+                'TotalOrders':totalOrder.data,
                 'loaded':true
             })
         }
         else{
             setDbError(true)
         }
+        
     }
+    // const View=()=>{
+    //     console.log('-----',data)
+    // }
     useEffect(()=>{
        getValues()
      // eslint-disable-next-line react-hooks/exhaustive-deps      
@@ -106,7 +114,6 @@ export const Home = (props) => {
            <br/><a href="/home">
         Try Reloading the page
         </a></p>
-         
             </div>
             :
              <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
@@ -117,7 +124,6 @@ export const Home = (props) => {
              </div>
             }
         </div>
-
     )
 }
 export default Home

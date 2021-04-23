@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react'
 import MaterialTable from 'material-table'
-import { getAllCategory,deleteCategory } from './../services/categoryService'
+import { getAllCategory,deleteCategory ,deleteSubCategory} from './../services/categoryService'
 import { Button,Spinner } from 'react-bootstrap'
 import './categoryList.css'
 import CategoryForm from './categoryForm'
@@ -118,7 +118,7 @@ useEffect(()=>{
             actions={[
                 {
                     icon: 'edit',
-                    tooltip: 'Edit User',
+                    tooltip: 'Edit category',
                     onClick: async (event, rowData) => {
                         editActive(rowData)
                     }
@@ -162,8 +162,36 @@ useEffect(()=>{
                        options={{
                         search: false,
                         toolbar:false,
-                        paging:false
+                        paging:false,
+                        actionsColumnIndex:-1
                       }}
+                      actions={[
+                        {
+                            icon: 'edit',
+                            tooltip: 'Edit sub Category',
+                            onClick: async (event, rowData) => {
+                                console.log(rowData)
+                                props.history.replace({
+                                    pathname: '/category/addSubCategory',
+                                    state: rowData 
+                                  })
+                            }
+                        },
+                    ]}
+                    editable={{
+                        onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
+                            const id = selectedRow._id
+                            const data = await deleteSubCategory(id)
+                            if(data){
+                                setSnackBarOpen(true)
+                                setTimeout(() => {
+                                    getCategory()
+                                    resolve()
+                                }, 1000);
+                                
+                            }
+                        }),
+                    }}
                         ></MaterialTable>
                       </div>
                     )

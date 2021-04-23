@@ -1,7 +1,7 @@
 
 import './App.css';
 import  LoginPage  from './auth/login';
-import {Route,BrowserRouter, Redirect} from 'react-router-dom'
+import {Route,BrowserRouter} from 'react-router-dom'
 import Home from './home/home';
 import { Product } from './products/product';
 import {OrderList} from './orders/orderList'
@@ -19,7 +19,7 @@ function App() {
   // }
   return (
     <BrowserRouter>
-    <Redirect to='/home' />
+    
     <Route path='/category/addSubCategory' component={SubCategoryForm} />
     <Route  path='/login' component={()=><LoginPage   />} />
     <Route  path='/home' component={Home} />

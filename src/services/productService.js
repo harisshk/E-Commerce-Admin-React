@@ -244,7 +244,10 @@ export const getTotalProducts = async()=>{
         const data = await axios.get(url+'/get/totalProducts')
         // console.log("TNumber of products",data.data.totalProducts)
         if(!data.data.error){
-            return data.data.totalProducts
+            return {
+                error:false,
+                data:data.data.totalProducts
+            }
         }
         else{
             return false
@@ -259,7 +262,10 @@ export const getActiveProducts = async()=>{
         const data = await axios.get(url+'/get/activeProducts')
         // console.log("TNumber of products",data.data.totalProducts)
         if(!data.data.error){
-            return data.data.activeProducts
+            return {
+                data:data.data.activeProducts,
+                error:false
+            }
         }
         else{
             return false
