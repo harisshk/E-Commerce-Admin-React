@@ -28,6 +28,7 @@ export const Product = (props) => {
                      {title:"Brand Name",field:'brand.brandName'},
                  {title:'Model Name',field:"manufactureDetails.modelName"},
                      {title:"Category",field:'category.name'},
+                     {title:"Sub Category",field:'subCategory.name'},
                     //  {title:"Variants",field:'variants.length'},
                      {title:"Images",field:'gallery.length'},
                      {title:"Tags",field:'tags.length'},

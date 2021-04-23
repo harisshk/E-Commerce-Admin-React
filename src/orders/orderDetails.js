@@ -66,7 +66,6 @@ export const OrderDetails = (props) => {
                             <Col>Cashback Price</Col>
                             <Col>{details.cashBackPrice}</Col>
                         </Row>
-                        <div className="line"></div>
                         <Row >
                             <Col> Grand Total</Col>
                             <Col>{details.totalPrice}</Col>

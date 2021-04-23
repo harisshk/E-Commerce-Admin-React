@@ -4,7 +4,7 @@ import  LoginPage  from './auth/login';
 import {Route,BrowserRouter} from 'react-router-dom'
 import Home from './home/home';
 import { Product } from './products/product';
-import {OrderList} from './orders/orderList'
+import {OrderIndex} from './orders/orderIndex'
 import ProductForm from './products/productForm';
 import VariantForm from './products/variantForm';
 import {TagList} from './tag/tagList'
@@ -24,7 +24,7 @@ function App() {
     <Route  path='/login' component={()=><LoginPage   />} />
     <Route  path='/home' component={Home} />
     <Route exact path='/product' component={Product} />
-    <Route exact path='/orders' component={OrderList} />
+    <Route exact path='/orders' component={OrderIndex} />
     <Route exact path='/orders/details' component={OrderDetails} />
     <Route exact path='/category' component={CategoryList} />
     <Route exact path='/product/add' component={ProductForm} />

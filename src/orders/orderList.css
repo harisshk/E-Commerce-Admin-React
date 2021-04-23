@@ -1,0 +1,18 @@
+.green{
+    background-color: rgb(217, 235, 217);
+    color: green;
+}
+.yellow{
+    color: #c46711;
+}
+.yellow, .green{
+    padding: 2px;
+    border-radius: 20px;
+    font-weight:bolder;
+    
+}
+.amount{
+    display:flow;
+    float:right;
+    margin-top:100px
+}

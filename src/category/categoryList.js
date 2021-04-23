@@ -42,16 +42,15 @@ const modalOpen=()=> {
 }
 const modalClose=()=> {
     setModalShow(false)
-    setTimeout(() => {
-        setIsEditCategory(false)
-    }, 2000);
+    setIsEditCategory(false)
+
 
 }
 const onSave = async () => {
    setModalShow(false)
   setTimeout(() => {
     setIsEditCategory(false)
-  }, 2000);
+  }, 200);
    getCategory()
 
 }
@@ -70,7 +69,7 @@ const editActive=(data)=> {
 // }
 const getCategory=async()=>{
     const data = await getAllCategory()
-    console.log("Cat",data)
+    // console.log("Cat",data)
    if(data){
     setCategoryList(data)
     
@@ -101,7 +100,7 @@ useEffect(()=>{
     setDbError(false)
     setSnackBarOpen(false)
  // eslint-disable-next-line react-hooks/exhaustive-deps      
-},[props])
+},[])
 
     return (
         <div>
@@ -142,7 +141,8 @@ useEffect(()=>{
                 actionsColumnIndex: -1,
                 showFirstLastPageButtons: false,
                 pageSizeOptions: [5, 10, 20, 50],
-                detailPanelColumnAlignment:'right'
+                detailPanelColumnAlignment:'right',
+                detailPanelColumnStyle:{width:'100px'}
             }}
             
             detailPanel={[

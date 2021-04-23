@@ -9,7 +9,8 @@ export const getAllOrders=async()=>{
         }
     }
     catch(error){
-        console.log(error)
+        // console.log(error)
+        return false
     }
 }
 export const getTotalOrders=async()=>{
@@ -23,7 +24,7 @@ export const getTotalOrders=async()=>{
         }
     }
     catch(error){
-        console.log(error)
+        return {error:true}
     }
 }
 export const getActiveOrders=async()=>{
@@ -37,6 +38,6 @@ export const getActiveOrders=async()=>{
         }
     }
     catch(error){
-        console.log(error)
+        return {error:true}
     }
 }

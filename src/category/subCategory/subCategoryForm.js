@@ -30,6 +30,9 @@ export const SubCategoryForm=(props)=>{
             [field]:value
         })
     }
+    const view=()=>{
+        console.log(subCategory)
+    }
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
@@ -71,7 +74,8 @@ export const SubCategoryForm=(props)=>{
             console.log('----===',props.location.state)
             setSubCategory({
                 subCategoryName:props.location.state.name,
-                categoryId:props.location.state.parentCategory
+                categoryId:props.location.state.parentCategory,
+                coverImage:props.location.state.coverImage
             })
             setIsActive(props.location.state.isActive)
         }
@@ -106,6 +110,21 @@ export const SubCategoryForm=(props)=>{
                                     </Form.Control.Feedback>
 
                             </Form.Group>
+                           
+                            <Form.Group  >
+                                <Form.Label>Category image</Form.Label>
+                                <Form.Control required type="text" value={subCategory.coverImage}  onChange={(e) => setField( 'coverImage',e.target.value)} placeholder="Enter Category Image Url" />
+                                <Form.Control.Feedback type="invalid">
+                                    Please Enter a Category Name.
+                                    </Form.Control.Feedback>
+                            </Form.Group>
+                           
+                            {subCategory.coverImage && < img
+                                src={subCategory.coverImage}
+                                height="100px"
+                                width="100px"
+                                alt="added_image"
+                            />}  
                             {isEdit  &&
                              <Form.Group  >
                                  <Form.Check 
@@ -127,7 +146,7 @@ export const SubCategoryForm=(props)=>{
                              
                          </Form.Group>
                             }
-                            
+                            <Button onClick={()=>{view()}}></Button>
                             <Button type="submit" >{isEdit?"Update":"Save"}</Button>
                             {dbError && <p style={{color:'red'}}>Cannot {isEdit?"Update":"Save"} data</p>}
                             </Form>

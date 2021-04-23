@@ -4,17 +4,22 @@ import {addCategory,updateCategory} from './../services/categoryService'
 import Snackbar from '@material-ui/core/Snackbar'
 
 export const CategoryForm =(props)=> {
-    const [name,setName] = useState('')
+    const [category,setCategory] = useState('')
     const [isActive,setIsActive] = useState(false)
     const [validated, setValidated] = useState(false);
     const [editCategoryId,setEditCategoryId]= useState('')
     const [errorDb,setErrorDb] = useState(false)
     const [isEdit,setIsEdit]= useState(false)
-   const setField=(value)=>{
+   const setField=(field,value)=>{
         
-       setName(value)   
+       setCategory({
+           ...category,
+           [field]:value
+       })   
     }
-    
+    // const view=()=>{
+    //     console.log('----------',category)
+    // }
     const handleSubmit=async(e)=>{
        
         e.preventDefault();
@@ -23,9 +28,10 @@ export const CategoryForm =(props)=> {
         if(form.checkValidity() === true){
             if(props.isEdit){
                 
-                const data = await updateCategory({name:name,
+                const data = await updateCategory({name:category.name,
                         isActive:isActive,
-                        id:editCategoryId
+                        id:editCategoryId,
+                        coverImage:category.coverImage
                 })
                 if (data) {
                     setSnackBarOpen(true)
@@ -36,10 +42,12 @@ export const CategoryForm =(props)=> {
                 }
             }
             else{
-                const data = await addCategory(name)
+                const data = await addCategory({
+                    name:category.name,
+                    coverImage:category.coverImage
+                })
                 if (data) {
                     setSnackBarOpen(true)
-                    setIsEdit(true)
                     props.onSave()
                 }
                 else{
@@ -60,16 +68,22 @@ export const CategoryForm =(props)=> {
         setSnackBarOpen(false)
     }
     useEffect(()=>{
-        if(props.isEdit){
-            // console.log('hi')
-            setName(props.editCategory.name)
+        if(props.isEdit ){
+            setCategory({
+                name:props.editCategory.name,
+                coverImage:props.editCategory.coverImage
+            })
             setIsActive(props.editCategory.isActive)
             setEditCategoryId(props.editCategory._id)
+            setIsEdit(true)
         }
         else{
-            setName('')
             setValidated(false)
             setEditCategoryId([])
+            if(!props.isEdit){
+                setCategory({})
+            }
+            setIsEdit(false)
         }
         setErrorDb(false)          // eslint-disable-next-line react-hooks/exhaustive-deps
     },[props])
@@ -84,17 +98,31 @@ export const CategoryForm =(props)=> {
                 <Modal.Body>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Row>
-
                             <Form.Group as={Col} >
                                 <Form.Label>Category Name</Form.Label>
-                                <Form.Control required type="text" value={name}  onChange={(e) => setField( e.target.value)} placeholder="Enter Category Name" />
+                                <Form.Control required type="text" value={category.name}  onChange={(e) => setField( 'name',e.target.value)} placeholder="Enter Category Name" />
                                 <Form.Control.Feedback type="invalid">
                                     Please Enter a Category Name.
                                     </Form.Control.Feedback>
                             </Form.Group>
                             </Form.Row>
                             <Form.Row>
-                            {props.isEdit  &&
+                            <Form.Group as={Col} >
+                                <Form.Label>Category image</Form.Label>
+                                <Form.Control required type="text" value={category.coverImage}  onChange={(e) => setField( 'coverImage',e.target.value)} placeholder="Enter Category Image Url" />
+                                <Form.Control.Feedback type="invalid">
+                                    Please Enter a Category Name.
+                                    </Form.Control.Feedback>
+                            </Form.Group>
+                            </Form.Row> 
+                            {category.coverImage && < img
+                                src={category.coverImage}
+                                height="100px"
+                                width="100px"
+                                alt="added_image"
+                            />}                           
+                            <Form.Row>
+                            {isEdit  &&
                              <Form.Group as={Col} >
                                  <Form.Check 
                                   checked={isActive === true}
@@ -116,20 +144,19 @@ export const CategoryForm =(props)=> {
                          </Form.Group>
                             }
                         </Form.Row>
-                         <Button type='submit'> {props.isEdit ? 'Update' : 'Save'}</Button>
+                         <Button type='submit'> {isEdit ? 'Update' : 'Save'}</Button>
                     </Form>
-                    
                 </Modal.Body>
                 <Modal.Footer>
                     {errorDb && <p><p style={{color:'red'}}>Cannot {isEdit ? 'Update' : 'Save'} data</p></p>}
                 
                 {/* <Button onClick={() => { view() }}>View</Button> */}
                     <Button onClick={() => { props.onHide()
-                    setName('')
+                    setCategory({})
                     }}>Close</Button>
                 </Modal.Footer>
             </Modal>
-            <Snackbar open={snackBarOpen} message={props.isEdit?"Successfully Updated":"Successfully Added"} 
+            <Snackbar open={snackBarOpen} message={isEdit?"Successfully Updated":"Successfully Added"} 
             autoHideDuration={2000} onClose={handleCloseSnack}>
        
        </Snackbar>

@@ -35,6 +35,7 @@ export const ProductForm = (props) => {
     const [tagInput, setTagInput] = useState('')
     const [subCategory, setSubCategory] = useState(null)
     const [category, setCategory] = useState(null)
+    const [imageRequired,setImageRequired]= useState(false)
     // const [variant, setVariant] = useState([])
     // const [variantId, setVariantId] = useState([])
     const [formf, setForm] = useState({url:''})
@@ -83,6 +84,7 @@ export const ProductForm = (props) => {
         getValues()
         // setVariantRequired(false)
         setTagRequired(false)
+        setImageRequired(false)
         setValidated(false)
         setStoreError(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,13 +129,13 @@ export const ProductForm = (props) => {
             })
         }
     }
-    const view = ()=>{
-        console.log('newtag',tagNew)
-        console.log('tagid',tagId)
-        console.log('----',formf)
-        console.log('oldtag',tag)
-        console.log(gallery)
-    }
+    // const view = ()=>{
+    //     console.log('newtag',tagNew)
+    //     console.log('tagid',tagId)
+    //     console.log('----',formf)
+    //     console.log('oldtag',tag)
+    //     console.log(gallery)
+    // }
     // const ss = (data) => {
     //     setVariantRequired(false)
     //     setVariant(
@@ -225,16 +227,21 @@ export const ProductForm = (props) => {
                 }
             }
         }
-        
-        else if (tagId.length === 0) {
+        else if (tagId.length !== 0 && gallery.length === 0){
+            setTagRequired(false)
+            setImageRequired(true)
+            event.preventDefault();
+        }
+        else if (tagId.length === 0 && gallery.length !== 0) {
             // setVariantRequired(false)
             setTagRequired(true)
+            setImageRequired(false)
             event.preventDefault();
         }
         else {
+            setTagRequired(true)
+            setImageRequired(true)
             event.preventDefault();
-            setTagRequired(false)
-            // setVariantRequired(true)
         }
         setValidated(true);
     };
@@ -326,12 +333,9 @@ export const ProductForm = (props) => {
                             <Form.Group as={Col}>
                                 <Form.Label>Tag</Form.Label>
                                 <Form.Control type="text" value={tagInput}
-                                    onChange={(e) => tagEvent(e.target.value)} placeholder="Enter Description" />
+                                    onChange={(e) => tagEvent(e.target.value)} placeholder="Enter tag name" />
                                 {nullTag && <p style={{ color: 'red' }}>Null valuues are not accepted</p>}
                                 <Button onClick={() => addTagHandler()}>Add</Button>
-                                <Form.Control.Feedback type="invalid">
-                                    Please Enter description.
-            </Form.Control.Feedback>
                             </Form.Group>
                         </div>
                         <div style={{ width: '200px' }}>
@@ -435,16 +439,16 @@ export const ProductForm = (props) => {
                         
                        <Form.Group as={Col}>
                             <Form.Label>Url</Form.Label>
-                            <Form.Control  type="text" value={formf.url} onChange={(e) => setField('url', e.target.value)} placeholder="Enter the url" />
-                            <Form.Control.Feedback type="invalid">
-                                Please Enter the urStock.
-            </Form.Control.Feedback>
+                            <Form.Control  type="text" value={formf.url} onChange={(e) => setField('url', e.target.value)}
+                             placeholder="Enter the url" />
+                            
                         </Form.Group>
                         <Button onClick={()=>{setImgArray()}}>Add</Button>
                       
                         </div>
                        <Form.Row>
                            <Form.Group as={Col}>
+                               {imageRequired && <p style={{color:'red'}}>Atleast one image is required</p>}
                            <Button
                                 onClick={() => setOpen(!open)}
                                 aria-controls="example-collapse-text"
@@ -599,9 +603,9 @@ export const ProductForm = (props) => {
                                 Please Enter the replacement policy.
             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group as={Col} >
+                        <Form.Group as={Col}  >
                             <Form.Label>Additional Information</Form.Label>
-                            <Form.Control required type="text" value={formf.additionalInformation} onChange={(e) => setField('additionalInformation', e.target.value)} placeholder="Enter Additional Information" />
+                            <Form.Control  required type="text" value={formf.additionalInformation} onChange={(e) => setField('additionalInformation', e.target.value)} placeholder="Enter Additional Information" />
                             <Form.Control.Feedback type="invalid">
                                 Please Enter additional information.
             </Form.Control.Feedback>
@@ -659,10 +663,7 @@ export const ProductForm = (props) => {
 
                     {storeError && <p style={{ color: 'red' }}>Cannot {isEdit ? 'Update' : 'Save'} the data </p>}
                     <Button type='submit'>{isEdit ? 'Update' : 'Save'}</Button>
-                    <Button onClick={()=>{
-                        view()
-                    }}>View</Button>
-
+                  
                     <Button style={{ margin: '10px' }} onClick={() => {
                         props.history.push('/product')
                     }}>

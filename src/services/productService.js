@@ -250,11 +250,11 @@ export const getTotalProducts = async()=>{
             }
         }
         else{
-            return false
+            return {error:true}
         }
     }
     catch(error){
-        console.log(error)
+        return {error:true}
     }
 }
 export const getActiveProducts = async()=>{
@@ -268,10 +268,10 @@ export const getActiveProducts = async()=>{
             }
         }
         else{
-            return false
+            return {error:true}
         }
     }
     catch(error){
-        console.log(error)
+        return {error:true}
     }
 }
