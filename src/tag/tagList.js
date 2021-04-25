@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import MaterialTable from 'material-table'
 import { getAllTag, deleteTag } from './../services/tagService'
-import { Spinner, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import Snackbar from '@material-ui/core/Snackbar'
 import TagModal from './tagModal'
 import NavBar from '../components/navBar'
+import Table from './../components/table'
+import SpinLoader from '../components/spinLoader'
 export const TagList = (props) => {
     const [tag, SetTag] = useState(null)
     const [modalShow, setModalShow] = useState(false)
@@ -47,6 +48,31 @@ export const TagList = (props) => {
         setIsEdit(true)
         setModalShow(true)
     }
+    const actions=[
+        {
+            icon: 'edit',
+            tooltip: 'Edit Tag',
+            onClick: async (event, rowData) => {
+                editActive(rowData)
+            }
+        }
+    ]
+    const options ={
+        actionsColumnIndex: -1,
+        showFirstLastPageButtons: false,
+        pageSizeOptions: [5, 10, 20, 50]
+    }
+    const editable={
+        onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
+            const id = selectedRow._id
+            const data = await deleteTag(id)
+            if (data) {
+                setSnackBarOpen(true)
+                getTag()
+                resolve()
+            }
+        }),
+    }
     const columns = [
         { title: "Tag Name", field: 'tag' },
         {
@@ -76,33 +102,7 @@ export const TagList = (props) => {
             {tag ?
                 <div style={{ margin: '30px' }}>
                     <Button onClick={() => { open() }}>Add Tag</Button>
-                    <MaterialTable title="Tag" columns={columns} data={tag} style={{ margin: '0 490px' }}
-                        actions={[
-                            {
-                                icon: 'edit',
-                                tooltip: 'Edit Tag',
-                                onClick: async (event, rowData) => {
-                                    editActive(rowData)
-                                }
-                            }
-                        ]}
-                        editable={{
-                            onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
-                                const id = selectedRow._id
-                                const data = await deleteTag(id)
-                                if (data) {
-                                    setSnackBarOpen(true)
-                                    getTag()
-                                    resolve()
-                                }
-                            }),
-                        }}
-                        options={{
-                            actionsColumnIndex: -1,
-                            showFirstLastPageButtons: false,
-                            pageSizeOptions: [5, 10, 20, 50]
-                        }}
-                    ></MaterialTable>
+                    <Table actions={actions} title="Tag" editable={editable}  style={{ margin:'5px 350px' }} columns={columns} data={tag}  options={options}/>
                     <TagModal
                         show={modalShow}
                         onHide={() => {
@@ -129,10 +129,7 @@ export const TagList = (props) => {
                     </div>
                     :
                     <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
-                        <Spinner style={{
-                            display: 'block', marginLeft: 'auto',
-                            marginRight: 'auto', height: '50px', width: '50px'
-                        }} animation="border" variant="primary" />
+                        <SpinLoader />
                         <p style={{
                             display: 'block', marginLeft: 'auto',
                             marginRight: 'auto', textAlign: 'center'

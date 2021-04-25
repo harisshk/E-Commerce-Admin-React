@@ -1,8 +1,8 @@
 import React,{useEffect, useState} from 'react'
 import {getAllOrders} from '../services/orderService'
-import { Spinner} from 'react-bootstrap'
+import { SpinLoader} from './../components/spinLoader'
 import Snackbar from '@material-ui/core/Snackbar'
-import MaterialTable from 'material-table'
+import Table from './../components/table'
 import dateFormat from 'dateformat';
 import { GiMoneyStack } from "react-icons/gi";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
@@ -19,7 +19,6 @@ export const OrderList=(props)=>{
     const getOrders=async()=>{
         const data = await getAllOrders()
         console.log("orders----------",data)
-        
         if(data){
             SetOrders(data)
         }
@@ -137,7 +136,7 @@ export const OrderList=(props)=>{
         <div>
             {orders ?
         <div><h3>Orders Page</h3>
-            <MaterialTable style={{overflow:"none" ,margin: '15px 40px' }} title='' data={orders}
+            <Table style={{overflow:"none" ,margin: '15px 40px' }} title='' data={orders}
         columns={columns}
         detailPanel={[
             {
@@ -149,14 +148,14 @@ export const OrderList=(props)=>{
               render: rowData => {
                 return (
                   <div>
-                      <MaterialTable style={{border:"3px solid #067BFD"}} title='Sub Category' columns={subcolumn} data={rowData.products}
+                      <Table style={{border:"3px solid #067BFD"}} title='Sub Category' columns={subcolumn} data={rowData.products}
                        options={{
                         search: false,
                         toolbar:false,
                         paging:false,
                         actionsColumnIndex:-1
                       }}
-                        ></MaterialTable>
+                        ></Table>
                         <div className="amount">
                             <p>Total Amount:{rowData.totalPrice}</p>
                             <p>Discount Amount:{rowData.discountPrice}</p>
@@ -181,7 +180,7 @@ export const OrderList=(props)=>{
             },
         ]}
     >
-    </MaterialTable> 
+    </Table> 
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
 
@@ -198,7 +197,7 @@ export const OrderList=(props)=>{
     </div>
     :
     <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
-    <Spinner  style={{display:'block',marginLeft:'auto',
+    <SpinLoader  style={{display:'block',marginLeft:'auto',
     marginRight:'auto',height:'50px',width:'50px'}} animation="border" variant="primary" />
     <p style={{display:'block',marginLeft:'auto',
     marginRight:'auto',textAlign:'center'}}>Loading</p>

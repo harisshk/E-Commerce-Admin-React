@@ -128,6 +128,9 @@ export const ProductForm = (props) => {
                 url:''
             })
         }
+        else{
+            
+        }
     }
     // const view = ()=>{
     //     console.log('newtag',tagNew)
@@ -427,6 +430,13 @@ export const ProductForm = (props) => {
                             <Form.Control required type="number" value={formf.price} onChange={(e) => setField('price', e.target.value)} placeholder="Enter Price" />
                             <Form.Control.Feedback type="invalid">
                                 Please Enter price.
+            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Tax</Form.Label>
+                            <Form.Control required type="number" value={formf.tax} onChange={(e) => setField('tax', e.target.value)} placeholder="Enter Tax" />
+                            <Form.Control.Feedback type="invalid">
+                                Please Enter Tax.
             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col}>

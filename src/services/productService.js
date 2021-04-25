@@ -61,6 +61,7 @@ export const adduploadFormatter = (formf,gallery,tagId) =>{
         price:formf.price,
         stock:formf.stock,
         gallery:gallery,
+        tax:formf.tax,
         subCategory:formf.subCategory,
         brand: { brandName: formf.brandName },
         shortDescription: formf.shortDescription,
@@ -80,8 +81,6 @@ export const adduploadFormatter = (formf,gallery,tagId) =>{
             releaseDate: formf.releaseDate
         }, "jwtToken": jwt,
         isActive:formf.isActive
-
-
     }
     return final
 }
@@ -89,10 +88,10 @@ export const adduploadFormatter = (formf,gallery,tagId) =>{
 //Add Product
 export const addProduct = async (formf,gallery,tagId) => {
     const final = await adduploadFormatter(formf,gallery,tagId)
-    console.log("Final",final)
+    // console.log("Final",final)
     try {
         const data = await axios.post(url+'/add/product/'+userId, final)
-        console.log("-----",data)
+        // console.log("-----",data)
         if (!data.data.error) {
 
             return true
@@ -109,8 +108,6 @@ export const addProduct = async (formf,gallery,tagId) => {
 
 //Deleting a product
 export const deleteProduct = async (id) => {
-
-
     try {
         const data = await axios.delete(url+'/delete/product/'+userId+'/' + id, {
             data:
@@ -143,6 +140,7 @@ export const editProductFormatter = (data) => {
         category: data.category._id,
         tags: data.tags,
         tagId:tagId,
+        tax:data.tax,
         price: data.price,
         subCategory:data.subCategory._id,
         stock: data.stock,
@@ -163,13 +161,12 @@ export const editProductFormatter = (data) => {
         isActive:data.isActive
     }
     // console.log('Editt',edit)
-    
     return edit
 }
 export const editProduct=async(formf,id,gallery,tagId)=>{
     const final = await adduploadFormatter(formf,gallery,tagId
         )
-    // console.log('final',final,id)
+        // console.log('final',final,id)
     try {
         const data = await axios.put(url+'/update/product/'+userId+'/'+id,final)
         // console.log("Data of update",data.data.error)

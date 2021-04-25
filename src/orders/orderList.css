@@ -3,12 +3,12 @@
     color: green;
 }
 .yellow{
-    color: #c46711;
+    color: #FEFBFF;
+    background-color: #F5C01A;
 }
 .yellow, .green{
     padding: 2px;
     border-radius: 20px;
-    font-weight:bolder;
     
 }
 .amount{
