@@ -14,13 +14,14 @@ export const getAllOrders=async()=>{
         return false
     }
 }
-export const getTotalOrders=async()=>{
+export const getOrdersCount=async()=>{
     try{
-        const data = await axios.get(url+'/get/all/totalOrderCount/')
+        const data = await axios.get(url+'/get/all/ordersCount/')
+        console.log(data.data.OrdersCount.OrdersCount[0])
         if(!data.data.error){
             return {
                 error:false,
-                data:data.data.totalOrders
+                data:data.data.OrdersCount.OrdersCount[0]
             }
         }
     }
@@ -28,20 +29,20 @@ export const getTotalOrders=async()=>{
         return {error:true}
     }
 }
-export const getActiveOrders=async()=>{
-    try{
-        const data = await axios.get(url+'/get/all/activeOrderCount/')
-        if(!data.data.error){
-            return {
-                error:false,
-                data:data.data.activeOrders
-            }
-        }
-    }
-    catch(error){
-        return {error:true}
-    }
-}
+// export const getActiveOrders=async()=>{
+//     try{
+//         const data = await axios.get(url+'/get/all/activeOrderCount/')
+//         if(!data.data.error){
+//             return {
+//                 error:false,
+//                 data:data.data.activeOrders
+//             }
+//         }
+//     }
+//     catch(error){
+//         return {error:true}
+//     }
+// }
 export const getCancelledOrders=async(isCancelled)=>{
     try{
         const data = await axios.get(url+'/get/all/orders/'+userId+'/'+isCancelled)

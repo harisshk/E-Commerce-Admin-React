@@ -4,8 +4,8 @@ import {Col,Row,Spinner} from 'react-bootstrap'
 import { FiShoppingCart } from "react-icons/fi";
 import { BiPackage } from "react-icons/bi";
 import {  FaTicketAlt } from "react-icons/fa";
-import {getTotalProducts,getActiveProducts} from './../services/productService'
-import {getActiveOrders,getTotalOrders} from './../services/orderService'
+import {getProductsCount} from './../services/productService'
+import {getOrdersCount} from './../services/orderService'
 
 import './home.css'
 export const Home = (props) => {
@@ -14,25 +14,23 @@ export const Home = (props) => {
         'ActiveProducts':0,
         'ActiveOrders':0,
         'TotalOrders':0,
+        'DeliveredOrders':0,
         'loaded':false
     })
     const[dbError,setDbError]=useState(false)
     const getValues=async()=>{
-        const totalProducts = await getTotalProducts()
-        const activeProducts = await getActiveProducts()
-        const totalOrder = await getTotalOrders()
-        const activeOrder = await getActiveOrders()
-        console.log(totalOrder)
-        console.log(totalProducts)
-        console.log(activeOrder)
-        console.log(activeProducts)
-        if(!totalOrder.error && !totalProducts.error && !activeOrder.error && !activeProducts.error){
+        const productsCount = await getProductsCount()
+        const orderCount = await getOrdersCount()
+        // console.log('-----------------',orderCount)
+        // console.log('=============',productsCount)
+        if( !orderCount.error  && !productsCount.error){
             setData({
                 ...data,
-                'TotalProducts':totalProducts.data,
-                'ActiveProducts':activeProducts.data,
-                'ActiveOrders':activeOrder.data,
-                'TotalOrders':totalOrder.data,
+                'TotalProducts':productsCount.data.totalProductsCount,
+                 'ActiveProducts':productsCount.data.activeProductsCount,
+                 'ActiveOrders':orderCount.data.activeCount,
+                'TotalOrders':orderCount.data.totalCount,
+                'DeliveredOrders':orderCount.data.deliveredCount,
                 'loaded':true
             })
         }
@@ -101,6 +99,30 @@ export const Home = (props) => {
                         <div className='values'>{data.ActiveProducts}</div></div>
                             <div className='iconBox'>
                             <BiPackage size={60} className='icon'> </BiPackage></div>    
+                            </Col>
+
+                    </Row>
+                </div>
+                <div className='containerBox'>
+                    <Row>
+                    
+                    <Col className="cardBox">
+                        <div className="cardHeader">Delivered Orders
+                        <div className='values'>{data.DeliveredOrders}</div></div>
+                            <div className='iconBox'>
+                            <FiShoppingCart size={60} className='icon'> </FiShoppingCart></div>    
+                            </Col>
+                            <Col className="dummycardBox">
+                        {/* <div className="cardHeader">Active Tickets
+                        <div className='values'>4</div></div>
+                            <div className='iconBox'>
+                            <FaTicketAlt size={60} className='icon'> </FaTicketAlt></div>     */}
+                            </Col>
+                            <Col className="dummycardBox">
+                        {/* <div className="cardHeader">Active Products
+                        <div className='values'>{data.ActiveProducts}</div></div>
+                            <div className='iconBox'>
+                            <BiPackage size={60} className='icon'> </BiPackage></div>     */}
                             </Col>
 
                     </Row>

@@ -100,7 +100,7 @@ export const OrderTable = (props) => {
                 }
                 else {
                     return (
-                        <p  ><FiTruck color={'black'} size={20}></FiTruck>
+                        <p  ><FiberManualRecordIcon fontSize="inherit" style={{ color: 'yellow' }} /><FiTruck color={'black'} size={20}></FiTruck>
                 on Progress</p>
                     )
                 }

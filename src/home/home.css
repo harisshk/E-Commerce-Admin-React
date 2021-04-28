@@ -43,3 +43,10 @@ height: 98vh;
     width: 30%;
     border-radius: 0 30px 30px 0;
 }
+.dummycardBox{
+    display: flex;
+    height:150px;
+    margin:20px 100px;
+    
+    border-radius: 20px;
+}

@@ -4,7 +4,7 @@ import { url, jwt, userId } from './../constants/auth'
 export const getAllProducts = async () => {
     try {
         const data = await axios.get(url + '/all/product/60703d3736520febd350c14c')
-        // console.log(data)
+            
         if (!data.data.error) {
             return data.data.products
         }
@@ -230,32 +230,14 @@ export const updateVariant = async (variant, imageArray, variantId) => {
     }
 }
 
-export const getTotalProducts = async () => {
+export const getProductsCount = async () => {
     try {
-        const data = await axios.get(url + '/get/totalProducts')
+        const data = await axios.get(url + '/get/productsCount')
         // console.log("TNumber of products",data.data.totalProducts)
         if (!data.data.error) {
             return {
                 error: false,
-                data: data.data.totalProducts
-            }
-        }
-        else {
-            return { error: true }
-        }
-    }
-    catch (error) {
-        return { error: true }
-    }
-}
-export const getActiveProducts = async () => {
-    try {
-        const data = await axios.get(url + '/get/activeProducts')
-        // console.log("TNumber of products",data.data.totalProducts)
-        if (!data.data.error) {
-            return {
-                data: data.data.activeProducts,
-                error: false
+                data: data.data.productsCount[0]
             }
         }
         else {
