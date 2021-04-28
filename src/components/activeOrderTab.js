@@ -1,28 +1,25 @@
 import React from 'react';
-import NavBar from './navBar'
 import { Navbar, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-export default function TActiveOrderTab() {
+export default function ActiveOrderTab() {
 
   return (
     <div >
-      <NavBar></NavBar>
+     
       <Navbar bg="light">
-            <Link  to='/totalOrders'>
-                <Button variant="primary">
-                    Total Orders
+            <Link  to='/orders/activeOrders'>
+                <Button  variant="outline-primary">
+                    Total Active Orders
                 </Button> 
             </Link>
-            <Link to='/activeOrders'> 
-                <Button variant="primary" >Active Orders</Button>
+            
+            <Link to='/orders/paidOrders'>
+                <Button variant="outline-primary">
+                Paid Orders</Button>
             </Link>
-            <Link to='/cancelledOrders'>
-                <Button variant="primary">
-                Cancelled Orders</Button>
-            </Link>
-            <Link to='/deliveredOrders'>
-                <Button variant="primary" >
-                Delivered Orders</Button>
+            <Link to='/orders/unpaidOrders'>
+                <Button variant="outline-primary" >
+                Unpaid Orders</Button>
             </Link>
         </Navbar>
     </div>

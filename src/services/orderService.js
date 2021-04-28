@@ -4,7 +4,7 @@ import {url,userId} from '../constants/auth'
 export const getAllOrders=async()=>{
     try{
         const data = await axios.get(url+'/get/all/totalOrders/')
-        // console.log(data.data)
+        console.log(data.data)
         if(!data.data.error){
             return data.data.totalOrders
         }
@@ -18,7 +18,7 @@ export const getOrdersCount=async()=>{
     try{
         const data = await axios.get(url+'/get/all/ordersCount/')
         console.log(data.data.OrdersCount.OrdersCount[0])
-        if(!data.data.error){
+        if(data.data.OrdersCount.OrdersCount[0]){
             return {
                 error:false,
                 data:data.data.OrdersCount.OrdersCount[0]
@@ -29,20 +29,18 @@ export const getOrdersCount=async()=>{
         return {error:true}
     }
 }
-// export const getActiveOrders=async()=>{
-//     try{
-//         const data = await axios.get(url+'/get/all/activeOrderCount/')
-//         if(!data.data.error){
-//             return {
-//                 error:false,
-//                 data:data.data.activeOrders
-//             }
-//         }
-//     }
-//     catch(error){
-//         return {error:true}
-//     }
-// }
+export const getActiveOrders=async()=>{
+    try{
+        const data = await axios.get(url+'/get/all/activeOrders')
+        console.log(data.data.activeOrders)
+        if(!data.data.error){
+            return data.data.activeOrders
+        }
+    }
+    catch(error){
+        return false
+    }
+}
 export const getCancelledOrders=async(isCancelled)=>{
     try{
         const data = await axios.get(url+'/get/all/orders/'+userId+'/'+isCancelled)
@@ -70,12 +68,29 @@ export const getDeliveredOrders=async(isDelivered)=>{
         return false
     }
 }
-export const updateOrderStatus = async (status,orderId)=>{
+
+export const updateOrderStatus = async (status,id)=>{
+    console.log('------',status)
+    console.log('------',id)
+
     try{
-        const data = await axios.put(url+'/update/status/order/'+userId+'/'+orderId,status)
+        const data = await axios.put(url+'/update/status/order/'+id.userId+'/'+id.orderId,status)
         // console.log(data.data)
         if(!data.data.error){
-            return true
+            if(status.status==="Order Confirmed"){
+                const data= await axios.post(url+'/push/nofication/'+id.userId,
+                {
+		title: "Order Confirmed",
+		body: "Order is confirmed and ready for packing"
+	})
+                if(!data.data.error){
+                    const data = await axios.put(url+'/update/status/order/'+id.userId+'/'+id.orderId,{pushStatus:true})
+                    if(!data.data.error){
+                        return true
+                    }
+                }
+            }
+            
         }
     }
     catch(error){

@@ -21,7 +21,7 @@ export const NavBar = (props) => {
                 <Button variant="primary">
                 <FaGripVertical size={30} color='white'></FaGripVertical>Category</Button>
             </Link>
-            <Link to='/totalOrders'>
+            <Link to='/orders/totalOrders'>
                 <Button variant="primary" >
                 <FaShoppingCart size={30} color='white'></FaShoppingCart>Orders</Button>
             </Link>

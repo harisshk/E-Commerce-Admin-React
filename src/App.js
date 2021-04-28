@@ -8,6 +8,9 @@ import ProductForm from './products/productForm';
 import VariantForm from './products/variantForm';
 import orderList from './orders/orderList'
 import {TagList} from './tag/tagList'
+import ActionPendingOrders from './orders/unConfirmedOrders'
+import PaidOrders from './orders/paidOrders'
+import UnPaidOrders from './orders/unPaidOrders'
 // import { useState } from 'react';
 import SubCategoryForm from './category/subCategory/subCategoryForm'
 import CategoryList from './category/categoryList';
@@ -26,11 +29,14 @@ function App() {
     <Route  path='/login' component={()=><LoginPage   />} />
     <Route exact path='/' component={Home} />
     <Route exact path='/product' component={Product} />
-    <Route exact path='/totalOrders' component={orderList} />
-    <Route exact path='/activeOrders' component={ActiveOrders} />
+    <Route exact path='/orders/totalOrders' component={orderList} />
+    <Route exact path='/orders/activeOrders' component={ActiveOrders} />
+    <Route exact path='/orders/paidOrders' component={PaidOrders} />
+    <Route exact path='/orders/unpaidOrders' component={UnPaidOrders} />
+    <Route exact path='/orders/actionPendingOrders' component={ActionPendingOrders} />
     <Route exact path='/category' component={CategoryList} />
-    <Route exact path='/cancelledOrders' component={CancelledOrders} />
-    <Route exact path='/deliveredOrders' component={DeliveredOrders} />
+    <Route exact path='/orders/cancelledOrders' component={CancelledOrders} />
+    <Route exact path='/orders/deliveredOrders' component={DeliveredOrders} />
     <Route exact path='/product/add' component={ProductForm} />
     <Route exact path='/tags' component={TagList} />
     <Route  path='/product/add' component={VariantForm} />

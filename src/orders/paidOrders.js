@@ -5,15 +5,13 @@ import OrderTable from './../components/orderTable'
 import {getActiveOrders} from './../services/orderService'
 import TabBar from './../components/tabBar'
 import ActiveOrderTab from './../components/activeOrderTab'
-
-export const ActiveOrders = (props)=>{
+export const PaidOrders = (props)=>{
     const [orders,SetOrders] = useState(null)
     const [dbError,setDbError] = useState(false)
     const getOrders=async()=>{
         const data = await getActiveOrders()
-        // console.log("orders----------",data)
         if(data){
-            SetOrders(data.filter(item => item.status === "Order Confirmed"))
+            SetOrders(data.filter(item => item.status === "Order Confirmed" && item.isAmountPaid === true))
         }
         else{
             setDbError(true)
@@ -34,12 +32,10 @@ export const ActiveOrders = (props)=>{
     },[props])
 
     return(
-        <div>
-            <TabBar/>
-            <ActiveOrderTab />
+        <div><TabBar></TabBar>
+         <ActiveOrderTab />
             {orders ?
         <div>
-            
             <OrderTable orders={orders} refresh={()=>refresh()}/>
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
@@ -66,4 +62,4 @@ export const ActiveOrders = (props)=>{
         </div>
     )
 }
-export default ActiveOrders
+export default PaidOrders

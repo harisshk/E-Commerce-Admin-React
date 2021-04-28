@@ -62,10 +62,24 @@ export const Product = (props) => {
     { title: "Category", field: 'category.name' },
     { title: "Sub Category", field: 'subCategory.name' },
     //  {title:"Variants",field:'variants.length'},
-    { title: "Images", field: 'gallery.length' },
-    { title: "Tags", field: 'tags.length' },
-    // {title:"Stock",field:'variants[0].stock'},
-    // {title:"Price",field:'variants[0].price'},
+    // { title: "Images", field: 'gallery.length' },
+    // { title: "Tags", field: 'tags.length' },
+    {title:"Stock",field:'stock',
+    render: rowData => {
+        if (rowData.stock>11) {
+            return (
+                <p style={{textAlign:'center'}}>{rowData.stock}</p>
+            )
+        }
+        else {
+            return (
+                <p style={{ margin:'4px',textAlign:'center',padding:"5px",backgroundColor:'red',
+                    borderRadius:'20px', color: 'white', fontWeight: "bolder" }}>
+                     {rowData.stock}</p>
+            )
+        }
+    }},
+    {title:"Price",field:'price'},
     {
         title: "Is Active", field: 'isActive',
         render: rowData => {

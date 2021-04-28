@@ -3,27 +3,30 @@ import Table from './table'
 import dateFormat from 'dateformat';
 import { GiMoneyStack } from "react-icons/gi";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
 import { FiTruck } from "react-icons/fi";
 import { BiMessageError, BiMessageAltCheck } from "react-icons/bi";
 import OrderStausModal from './orderSatatusModal'
 import {updateOrderStatus} from './../services/orderService'
 
 export const OrderTable = (props) => {
-    const { orders,refresh } = props
-    // console.log(props)
+    const { orders,refresh,cancelled } = props
+    console.log(props)
     const [modalShow,setModalShow]=useState(false)
     const [value,setValue]=useState('')
     const [isDeliverd,setIsDelivered]=useState(null)
-    const [orderId,setOrderId]=useState('')
+    const [Id,setId]=useState({})
     const onHide=()=>{
         setModalShow(false)
     }
     const onUpdate=async(status)=>{
-        const data =updateOrderStatus(status,orderId)
+        const data =updateOrderStatus(status,Id)
         if(data){
             setModalShow(false)
-            refresh()
-            refresh()
+            setTimeout(() => {
+                refresh()
+            }, 1500);
+            
         }
     }
     const columns = [
@@ -87,6 +90,12 @@ export const OrderTable = (props) => {
                         <p>UPI</p>
                     )
                 }
+                else if ((rowData.paymentType === 'Card')) {
+                    return (
+                        <p><CreditCardIcon size={30}/>Card</p>
+                    )
+                }
+                
             }
         },
         {
@@ -98,11 +107,14 @@ export const OrderTable = (props) => {
                             Delivered</p>
                     )
                 }
-                else {
+                else if(rowData.status==="Order Confirmed"){
                     return (
                         <p  ><FiberManualRecordIcon fontSize="inherit" style={{ color: 'yellow' }} /><FiTruck color={'black'} size={20}></FiTruck>
                 on Progress</p>
                     )
+                }
+                else{
+                    return(<p>Order not Confirmed</p>)
                 }
             }
         },
@@ -135,6 +147,86 @@ export const OrderTable = (props) => {
         //     }
         // },
     ]
+    const cancelledColumn = [
+        { title: "Order Number", field: 'name' },
+        { title: "Customer Name", field: 'address.name' },
+        {
+            title: "Order Created", field: 'createdAt',
+            render: rowData => {
+                return (
+                    <div>
+                        <p>{dateFormat(rowData.createdAt, "mmmm dS, yyyy ")}</p>
+                        <p style={{ color: '#4a4a48' }}>{dateFormat(rowData.createdAt, "hh:mm")}</p>
+                    </div>
+                )
+            }
+        },
+        {
+            title: "Order Updated", field: 'updatedAt',
+            render: rowData => {
+                return (
+                    <div>
+                        <p>{dateFormat(rowData.updatedAt, "mmmm dS, yyyy ")}</p>
+                        <p style={{ color: '#4a4a48' }}>{dateFormat(rowData.updatedAt, "hh:mm:ss")}</p>
+                    </div>
+                )
+            }
+        },
+        {
+            title: "Order Status", field: 'status',
+            render: rowData => {
+                if (rowData.status === 'Order Placed') {
+                    return (
+                        <p  >
+                            <FiberManualRecordIcon fontSize="inherit" style={{ color: 'green' }} />Order placed</p>
+                    )
+                }
+                else if(rowData.status === 'Cancelled Order'){
+                    return (
+                        <p className="red">
+                            Order Cancelled</p>
+                    )
+                }
+                else if(rowData.status === 'Order Confirmed'){
+                    return (
+                        <p className="green">
+                            Order Confirmed</p>
+                    )
+                }
+            }
+        },
+        { title: "Cancellation Reason", field: 'cancellationReason' },
+        {
+            title: "Payment Type", field: 'paymentType',
+            render: rowData => {
+                if (rowData.paymentType === 'COD') {
+                    return (
+                        <p><GiMoneyStack size={30} />COD</p>
+                    )
+                }
+                else if ((rowData.paymentType === 'UPI')) {
+                    return (
+                        <p>UPI</p>
+                    )
+                }
+                else if ((rowData.paymentType === 'Card')) {
+                    return (
+                        <p><CreditCardIcon size={30}/>Card</p>
+                    )
+                }
+                
+            }
+        },
+        
+        ]
+    const tableColumn=()=>{
+        if(cancelled){
+            return cancelledColumn
+        }
+        else{
+            return columns
+        }
+    }
     const subcolumn = [{ title: "Products", field: 'product.name' },
     { title: "Quantity", field: 'quantity' },
     { title: "Price", field: 'product.price' },
@@ -147,7 +239,7 @@ export const OrderTable = (props) => {
         <div>
 
             <Table style={{ overflow: "none", margin: '15px 40px' }} title='' data={orders}
-                columns={columns}
+                columns={tableColumn()}
                 detailPanel={[
                     {
                         icon: 'expand_more',
@@ -182,8 +274,6 @@ export const OrderTable = (props) => {
                     pageSizeOptions: [5, 10, 20, 50],
                     detailPanelColumnAlignment: 'right',
                     detailPanelColumnStyle: { width: '100px' },
-                    pageSize:5,
-                    pageSizeOptions: [5, 10, 20, 50],
                     emptyRowsWhenPaging:false,
 
                 }}
@@ -196,7 +286,10 @@ export const OrderTable = (props) => {
                             console.log(rowData)
                             setModalShow(true)
                             setValue(rowData.status)
-                            setOrderId(rowData._id)
+                            setId({
+                                orderId:rowData._id,
+                                userId:rowData.user._id
+                            })
                             setIsDelivered(rowData.isDelivered)
                         },
                     })
