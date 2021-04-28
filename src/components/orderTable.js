@@ -10,7 +10,7 @@ import {updateOrderStatus} from './../services/orderService'
 
 export const OrderTable = (props) => {
     const { orders,refresh } = props
-    console.log(props)
+    // console.log(props)
     const [modalShow,setModalShow]=useState(false)
     const [value,setValue]=useState('')
     const [isDeliverd,setIsDelivered]=useState(null)
@@ -28,7 +28,7 @@ export const OrderTable = (props) => {
     }
     const columns = [
         { title: "Order Number", field: 'name' },
-        // { title: "Customer Name", field: 'address.name' },
+        { title: "Customer Name", field: 'address.name' },
         {
             title: "Order Created", field: 'createdAt',
             render: rowData => {
@@ -46,7 +46,7 @@ export const OrderTable = (props) => {
                 return (
                     <div>
                         <p>{dateFormat(rowData.updatedAt, "mmmm dS, yyyy ")}</p>
-                        <p style={{ color: '#4a4a48' }}>{dateFormat(rowData.updatedAt, "hh:mm")}</p>
+                        <p style={{ color: '#4a4a48' }}>{dateFormat(rowData.updatedAt, "hh:mm:ss")}</p>
                     </div>
                 )
             }
@@ -163,7 +163,10 @@ export const OrderTable = (props) => {
                                             search: false,
                                             toolbar: false,
                                             paging: false,
-                                            actionsColumnIndex: -1
+                                            actionsColumnIndex: -1,
+                                            emptyRowsWhenPaging:false,
+                                            
+
                                         }}
                                     ></Table>
                                     <div className="amount">
@@ -179,7 +182,10 @@ export const OrderTable = (props) => {
                     pageSizeOptions: [5, 10, 20, 50],
                     detailPanelColumnAlignment: 'right',
                     detailPanelColumnStyle: { width: '100px' },
-                    
+                    pageSize:5,
+                    pageSizeOptions: [5, 10, 20, 50],
+                    emptyRowsWhenPaging:false,
+
                 }}
                 actions={[
                     rowData=>({

@@ -9,7 +9,7 @@ export const DeliveredOrders = (props)=>{
     const [dbError,setDbError] = useState(false)
     const getOrders=async()=>{
         const data = await getDeliveredOrders(true)
-        console.log("orders++++++++----------",data)
+        // console.log("orders++++++++----------",data)
         if(data){
             SetOrders(data)
         }

@@ -10,7 +10,7 @@ export const ActiveOrders = (props)=>{
     const [dbError,setDbError] = useState(false)
     const getOrders=async()=>{
         const data = await getCancelledOrders(false)
-        console.log("orders----------",data)
+        // console.log("orders----------",data)
         if(data){
             SetOrders(data)
         }

@@ -60,7 +60,10 @@ export const TagList = (props) => {
     const options ={
         actionsColumnIndex: -1,
         showFirstLastPageButtons: false,
-        pageSizeOptions: [5, 10, 20, 50]
+        pageSize:10,
+        pageSizeOptions: [10, 20, 50],
+        emptyRowsWhenPaging:false,
+
     }
     const editable={
         onRowDelete: selectedRow => new Promise(async (resolve, reject) => {

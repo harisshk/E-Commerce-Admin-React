@@ -194,7 +194,9 @@ export const CategoryList = (props) => {
                                 columns={columns} detailPanel={detailPanel} editable={editable} actions={actions} options={{
                                     actionsColumnIndex: -1,
                                     showFirstLastPageButtons: false,
-                                    pageSizeOptions: [5, 10, 20, 50],
+                                    emptyRowsWhenPaging:false,
+                                    pageSize:10,
+                                    pageSizeOptions: [ 10, 20, 50],
                                     detailPanelColumnAlignment: 'right',
                                     detailPanelColumnStyle: { width: '100px' }
                                 }}

@@ -39,7 +39,9 @@ export const Product = (props) => {
     const options = {
         actionsColumnIndex: -1,
         showFirstLastPageButtons: false,
-        pageSizeOptions: [5, 10, 20, 50]
+        pageSize:7,
+        pageSizeOptions: [7, 10, 20, 50],
+        emptyRowsWhenPaging:false,
     }
     const actions = [{
         icon: 'edit',
