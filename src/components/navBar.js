@@ -8,7 +8,7 @@ export const NavBar = (props) => {
     // console.log("----------", props.history)
     return (
         <Navbar bg="primary">
-            <Link  to='/home'>
+            <Link  to='/'>
                 <Button variant="primary">
                     <FaHome size={30} color='white'></FaHome>
                 </Button> 
@@ -21,7 +21,7 @@ export const NavBar = (props) => {
                 <Button variant="primary">
                 <FaGripVertical size={30} color='white'></FaGripVertical>Category</Button>
             </Link>
-            <Link to='/orders'>
+            <Link to='/totalOrders'>
                 <Button variant="primary" >
                 <FaShoppingCart size={30} color='white'></FaShoppingCart>Orders</Button>
             </Link>

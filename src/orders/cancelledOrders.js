@@ -1,18 +1,15 @@
-import React,{useEffect, useState} from 'react'
-import {getAllOrders} from '../services/orderService'
-import { SpinLoader} from './../components/spinLoader'
+import React,{useEffect,useState} from 'react'
+import {SpinLoader} from './../components/spinLoader'
 import Snackbar from '@material-ui/core/Snackbar'
 import OrderTable from './../components/orderTable'
-import './orderList.css'
-import TabBar from '../components/tabBar'
-
-
-export const OrderList=(props)=>{
+import {getCancelledOrders} from './../services/orderService'
+import TabBar from './../components/tabBar'
+export const CancelledOrders = (props)=>{
     const [orders,SetOrders] = useState(null)
     const [dbError,setDbError] = useState(false)
     const getOrders=async()=>{
-        const data = await getAllOrders()
-        // console.log("orders----------",data)
+        const data = await getCancelledOrders(true)
+        console.log("orders----------",data)
         if(data){
             SetOrders(data)
         }
@@ -20,14 +17,14 @@ export const OrderList=(props)=>{
             setDbError(true)
         }
     }
-  
+    const refresh=()=>{
+        getOrders()
+    }
     const [snackBarOpen,setSnackBarOpen] = useState(false)
     const handleCloseSnack=()=>{
         setSnackBarOpen(false)
     }
-    const refresh=()=>{
-        getOrders()
-    }
+    
     useEffect(()=>{
         getOrders()
         setDbError(false)
@@ -35,14 +32,14 @@ export const OrderList=(props)=>{
     },[props])
 
     return(
-        <div>
-            <TabBar></TabBar>
+        <div><TabBar></TabBar>
             {orders ?
         <div>
-            <OrderTable orders={orders} refresh={()=>refresh()}/>
+            <OrderTable orders={orders} refresh={()=>refresh()} cancelled={true}/>
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
-</Snackbar>
+
+    </Snackbar>
             </div>   :
     dbError ? 
     <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
@@ -64,4 +61,4 @@ export const OrderList=(props)=>{
         </div>
     )
 }
-export default OrderList
+export default CancelledOrders

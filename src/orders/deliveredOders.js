@@ -1,18 +1,15 @@
-import React,{useEffect, useState} from 'react'
-import {getAllOrders} from '../services/orderService'
-import { SpinLoader} from './../components/spinLoader'
+import React,{useEffect,useState} from 'react'
+import {SpinLoader} from './../components/spinLoader'
 import Snackbar from '@material-ui/core/Snackbar'
 import OrderTable from './../components/orderTable'
-import './orderList.css'
-import TabBar from '../components/tabBar'
-
-
-export const OrderList=(props)=>{
+import {getDeliveredOrders} from './../services/orderService'
+import TabBar from './../components/tabBar'
+export const DeliveredOrders = (props)=>{
     const [orders,SetOrders] = useState(null)
     const [dbError,setDbError] = useState(false)
     const getOrders=async()=>{
-        const data = await getAllOrders()
-        // console.log("orders----------",data)
+        const data = await getDeliveredOrders(true)
+        console.log("orders++++++++----------",data)
         if(data){
             SetOrders(data)
         }
@@ -35,13 +32,13 @@ export const OrderList=(props)=>{
     },[props])
 
     return(
-        <div>
-            <TabBar></TabBar>
+        <div><TabBar></TabBar>
             {orders ?
         <div>
             <OrderTable orders={orders} refresh={()=>refresh()}/>
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
+
 </Snackbar>
             </div>   :
     dbError ? 
@@ -64,4 +61,4 @@ export const OrderList=(props)=>{
         </div>
     )
 }
-export default OrderList
+export default DeliveredOrders

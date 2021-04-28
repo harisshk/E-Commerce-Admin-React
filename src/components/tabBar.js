@@ -1,23 +1,30 @@
 import React from 'react';
-import {Tabs,Tab} from 'react-bootstrap';
 import NavBar from './navBar'
-import OrderList from './../orders/orderList'
+import { Navbar, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 export default function TabBar() {
+
   return (
     <div >
       <NavBar></NavBar>
-      <Tabs variant="pills" active defaultActiveKey="totalOrders" id="uncontrolled-tab-example">
-  <Tab eventKey="totalOrders" title="Total Orders">
-    <OrderList></OrderList>
-  </Tab>
-  <Tab eventKey="activeOrders" title="Active Orders">
-    null
-  </Tab>
-  <Tab eventKey="deliveredOrders" title="Delivered Orders" >
-    null
-    
-  </Tab>
-</Tabs>
+      <Navbar bg="light">
+            <Link  to='/totalOrders'>
+                <Button variant="primary">
+                    Total Orders
+                </Button> 
+            </Link>
+            <Link to='/activeOrders'> 
+                <Button variant="primary" >Active Orders</Button>
+            </Link>
+            <Link to='/cancelledOrders'>
+                <Button variant="primary">
+                Cancelled Orders</Button>
+            </Link>
+            <Link to='/deliveredOrders'>
+                <Button variant="primary" >
+                Delivered Orders</Button>
+            </Link>
+        </Navbar>
     </div>
   );
 }

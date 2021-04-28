@@ -6,10 +6,15 @@
     color: #FEFBFF;
     background-color: #F5C01A;
 }
-.yellow, .green{
-    padding: 2px;
+.red{
+    background-color: rgb(241, 37, 37);
+    color: #FEFBFF;
+
+}
+.yellow, .green, .red{
+    padding:5px;
+    text-align: center;
     border-radius: 20px;
-    
 }
 .amount{
     display:flow;
