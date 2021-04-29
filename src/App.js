@@ -1,7 +1,7 @@
 
 import './App.css';
 import  LoginPage  from './auth/login';
-import {Route,BrowserRouter} from 'react-router-dom'
+import {Route,BrowserRouter, Redirect, Switch} from 'react-router-dom'
 import Home from './home/home';
 import { Product } from './products/product';
 import ProductForm from './products/productForm';
@@ -11,12 +11,13 @@ import {TagList} from './tag/tagList'
 import ActionPendingOrders from './orders/unConfirmedOrders'
 import PaidOrders from './orders/paidOrders'
 import UnPaidOrders from './orders/unPaidOrders'
-// import { useState } from 'react';
+import DiscountForm from './discounts/discountForm'
 import SubCategoryForm from './category/subCategory/subCategoryForm'
 import CategoryList from './category/categoryList';
 import CancelledOrders from './orders/cancelledOrders'
 import ActiveOrders from './orders/activeOrders'
-import DeliveredOrders from './orders/deliveredOders'
+import DeliveredOrders from './orders/deliveredOders';
+import DiscountList from './discounts/discountList'
 function App() {
   // const [isLogin,setIsLogin] = useState(false)
   // const login =()=>{
@@ -24,11 +25,14 @@ function App() {
   // }
   return (
     <BrowserRouter>
-    
+    <Switch>
+    <Redirect exact from='/' to='/login' component={LoginPage} />
     <Route path='/category/addSubCategory' component={SubCategoryForm} />
-    <Route  path='/login' component={()=><LoginPage   />} />
-    <Route exact path='/' component={Home} />
+    <Route  path='/login' component={LoginPage} />
+    <Route exact path='/home' component={Home} />
     <Route exact path='/product' component={Product} />
+    <Route exact path='/discount' component={DiscountList} />
+    <Route exact path='/discount/add' component={DiscountForm} />
     <Route exact path='/orders/totalOrders' component={orderList} />
     <Route exact path='/orders/activeOrders' component={ActiveOrders} />
     <Route exact path='/orders/paidOrders' component={PaidOrders} />
@@ -40,6 +44,7 @@ function App() {
     <Route exact path='/product/add' component={ProductForm} />
     <Route exact path='/tags' component={TagList} />
     <Route  path='/product/add' component={VariantForm} />
+    </Switch>
     </BrowserRouter>
   );
 }

@@ -48,7 +48,7 @@ export const Product = (props) => {
         tooltip: 'Edit User',
         onClick: async (event, rowData) => {
             const edit = await editProductFormatter(rowData)
-            console.log("Edit", edit)
+            // console.log("Edit", edit)
             props.history.replace({
                 pathname: '/product/add',
                 state: edit

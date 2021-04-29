@@ -49,7 +49,7 @@ export const OrderTable = (props) => {
                 return (
                     <div>
                         <p>{dateFormat(rowData.updatedAt, "mmmm dS, yyyy ")}</p>
-                        <p style={{ color: '#4a4a48' }}>{dateFormat(rowData.updatedAt, "hh:mm:ss")}</p>
+                        <p style={{ color: '#4a4a48' }}>{dateFormat(rowData.updatedAt, "hh:mm   ")}</p>
                     </div>
                 )
             }

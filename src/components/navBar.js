@@ -1,14 +1,14 @@
 import React from 'react'
 import { Navbar, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { FaHome ,FaGripVertical,FaShoppingCart,FaTags} from "react-icons/fa";
+import { FaHome ,FaGripVertical,FaShoppingCart,FaTags,FaPercent} from "react-icons/fa";
 import { BiPackage } from "react-icons/bi";
 import './navBar.css'
 export const NavBar = (props) => {
     // console.log("----------", props.history)
     return (
         <Navbar bg="primary">
-            <Link  to='/'>
+            <Link  to='/home'>
                 <Button variant="primary">
                     <FaHome size={30} color='white'></FaHome>
                 </Button> 
@@ -28,6 +28,10 @@ export const NavBar = (props) => {
             <Link to='/tags'>
                 <Button variant="primary" >
                 <FaTags size={30} color='white'></FaTags>Tags</Button>
+            </Link>
+            <Link to='/discount'>
+                <Button variant="primary" >
+                <FaPercent size={20} color='white'/>Discount</Button>
             </Link>
         </Navbar>
     )

@@ -99,9 +99,9 @@ export const SubCategoryForm = (props) => {
 
 
                     <Form.Group  >
-                        <Form.Label>Sub Category Name</Form.Label>
+                        <Form.Label> Category Name</Form.Label>
                         <Form.Control required as="select" value={subCategory.categoryId} defaultValue='' onChange={(e) => { setField('categoryId', e.target.value) }} >
-                            <option value=''>Select a sub Category</option>
+                            <option value=''>Select a Category</option>
                             {categoryList && categoryList.map((team) => <option key={team._id} value={team._id}>{team.name}</option>)}
 
                         </Form.Control>

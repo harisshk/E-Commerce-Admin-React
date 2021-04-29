@@ -6,7 +6,8 @@ import {Login} from './../services/authserivce'
 export const  LoginPage = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(true);
+  const [validated,setValidated]=useState(false)
   useEffect(()=>{
     console.log(props)
     
@@ -16,19 +17,22 @@ export const  LoginPage = (props) => {
     return email.length > 0 && password.length > 0;
   }
 
-  function Loginhandler(email,password){
-      setSuccess(Login(email,password))
-      console.log(success)
-       if (!success){
+  const  Loginhandler=async(e)=>{
+    e.preventDefault();
+    const form = e.currentTarget;
+    if(form.checkValidity() === true){
+      const data = await Login(email,password)
+      setSuccess(data)
+      if(data){
         props.history.push('/home')
-        console.log(props.history)
-       }
-       
+      }
+    }
+    setValidated(true)
   }
 
   return (
     <div className="Login">
-      <Form >
+      <Form onSubmit={Loginhandler} noValidate validated={validated} >
         <Form.Group size="lg" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -46,10 +50,10 @@ export const  LoginPage = (props) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Button block size="lg" type="submit" onClick={()=>{Loginhandler(email,password)}} disabled={!validateForm()}>
+        <Button block size="lg" type="submit"  disabled={!validateForm()}>
           Login
         </Button>
-        {success &&<span style={{color:'red'}} disabled={success}>Inavlid credentials</span>
+        {!success &&<span style={{color:'red'}} disabled={success}>Inavlid credentials</span>
 }
       </Form>
     </div>
