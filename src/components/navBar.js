@@ -1,13 +1,16 @@
 import React from 'react'
 import { Navbar, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { FaHome ,FaGripVertical,FaShoppingCart,FaTags,FaPercent} from "react-icons/fa";
+import { FaHome ,FaGripVertical,FaShoppingCart,FaTags,FaPercent,FaUserAlt} from "react-icons/fa";
 import { BiPackage } from "react-icons/bi";
-import './navBar.css'
+import './navBar.css';
+import { GrLogout } from "react-icons/gr";
+
 export const NavBar = (props) => {
     // console.log("----------", props.history)
     return (
-        <Navbar bg="primary">
+      <div>
+            <Navbar bg="primary">
             <Link  to='/home'>
                 <Button variant="primary">
                     <FaHome size={30} color='white'></FaHome>
@@ -33,7 +36,19 @@ export const NavBar = (props) => {
                 <Button variant="primary" >
                 <FaPercent size={20} color='white'/>Discount</Button>
             </Link>
+            <Link to='/users'>
+                <Button variant="primary" >
+                <FaUserAlt size={20} color='white'/>Users</Button>
+            </Link>
+            <div style={{position:"relative",marginLeft:"auto"}}>
+            <Link to='/'>
+                <Button variant="primary" >
+                <GrLogout size={20} color=''/>Logout</Button>
+            </Link>
+            </div>
         </Navbar>
+       
+      </div>
     )
 }
 export default NavBar

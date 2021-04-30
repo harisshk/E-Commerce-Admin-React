@@ -10,6 +10,7 @@ import orderList from './orders/orderList'
 import {TagList} from './tag/tagList'
 import ActionPendingOrders from './orders/unConfirmedOrders'
 import PaidOrders from './orders/paidOrders'
+import UserList from './users/userList'
 import UnPaidOrders from './orders/unPaidOrders'
 import DiscountForm from './discounts/discountForm'
 import SubCategoryForm from './category/subCategory/subCategoryForm'
@@ -17,7 +18,9 @@ import CategoryList from './category/categoryList';
 import CancelledOrders from './orders/cancelledOrders'
 import ActiveOrders from './orders/activeOrders'
 import DeliveredOrders from './orders/deliveredOders';
-import DiscountList from './discounts/discountList'
+import DiscountList from './discounts/discountList';
+import UserForm from './users/userForm'
+import InactiveUserList from './users/activateUser'
 function App() {
   // const [isLogin,setIsLogin] = useState(false)
   // const login =()=>{
@@ -30,6 +33,9 @@ function App() {
     <Route path='/category/addSubCategory' component={SubCategoryForm} />
     <Route  path='/login' component={LoginPage} />
     <Route exact path='/home' component={Home} />
+    <Route exact path='/users' component={UserList} />
+    <Route exact path='/users/activate' component={InactiveUserList} />
+    <Route exact path='/users/add' component={UserForm} />
     <Route exact path='/product' component={Product} />
     <Route exact path='/discount' component={DiscountList} />
     <Route exact path='/discount/add' component={DiscountForm} />
