@@ -1,16 +1,19 @@
 import React,{useEffect,useState} from 'react'
 import Table from './../components/table'
-import {getInactiveAdmin} from './../services/authserivce';
+import {getInactiveAdmin} from './../services/adminService';
 import {Button} from 'react-bootstrap';
 import Snackbar from '@material-ui/core/Snackbar'
 import SpinLoader from './../components/spinLoader'
 import NavBar from './../components/navBar'
+import ActivateAccount from './../components/activateAccount'
 import dateFormat from 'dateformat';
 import UserTab from '../components/usertab';
 export const InactiveUserList=(props)=>{
     const [users,setUsers]=useState(null)
     const [dbError,setDbError]=useState(false)
-    const getDiscount=async()=>{
+    const [modalShow,setModalShow]=useState(false)
+    const [id,setId]=useState('')
+    const getUser=async()=>{
         const data = await getInactiveAdmin()
         if(!data.error){
             setUsers(data.data)
@@ -18,6 +21,12 @@ export const InactiveUserList=(props)=>{
         else{
             setDbError(true)
         }
+    }
+    const onHide=()=>{
+        setModalShow(false)
+        setTimeout(() => {
+            getUser()
+        }, 400);
     }
     const [snackBarOpen,setSnackBarOpen] = useState(false)
     const handleCloseSnack=()=>{
@@ -61,32 +70,30 @@ export const InactiveUserList=(props)=>{
     }
     const actions=[
         {
-            icon: 'edit',
-            tooltip: 'Edit Tag',
+            icon: 'settings',
+            tooltip: 'Activate Account',
             onClick: async (event, rowData) => {
-                props.history.replace({
-                    pathname: '/users/add',
-                    state: rowData
-                })
+                setModalShow(true)
+                setId(rowData._id)
             }
         }
     ]
-    const editable={
-        onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
-            const id = selectedRow._id
+    // const editable={
+    //     onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
+    //         const id = selectedRow._id
             
-            if (true) {
-                setSnackBarOpen(true)
+    //         if (true) {
+    //             setSnackBarOpen(true)
                 
-                resolve()
-            }
-        }),
-    }
+    //             resolve()
+    //         }
+    //     }),
+    // }
     useEffect(() => {
-        getDiscount()
+        getUser()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [props])
     return(
         <div><NavBar />
          <UserTab/>
@@ -96,7 +103,7 @@ export const InactiveUserList=(props)=>{
                     <div style={{ margin: '10px 20px' }}>
                         <Button onClick={() => { props.history.push('/users/add') }}>Add User</Button>
                     </div>
-                    <Table data={users} editable={editable} actions={actions} options={options} title={"Users"} columns={column} style={{margin:"0px 200px"}}/>
+                    <Table data={users}  actions={actions} options={options} title={"Users"} columns={column} style={{margin:"0px 200px"}}/>
                 </div>
                 :
                 dbError ?
@@ -121,7 +128,7 @@ export const InactiveUserList=(props)=>{
                     </div>
 
             }
-
+    <ActivateAccount show={modalShow} onHide={()=>onHide()} id={id} />
 <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack} />
         </div>

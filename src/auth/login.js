@@ -9,13 +9,27 @@ export const  LoginPage = (props) => {
   const [success, setSuccess] = useState(true);
   const [validated,setValidated]=useState(false)
   useEffect(()=>{
-    console.log(props)
-    
+   
       // eslint-disable-next-line react-hooks/exhaustive-deps
 },[])
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
+  const formBox = {
+    width: "450px",
+    height: "360px",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    top: 0,
+    bottom: 0,
+    padding: "20px",
+    borderRadius: "30px",
+    margin: "auto",
+    maxWidth: "100%",
+    maxHeight: "100%"
+}
 
   const  Loginhandler=async(e)=>{
     e.preventDefault();
@@ -31,21 +45,25 @@ export const  LoginPage = (props) => {
   }
 
   return (
-    <div className="Login">
+   <div className="page">
+      <div style={formBox}>
+        <h4>Login</h4>
       <Form onSubmit={Loginhandler} noValidate validated={validated} >
-        <Form.Group size="lg" controlId="email">
+        <Form.Group size="lg" controlId="email" >
           <Form.Label>Email</Form.Label>
           <Form.Control
             autoFocus
             type="email"
             value={email}
+            placeholder="Enter the email"
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
-        <Form.Group size="lg" controlId="password">
+        <Form.Group size="lg" controlId="password" >
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
+            placeholder="Enter the password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -53,10 +71,14 @@ export const  LoginPage = (props) => {
         <Button block size="lg" type="submit"  disabled={!validateForm()}>
           Login
         </Button>
+        <Button block size="lg" onClick={()=>{props.history.push('/signup')}}>
+          signup
+        </Button>
         {!success &&<span style={{color:'red'}} disabled={success}>Inavlid credentials</span>
 }
       </Form>
     </div>
+   </div>
   );
 }
 

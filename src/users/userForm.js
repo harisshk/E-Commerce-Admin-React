@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {Button,Form} from 'react-bootstrap';
-import {createAdmin} from './../services/authserivce'
-import dateFormat from 'dateformat';
+import {createAdmin} from './../services/adminService'
 import Snackbar from '@material-ui/core/Snackbar'
 
 export const UserForm=(props)=>{
