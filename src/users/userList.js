@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import Table from './../components/table'
-import {getAllAdmin} from './../services/authserivce';
+import {getAllAdmin} from './../services/adminService';
 import {Button} from 'react-bootstrap';
 import Snackbar from '@material-ui/core/Snackbar'
 import SpinLoader from './../components/spinLoader'
@@ -8,13 +8,16 @@ import NavBar from './../components/navBar'
 import dateFormat from 'dateformat';
 import UserTab from '../components/usertab';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-
+import ActivateAccount from './../components/activateAccount'
 export const UserList=(props)=>{
     const [users,setUsers]=useState(null)
     const [dbError,setDbError]=useState(false)
-    const getDiscount=async()=>{
+    const [modalShow,setModalShow]=useState(false)
+    const [id,setId]=useState('')
+    const getUser=async()=>{
         const data = await getAllAdmin()
         if(!data.error){
+            console.log(data.data)
             setUsers(data.data)
         }
         else{
@@ -24,6 +27,12 @@ export const UserList=(props)=>{
     const [snackBarOpen,setSnackBarOpen] = useState(false)
     const handleCloseSnack=()=>{
         setSnackBarOpen(false)
+    }
+    const onHide=()=>{
+        setModalShow(false)
+        setTimeout(() => {
+            getUser()
+        }, 400);
     }
     const column=[
      {title:"Name",field:"name"},
@@ -58,7 +67,7 @@ export const UserList=(props)=>{
     render: rowData => {
         if (rowData.isActivated) {
             return (
-                <p  style={{ color: 'green', fontWeight: "bolder" }}>Active</p>
+                <p  className="green">Active</p>
             )
         }
         else {
@@ -68,7 +77,6 @@ export const UserList=(props)=>{
         }
     }
 },
-    
     ]
     const options ={
         actionsColumnIndex: -1,
@@ -79,30 +87,31 @@ export const UserList=(props)=>{
 
     }
     const actions=[
-        {
-            icon: 'edit',
-            tooltip: 'Edit Tag',
+        rowData=>({
+            disabled:rowData.isActivated,
+            icon: 'settings',
+            tooltip: 'activate account',
             onClick: async (event, rowData) => {
-                props.history.replace({
-                    pathname: '/discount/add',
-                    state: rowData
-                })
-            }
-        }
-    ]
-    const editable={
-        onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
-            const id = selectedRow._id
-            
-            if (true) {
-                setSnackBarOpen(true)
+                setModalShow(true)
+                setId(rowData._id)
                 
-                resolve()
             }
-        }),
-    }
+        })
+    ]
+    // const editable={
+    //     onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
+    //         const id = selectedRow._id
+            
+    //         if (true) {
+    //             setSnackBarOpen(true)
+                
+    //             resolve()
+    //         }
+    //     }),
+    // }
     useEffect(() => {
-        getDiscount()
+        getUser()
+        setModalShow(false)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -115,7 +124,7 @@ export const UserList=(props)=>{
                     <div style={{ margin: '10px 20px' }}>
                         <Button onClick={() => { props.history.push('/users/add') }}>Add User</Button>
                     </div>
-                    <Table data={users} editable={editable} actions={actions} options={options} title={"Users"} columns={column} style={{margin:"0px 200px"}}/>
+                    <Table data={users}  actions={actions} options={options} title={"Users"} columns={column} style={{margin:"0px 200px"}}/>
                 </div>
                 :
                 dbError ?
@@ -140,7 +149,7 @@ export const UserList=(props)=>{
                     </div>
 
             }
-
+    <ActivateAccount show={modalShow} onHide={()=>onHide()} id={id} />
 <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack} />
         </div>

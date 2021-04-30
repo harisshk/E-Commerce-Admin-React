@@ -21,6 +21,7 @@ import DeliveredOrders from './orders/deliveredOders';
 import DiscountList from './discounts/discountList';
 import UserForm from './users/userForm'
 import InactiveUserList from './users/activateUser'
+import SignUp from './auth/signup'
 function App() {
   // const [isLogin,setIsLogin] = useState(false)
   // const login =()=>{
@@ -32,6 +33,7 @@ function App() {
     <Redirect exact from='/' to='/login' component={LoginPage} />
     <Route path='/category/addSubCategory' component={SubCategoryForm} />
     <Route  path='/login' component={LoginPage} />
+    <Route  path='/signup' component={SignUp  } />
     <Route exact path='/home' component={Home} />
     <Route exact path='/users' component={UserList} />
     <Route exact path='/users/activate' component={InactiveUserList} />

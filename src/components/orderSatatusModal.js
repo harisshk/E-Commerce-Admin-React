@@ -37,7 +37,7 @@ return(
                 <Modal.Body>
                     <Form >
                     <Form.Group as={Col}>
-                            <Form.Label>Sub Category</Form.Label>
+                            <Form.Label>Order Status</Form.Label>
                             <Form.Control required as="select"  defaultValue='' value={orderStatus.status} onChange={(e) => setField( 'status',e.target.value)}  >
                                 <option value='Order Placed'>Order Placed</option>
                                 <option value='Order Confirmed'>Order Confirmed</option>
@@ -66,9 +66,6 @@ return(
                     </Form>
                    
                 </Modal.Body>
-                <Modal.Footer>
-                    
-                </Modal.Footer>
             </Modal>
 )
 } 
