@@ -71,9 +71,6 @@ export const  LoginPage = (props) => {
         <Button block size="lg" type="submit"  disabled={!validateForm()}>
           Login
         </Button>
-        <Button block size="lg" onClick={()=>{props.history.push('/signup')}}>
-          signup
-        </Button>
         {!success &&<span style={{color:'red'}} disabled={success}>Inavlid credentials</span>
 }
       </Form>

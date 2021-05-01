@@ -1,12 +1,12 @@
 import React,{useState,useEffect} from 'react';
 import {Button,Form} from 'react-bootstrap';
-import {createAdmin} from './../services/adminService'
+import {createAdmin,updateAdmin} from './../services/adminService'
 import Snackbar from '@material-ui/core/Snackbar'
 
 export const UserForm=(props)=>{
     const formBox={
     width: "450px",
-    height: "450px",
+    height: "420px",
     position: "absolute",
     left: 0,
     right: 0,
@@ -36,8 +36,8 @@ export const UserForm=(props)=>{
         e.preventDefault();
         const form = e.currentTarget;
         if(form.checkValidity() === true){
-            console.log("=-=-=-==",user)
-            if(!isEdit){
+           
+            if(!isEdit){ console.log("=-=-=-==",user)
                 const data = await createAdmin(user)
                 if(!data.error){
                     setSnackBarOpen(true)
@@ -48,13 +48,13 @@ export const UserForm=(props)=>{
                 }
             }
             else{
-                // const data = await updateDiscount(discount,props.location.state._id)
-                // if(!data.error){
-                //     setSnackBarOpen(true)
-                //     setTimeout(() => {
-                //         props.history.push('/discount')
-                //     }, 400);
-                // }
+                const data = await updateAdmin(user,props.location.state._id)
+                if(!data.error){
+                    setSnackBarOpen(true)
+                    setTimeout(() => {
+                        props.history.push('/users')
+                    }, 400);
+                }
             }
         }
         setValidated(true);
@@ -65,7 +65,10 @@ export const UserForm=(props)=>{
         if(props.location.state){
             setIsEdit(true)
             setUser(props.location.state)
+        }else{
+            setIsEdit(false)
         }
+
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -77,22 +80,22 @@ export const UserForm=(props)=>{
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <Form.Group >
                         <Form.Label>Full Name</Form.Label>
-                        <Form.Control required type="text" value={user.name} onChange={(e)=>setField("name",e.target.value)}  placeholder="Enter you full name" />
+                        <Form.Control required type="text" value={user.name} onChange={(e)=>setField("name",e.target.value)}  placeholder="Enter the full name" />
                         <Form.Control.Feedback type="invalid">
-                            Please Enter your full name.
+                            Please Enter the full name.
                         </Form.Control.Feedback>
                     </Form.Group>
                     
                     <Form.Group >
                         <Form.Label>Email</Form.Label>
-                        <Form.Control required type="email" value={user.email} onChange={(e)=>setField("email",e.target.value)}  placeholder="Enter your email" />
+                        <Form.Control required type="email" value={user.email} onChange={(e)=>setField("email",e.target.value)}  placeholder="Enter the email" />
                         <Form.Control.Feedback type="invalid">
                             Please Enter the mail in valid format.
                         </Form.Control.Feedback>
                     </Form.Group >
                     <Form.Group >
                         <Form.Label>Role</Form.Label>
-                        <Form.Control required as="select"  defaultValue=''  onChange={(e) => setField( 'role',e.target.value)}  >
+                        <Form.Control required as="select" value={user.role} defaultValue=''  onChange={(e) => setField( 'role',e.target.value)}  >
                         <option value=''>Select the role</option>
                                 <option value='Admin'>Admin</option>
                                 <option value='Manager'>Manager</option>
@@ -101,17 +104,6 @@ export const UserForm=(props)=>{
                             Please select the role.
                         </Form.Control.Feedback>
                     </Form.Group>
-                    
-                   {!isEdit &&
-                    <Form.Group>
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control required type="password" placeholder="Enter your password"  onChange={(e)=>setField("password",e.target.value)} />
-                    <Form.Control.Feedback type="invalid">
-                        Please Enter the password.
-                    </Form.Control.Feedback>
-                </Form.Group>
-               
-                   }
                     {isEdit  &&
                             <Form.Group >
                                 <Form.Label>Active</Form.Label>

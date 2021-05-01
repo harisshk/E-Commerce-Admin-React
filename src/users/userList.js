@@ -1,19 +1,20 @@
 import React,{useEffect,useState} from 'react'
 import Table from './../components/table'
-import {getAllAdmin} from './../services/adminService';
+import {getAllAdmin,updateAdmin} from './../services/adminService';
 import {Button} from 'react-bootstrap';
 import Snackbar from '@material-ui/core/Snackbar'
 import SpinLoader from './../components/spinLoader'
 import NavBar from './../components/navBar'
 import dateFormat from 'dateformat';
-import UserTab from '../components/usertab';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import ActivateAccount from './../components/activateAccount'
+import ResetPassword from '../components/resetPasswordModal';
+
 export const UserList=(props)=>{
     const [users,setUsers]=useState(null)
     const [dbError,setDbError]=useState(false)
     const [modalShow,setModalShow]=useState(false)
     const [id,setId]=useState('')
+    const [name,setName]=useState('')
     const getUser=async()=>{
         const data = await getAllAdmin()
         if(!data.error){
@@ -28,11 +29,19 @@ export const UserList=(props)=>{
     const handleCloseSnack=()=>{
         setSnackBarOpen(false)
     }
+    const [resetSnackBar,setResetSnackBarOpen] = useState(false)
+    const handleCloseResetSnack=()=>{
+        setSnackBarOpen(false)
+    }
     const onHide=()=>{
         setModalShow(false)
+        setResetSnackBarOpen(true)
         setTimeout(() => {
-            getUser()
-        }, 400);
+            setResetSnackBarOpen(false)
+        }, 2000);
+    }
+    const resetPassword =async(id)=>{
+        console.log(id)
     }
     const column=[
      {title:"Name",field:"name"},
@@ -40,6 +49,9 @@ export const UserList=(props)=>{
      {title:"Role",field:"role", render: rowData => {
         if(rowData.role===""){
             return(<p > <FiberManualRecordIcon fontSize="inherit" style={{ color: 'orange' }} />Account not activated</p>)
+        }
+        else{
+            return(<p > {rowData.role}</p>)
         }
     }},
      {title:"Account created",field:"",
@@ -63,20 +75,15 @@ export const UserList=(props)=>{
                 )
             }
         }
-    },{title: "Activated", field: 'isActive',
+    },{title: "Reset Password", field: 'isActive',
     render: rowData => {
-        if (rowData.isActivated) {
-            return (
-                <p  className="green">Active</p>
-            )
-        }
-        else {
-            return (
-                <p className="red">InActive</p>
-            )
-        }
-    }
-},
+        return(
+            <Button onClick={()=>{setId(rowData._id)
+                    setName(rowData.name)
+                    setModalShow(true)
+            }}>Reset</Button>
+        )
+    }}
     ]
     const options ={
         actionsColumnIndex: -1,
@@ -87,28 +94,26 @@ export const UserList=(props)=>{
 
     }
     const actions=[
-        rowData=>({
-            disabled:rowData.isActivated,
-            icon: 'settings',
+            {icon: 'edit',
             tooltip: 'activate account',
             onClick: async (event, rowData) => {
-                setModalShow(true)
-                setId(rowData._id)
-                
-            }
-        })
+                props.history.replace({
+                    pathname: '/users/add',
+                    state: rowData
+                })                
+            }}
     ]
-    // const editable={
-    //     onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
-    //         const id = selectedRow._id
+    const editable={
+        onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
+            const id = selectedRow._id
             
-    //         if (true) {
-    //             setSnackBarOpen(true)
+            if (true) {
+                setSnackBarOpen(true)
                 
-    //             resolve()
-    //         }
-    //     }),
-    // }
+                resolve()
+            }
+        }),
+    }
     useEffect(() => {
         getUser()
         setModalShow(false)
@@ -117,14 +122,14 @@ export const UserList=(props)=>{
     }, [])
     return(
         <div><NavBar />
-        <UserTab/>
+        
             {users ?
                 <div>
                     
                     <div style={{ margin: '10px 20px' }}>
                         <Button onClick={() => { props.history.push('/users/add') }}>Add User</Button>
                     </div>
-                    <Table data={users}  actions={actions} options={options} title={"Users"} columns={column} style={{margin:"0px 200px"}}/>
+                    <Table data={users} editable={editable} actions={actions} options={options} title={"Users"} columns={column} style={{margin:"0px 200px"}}/>
                 </div>
                 :
                 dbError ?
@@ -149,9 +154,11 @@ export const UserList=(props)=>{
                     </div>
 
             }
-    <ActivateAccount show={modalShow} onHide={()=>onHide()} id={id} />
-<Snackbar open={snackBarOpen} message="Successfully Deleted" 
+    <ResetPassword show={modalShow} onHide={()=>onHide()} id={id} name={name} />
+<Snackbar open={snackBarOpen} message="Successfully Deleted"
     autoHideDuration={3500} onClose={handleCloseSnack} />
+    <Snackbar open={resetSnackBar} message="Password Successfully Reseted"
+    autoHideDuration={2000} onClose={handleCloseResetSnack} />
         </div>
     )
 }

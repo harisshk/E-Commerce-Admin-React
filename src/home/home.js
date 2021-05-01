@@ -2,10 +2,11 @@ import React, { useState,useEffect } from 'react';
 import NavBar from './../components/navBar'
 import {Col,Row,Spinner} from 'react-bootstrap'
 import { FiShoppingCart } from "react-icons/fi";
-import { BiPackage } from "react-icons/bi";
+import { BiPackage,BiDollar } from "react-icons/bi";
 import {  FaTicketAlt } from "react-icons/fa";
 import {getProductsCount} from './../services/productService'
 import {getOrdersCount} from './../services/orderService'
+import {getDiscountCount} from './../services/discountService'
 
 import './home.css'
 export const Home = (props) => {
@@ -15,15 +16,18 @@ export const Home = (props) => {
         'ActiveOrders':0,
         'TotalOrders':0,
         'DeliveredOrders':0,
+        'TotalDiscount':0,
+        'activeDiscount':0,
         'loaded':false
     })
     const[dbError,setDbError]=useState(false)
     const getValues=async()=>{
         const productsCount = await getProductsCount()
         const orderCount = await getOrdersCount()
+        const discountCount = await getDiscountCount()
         // console.log('-----------------',orderCount)
         // console.log('=============',productsCount)
-        if( !orderCount.error  && !productsCount.error){
+        if( !orderCount.error  && !productsCount.error && !discountCount.error){
             setData({
                 ...data,
                 'TotalProducts':productsCount.data.totalProductsCount,
@@ -31,6 +35,8 @@ export const Home = (props) => {
                  'ActiveOrders':orderCount.data.activeCount,
                 'TotalOrders':orderCount.data.totalCount,
                 'DeliveredOrders':orderCount.data.deliveredCount,
+                'TotalDiscount':discountCount.data.totalCount,
+                'activeDiscount':discountCount.data.activeCount,
                 'loaded':true
             })
         }
@@ -65,34 +71,28 @@ export const Home = (props) => {
                             <FiShoppingCart size={60} className='icon'> </FiShoppingCart></div>    
                             </Col>
                             <Col className="cardBox">
-                        <div className="cardHeader">Total Tickets
-                        <div className='values'>13</div></div>
-                            <div className='iconBox'>
-                            <FaTicketAlt size={60} className='icon'> </FaTicketAlt></div>    
-                            </Col>
-                            <Col className="cardBox">
-                        <div className="cardHeader">Total Products
-                        <div className='values'>{data.TotalProducts}</div></div>
-                            <div className='iconBox'>
-                            <BiPackage size={60} className='icon'> </BiPackage></div>    
-                            </Col>
-
-                    </Row>
-                </div>
-                <div className='containerBox'>
-                    <Row>
-                    
-                    <Col className="cardBox">
                         <div className="cardHeader">Active Orders
                         <div className='values'>{data.ActiveOrders}</div></div>
                             <div className='iconBox'>
                             <FiShoppingCart size={60} className='icon'> </FiShoppingCart></div>    
                             </Col>
                             <Col className="cardBox">
-                        <div className="cardHeader">Active Tickets
-                        <div className='values'>4</div></div>
+                        <div className="cardHeader">Delivered Orders
+                        <div className='values'>{data.DeliveredOrders}</div></div>
                             <div className='iconBox'>
-                            <FaTicketAlt size={60} className='icon'> </FaTicketAlt></div>    
+                            <FiShoppingCart size={60} className='icon'> </FiShoppingCart></div>    
+                            </Col>
+                            
+
+                    </Row>
+                </div>
+                <div className='containerBox'>
+                    <Row>
+                    <Col className="cardBox">
+                        <div className="cardHeader">Total Products
+                        <div className='values'>{data.TotalProducts}</div></div>
+                            <div className='iconBox'>
+                            <BiPackage size={60} className='icon'> </BiPackage></div>    
                             </Col>
                             <Col className="cardBox">
                         <div className="cardHeader">Active Products
@@ -100,23 +100,31 @@ export const Home = (props) => {
                             <div className='iconBox'>
                             <BiPackage size={60} className='icon'> </BiPackage></div>    
                             </Col>
-
+                            <Col className="cardBox">
+                        <div className="cardHeader">Total Revenue
+                        <div className='values'>1200</div></div>
+                            <div className='iconBox'>
+                            <BiDollar size={60} className='icon'/></div>    
+                            </Col>
                     </Row>
                 </div>
                 <div className='containerBox'>
                     <Row>
-                    
-                    <Col className="cardBox">
-                        <div className="cardHeader">Delivered Orders
-                        <div className='values'>{data.DeliveredOrders}</div></div>
+                            <Col className="cardBox">
+                        <div className="cardHeader">Total Coupons
+                        <div className='values'>
+                            {data.TotalDiscount}
+                            </div></div>
                             <div className='iconBox'>
-                            <FiShoppingCart size={60} className='icon'> </FiShoppingCart></div>    
+                            <FaTicketAlt size={60} className='icon'> </FaTicketAlt></div>    
                             </Col>
-                            <Col className="dummycardBox">
-                        {/* <div className="cardHeader">Active Tickets
-                        <div className='values'>4</div></div>
+                            <Col className="cardBox">
+                        <div className="cardHeader">Active Coupons
+                        <div className='values'>
+                            {data.activeDiscount}
+                            </div></div>
                             <div className='iconBox'>
-                            <FaTicketAlt size={60} className='icon'> </FaTicketAlt></div>     */}
+                            <FaTicketAlt size={60} className='icon'> </FaTicketAlt></div>    
                             </Col>
                             <Col className="dummycardBox">
                         {/* <div className="cardHeader">Active Products

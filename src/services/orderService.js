@@ -17,12 +17,16 @@ export const getAllOrders=async()=>{
 export const getOrdersCount=async()=>{
     try{
         const data = await axios.get(url+'/get/all/ordersCount/')
-        console.log(data.data.OrdersCount.OrdersCount[0])
         if(data.data.OrdersCount.OrdersCount[0]){
             return {
                 error:false,
                 data:data.data.OrdersCount.OrdersCount[0]
             }
+        }
+        else{
+             return{
+                 error:true
+             }
         }
     }
     catch(error){

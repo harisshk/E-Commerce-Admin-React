@@ -60,3 +60,25 @@ export const deleteDiscount=async(id)=>{
         }
     }
 }
+export const getDiscountCount=async()=>{
+    try{
+        const data = await axios.get(url+'/get/couponsCount')
+        console.log(data.data.CouponCount.CouponCount[0])
+        if(!data.data.error){
+            return{
+                error:false,
+                data:data.data.CouponCount.CouponCount[0]
+            }
+        }
+        else{
+            return {
+                error:true
+            }
+        }
+    }
+    catch(error){
+        return {
+            error:true
+        }
+    }
+}
