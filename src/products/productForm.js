@@ -432,13 +432,7 @@ export const ProductForm = (props) => {
                                 Please Enter price.
             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group as={Col}>
-                            <Form.Label>Tax</Form.Label>
-                            <Form.Control required type="number" value={formf.tax} onChange={(e) => setField('tax', e.target.value)} placeholder="Enter Tax" />
-                            <Form.Control.Feedback type="invalid">
-                                Please Enter Tax.
-            </Form.Control.Feedback>
-                        </Form.Group>
+                       
                         <Form.Group as={Col}>
                             <Form.Label>Stock</Form.Label>
                             <Form.Control required type="number" value={formf.stock} onChange={(e) => setField('stock', e.target.value)} placeholder="Enter Stock" />

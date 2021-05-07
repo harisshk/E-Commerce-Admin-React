@@ -5,13 +5,16 @@ import { GiMoneyStack } from "react-icons/gi";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import { FiTruck } from "react-icons/fi";
+import {Row,Col} from 'react-bootstrap'
 import { BiMessageError, BiMessageAltCheck } from "react-icons/bi";
 import OrderStausModal from './orderSatatusModal'
 import {updateOrderStatus} from './../services/orderService'
 
 export const OrderTable = (props) => {
     const { orders,refresh,cancelled } = props
-    console.log(props)
+    const amount={
+        marginTop:"5px"
+    }
     const [modalShow,setModalShow]=useState(false)
     const [value,setValue]=useState('')
     const [isDeliverd,setIsDelivered]=useState(null)
@@ -250,7 +253,8 @@ export const OrderTable = (props) => {
                         render: rowData => {
                             return (
                                 <div>
-                                    <Table style={{ border: "3px solid #067BFD" }} title='Sub Category' columns={subcolumn} data={rowData.products}
+                                <div style={amount}>
+                                    <Row><Col> <Table style={{ border: "3px solid #067BFD" ,width:"800px"}} title='Sub Category' columns={subcolumn} data={rowData.products}
                                         options={{
                                             search: false,
                                             toolbar: false,
@@ -260,10 +264,53 @@ export const OrderTable = (props) => {
                                             
 
                                         }}
-                                    ></Table>
-                                    <div className="amount">
-                                        <p>Total Amount:{rowData.totalPrice}</p>
-                                        <p>Discount Amount:{rowData.discountPrice}</p>
+                                    ></Table></Col>
+                                      <Col>
+                                      <Row style={{marginLeft:"30px"}}><h4>Amount</h4></Row>
+                                      <Row style={amount}>
+                                       <Col>Total amount :</Col>
+                                        <Col>{rowData.totalPrice}</Col>
+                                       </Row>
+                                       <Row style={amount}>
+                                       <Col>Tax :</Col>
+                                        <Col>{rowData.tax}</Col>
+                                       </Row>
+                                       <Row style={amount}>
+                                       <Col>Discount :</Col>
+                                        <Col>{rowData.discountPrice}</Col>
+                                       </Row>
+                                       <Row style={amount}>
+                                       <Col>Cash Back :</Col>
+                                        <Col>{rowData.cashBackPrice}</Col>
+                                       </Row>
+                                       <Row>    </Row>
+                                       <Row style={amount}>
+                                       <Col>Total Invoice Amount :</Col>
+                                        <Col>{rowData.totalPrice}</Col>
+                                       </Row>
+                                      </Col>
+                                      <Col>
+                                      <Row style={{marginLeft:"30px"}}><h4>Delivery Details</h4></Row>
+                                      <Row style={amount}>
+                                       <Col>Name :{rowData.address.name}</Col>
+                                       </Row>
+                                       <Row style={amount}>
+                                       <Col> {rowData.address.address},</Col>
+                                       </Row>
+                                       <Row >
+                                       <Col> {rowData.address.town},</Col>
+                                       </Row>
+                                       <Row >
+                                       <Col> {rowData.address.city},</Col>
+                                       </Row>
+                                       <Row >
+                                       <Col> {rowData.address.state} - {rowData.address.pinCode}</Col>
+                                       </Row>
+                                       <Row style={amount}>
+                                       <Col>Phone Number :{rowData.address.phoneNumber}</Col>
+                                       </Row>
+                                      </Col>
+                                    </Row>
                                     </div>
                                 </div>)
                         }

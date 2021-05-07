@@ -36,10 +36,10 @@ export const NavBar = (props) => {
                 <Button variant="primary" >
                 <FaPercent size={20} color='white'/>Discount</Button>
             </Link>
-            <Link to='/users'>
+            {/* <Link to='/users'>
                 <Button variant="primary" >
                 <FaUserAlt size={20} color='white'/>Users</Button>
-            </Link>
+            </Link> */}
             <div style={{position:"relative",marginLeft:"auto"}}>
             <Link to='/'>
                 <Button variant="primary" >

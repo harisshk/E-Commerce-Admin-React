@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import Table from './../components/table'
-import {getAllAdmin,updateAdmin} from './../services/adminService';
+import {getAllAdmin,deleteAdmin} from './../services/adminService';
 import {Button} from 'react-bootstrap';
 import Snackbar from '@material-ui/core/Snackbar'
 import SpinLoader from './../components/spinLoader'
@@ -39,9 +39,6 @@ export const UserList=(props)=>{
         setTimeout(() => {
             setResetSnackBarOpen(false)
         }, 2000);
-    }
-    const resetPassword =async(id)=>{
-        console.log(id)
     }
     const column=[
      {title:"Name",field:"name"},
@@ -106,10 +103,10 @@ export const UserList=(props)=>{
     const editable={
         onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
             const id = selectedRow._id
-            
-            if (true) {
+            const data = await deleteAdmin(id)
+            if (!data.error) {
                 setSnackBarOpen(true)
-                
+                getAllAdmin()
                 resolve()
             }
         }),

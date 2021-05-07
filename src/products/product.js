@@ -79,7 +79,11 @@ export const Product = (props) => {
             )
         }
     }},
-    {title:"Price",field:'price'},
+    {title:"Price",field:'price',render: rowData => {
+        return(
+            <p>{rowData.price} $</p>
+        )
+    }},
     {
         title: "Is Active", field: 'isActive',
         render: rowData => {

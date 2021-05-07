@@ -72,3 +72,22 @@ export const resetPassword=async(id)=>{
         console.log(error)
     }    
 }
+export const deleteAdmin=async(id)=>{
+    try{
+        const data = await axios.put(url+"/delete/admin/"+id)
+        if(!data.data.error){
+            return {
+                error:false,
+                data:data
+            }
+        }
+        else{
+            return{
+                error:true
+            }
+        }
+    }
+    catch(error){
+        console.log(error)
+    }    
+}
