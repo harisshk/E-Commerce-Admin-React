@@ -186,7 +186,7 @@ export const CategoryList = (props) => {
             {categoryList ?
 
                 <div>
-                    <Button style={{ margin: '10px 30px' }} onClick={() => modalOpen()}>Add Category</Button>
+                    <Button style={{ margin: '10px 30px' }} onClick={() => modalOpen()}>Add Parent Category</Button>
                     <Button style={{ margin: '10px 30px' }} onClick={() => props.history.push('/category/addSubCategory')}>Add SubCategory</Button>
                     {categoryList &&
                         <div className='table'>
