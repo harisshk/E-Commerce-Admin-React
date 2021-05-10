@@ -12,8 +12,9 @@ export const getAllDiscount=async()=>{
         }
     }
     catch(error){
-        console.log(error)
-    }
+        return{
+            error:true
+        }    }
 }
 export const addDiscount=async(discount)=>{
     try{

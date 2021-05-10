@@ -6,6 +6,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import SpinLoader from './../components/spinLoader'
 import NavBar from './../components/navBar'
 import dateFormat from 'dateformat';
+import Reload from './../components/reload'
 export const DiscountList=(props)=>{
     const [discount,setDiscount]=useState(null)
     const [dbError,setDbError]=useState(false)
@@ -110,17 +111,7 @@ export const DiscountList=(props)=>{
                 </div>
                 :
                 dbError ?
-                    <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
-
-                        <p style={{
-                            display: 'block', marginLeft: 'auto',
-                            marginRight: 'auto', textAlign: 'center'
-                        }}>Looks like Server Down!!
-             <br /><a href="/product">
-                                Try Reloading the page
-</a></p>
-
-                    </div>
+                   <Reload href={"/discount"} />
                     :
                     <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
                         <SpinLoader />
