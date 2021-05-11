@@ -11,7 +11,7 @@ export const PaidOrders = (props)=>{
     const getOrders=async()=>{
         const data = await getActiveOrders()
         if(data){
-            SetOrders(data.filter(item => item.status === "Order Confirmed" && item.isAmountPaid === true))
+            SetOrders(data.filter(item => item.status === "Processing" && item.isAmountPaid === true))
         }
         else{
             setDbError(true)
@@ -36,7 +36,7 @@ export const PaidOrders = (props)=>{
          <ActiveOrderTab />
             {orders ?
         <div>
-            <OrderTable orders={orders} refresh={()=>refresh()}/>
+            <OrderTable {...props} orders={orders} refresh={()=>refresh()}/>
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
 

@@ -21,6 +21,7 @@ import DeliveredOrders from './orders/deliveredOders';
 import DiscountList from './discounts/discountList';
 import UserForm from './users/userForm'
 import TaxList from './tax/taxList'
+import OrderDetails from './orders/orderDetails'
 function App() {
   // const [isLogin,setIsLogin] = useState(false)
   // const login =()=>{
@@ -50,6 +51,7 @@ function App() {
     <Route exact path='/tags' component={TagList} />
     <Route exact path='/product/add' component={VariantForm} />
     <Route exact path='/tax' component={TaxList} />
+    <Route exact path='/order/orderDetails' component={OrderDetails} />
     </Switch>
     </BrowserRouter>
   );

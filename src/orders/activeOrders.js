@@ -11,9 +11,9 @@ export const ActiveOrders = (props)=>{
     const [dbError,setDbError] = useState(false)
     const getOrders=async()=>{
         const data = await getActiveOrders()
-        // console.log("orders----------",data)
+        console.log("orders----------",data)
         if(data){
-            SetOrders(data.filter(item => item.status === "Order Confirmed"))
+            SetOrders(data.filter(item => item.status === "Processing"))
         }
         else{
             setDbError(true)
@@ -40,7 +40,7 @@ export const ActiveOrders = (props)=>{
             {orders ?
         <div>
             
-            <OrderTable orders={orders} refresh={()=>refresh()}/>
+            <OrderTable {...props} orders={orders} refresh={()=>refresh()}/>
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
 

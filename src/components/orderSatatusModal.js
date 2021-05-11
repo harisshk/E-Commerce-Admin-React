@@ -36,14 +36,20 @@ return(
                 </Modal.Header>
                 <Modal.Body>
                     <Form >
-                    <Form.Group as={Col}>
-                            <Form.Label>Order Status</Form.Label>
-                            <Form.Control required as="select"  defaultValue='' value={orderStatus.status} onChange={(e) => setField( 'status',e.target.value)}  >
-                                <option value='Order Placed'>Order Placed</option>
-                                <option value='Order Confirmed'>Order Confirmed</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group as={Col} >
+                    {
+                        <Form.Group as={Col}>
+                        <Form.Label>Order Status</Form.Label>
+                        <Form.Control required as="select"  defaultValue='' value={orderStatus.status} onChange={(e) => setField( 'status',e.target.value)}  >
+                        <option value='Payment Pending'>Payment Pending</option>
+                                                <option value='Processing'>Processing</option>
+                                                <option value='On Hold'>On Hold</option>
+                                                <option value='Completed'>Completed</option>
+                                                <option value='Cancelled'>Cancelled</option>
+                                                <option value='Refunded'>Refunded</option>
+                        </Form.Control>
+                    </Form.Group>
+                    }
+                        {/* <Form.Group as={Col} >
                                  <Form.Check 
                                   checked={orderStatus.isDelivered === true}
                                      type="radio"
@@ -61,7 +67,7 @@ return(
                                      id="formHorizontalRadios2"
                                  />
                              
-                         </Form.Group>
+                         </Form.Group> */}
                         <Button onClick={()=>{updateStatus()}}>Update</Button>
                     </Form>
                    

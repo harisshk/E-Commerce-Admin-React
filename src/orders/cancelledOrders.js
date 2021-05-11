@@ -35,7 +35,7 @@ export const CancelledOrders = (props)=>{
         <div><TabBar></TabBar>
             {orders ?
         <div>
-            <OrderTable orders={orders} refresh={()=>refresh()} cancelled={true}/>
+            <OrderTable {...props} orders={orders} refresh={()=>refresh()}  />
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
 

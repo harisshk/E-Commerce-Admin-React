@@ -34,7 +34,7 @@ export const ActionPendingOrders = (props)=>{
         <div><TabBar></TabBar>
             {orders ?
         <div>
-            <OrderTable orders={orders} refresh={()=>refresh()}/>
+            <OrderTable {...props} orders={orders} refresh={()=>refresh()}/>
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
 
