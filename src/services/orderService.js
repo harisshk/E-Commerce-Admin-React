@@ -81,8 +81,8 @@ export const updateOrderStatus = async (status, id) => {
         const data = await axios.put(url + '/update/status/order/' + id.userId + '/' + id.orderId, status)
         if (!data.data.error) {
             if (status.status === "Processing") {
-                const d = await axios.post(url + '/email/'+id.email,{
-                    message:"Your order has been processed"
+                 await axios.post(url + '/email/'+id.email,{
+                    message:"Your order has been processed and ready for shipping"
                 })
                 const data = await axios.post(url + '/push/nofication/' + id.userId,
 
@@ -95,7 +95,7 @@ export const updateOrderStatus = async (status, id) => {
                 }
             }
             else if (status.status === "Refunded") {
-                const d = await axios.post(url + '/email/'+id.email,{
+                 await axios.post(url + '/email/'+id.email,{
                     message:"Your order has been cancelled and refund process is initiated"
                 })
                 const data = await axios.post(url + '/push/nofication/' + id.userId,
@@ -117,5 +117,20 @@ export const updateOrderStatus = async (status, id) => {
     catch (error) {
         // console.log(error)
         return { error: true }
+    }
+}
+export const sendMail=async(email,message)=>{
+    try{
+        const data = await axios.post(url + '/email/'+email,{
+            message:message
+        })
+        if(!data.data.error){
+            return {error:false}
+        }
+    }
+    catch(error){
+        return {
+            error:true
+        }
     }
 }

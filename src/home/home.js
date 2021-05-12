@@ -55,6 +55,7 @@ export const Home = (props) => {
     return (
         <div className='body'>
             <NavBar props={props}></NavBar>
+            <div></div>
           {  data.loaded ?
             
             <div >

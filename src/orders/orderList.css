@@ -8,12 +8,15 @@
 }
 .red{
     background-color: rgb(241, 37, 37);
-    color: #FEFBFF;
+    color: #FEFBFF; 
+    
+    text-align:center;
 }
 .yellow, .green, .red{
-    padding:5px;
+    padding:10px;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 2px;
+    width:200px;
 }
 .amount{
     display:float;

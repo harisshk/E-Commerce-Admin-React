@@ -11,10 +11,26 @@ export const OrderStausModal =(props)=>{
     })
     const setField=(field,value)=>{
         
-        setOrderStatus({
-            ...orderStatus,
-            [field]:value
-        })   
+        if(value==="Cancelled"){
+            setOrderStatus({
+                ...orderStatus,
+                [field]:value,
+                isCancelled:true
+            })
+        }
+        else if (value==="Completed"){
+            setOrderStatus({
+                ...orderStatus,
+                [field]:value,
+                isDelivered:true
+            })
+        }
+        else{
+            setOrderStatus({
+                ...orderStatus,
+                [field]:value
+            })
+        }
      }
     const updateStatus=()=>{
         onUpdate(orderStatus)

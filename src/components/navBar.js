@@ -42,7 +42,7 @@ export const NavBar = (props) => {
             </Link>
             <Link to='/tax'>
                 <Button variant="primary" >
-                <FaUserAlt size={20} color='white'/>Tax</Button>
+                <FaPercent size={20} color='white'/>Tax</Button>
             </Link>
             <div style={{position:"relative",marginLeft:"auto"}}>
             <Link to='/'>

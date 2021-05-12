@@ -1,20 +1,25 @@
 import React, { useState,useEffect } from 'react'
 import Table from './table'
 import dateFormat from 'dateformat';
-import { GiMoneyStack } from "react-icons/gi";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
-import { FiTruck } from "react-icons/fi";
-import {Row,Col,Button} from 'react-bootstrap'
-import { BiMessageError, BiMessageAltCheck } from "react-icons/bi";
+import {Button} from 'react-bootstrap'
 import OrderStausModal from './orderSatatusModal'
 import {updateOrderStatus} from './../services/orderService'
 
 export const OrderTable = (props) => {
     const { orders,refresh } = props
-    console.log(props,"==")
-    const amount={
-        marginTop:"5px"
+    const onHold={
+        width:"200px",
+        color:"#97784A",
+        textAlign:"center",
+        padding:"10px",
+        backgroundColor:"#F8DDA7"
+    }
+    const completed={
+        width:"200px",
+        textAlign:"center",
+        padding:"10px",
+        backgroundColor:"#C8D7E1"
     }
     const [modalShow,setModalShow]=useState(false)
     const [value,setValue]=useState('')
@@ -75,7 +80,7 @@ export const OrderTable = (props) => {
                 if (rowData.status === 'Order Placed') {
                     return (
                         <p  >
-                            <FiberManualRecordIcon fontSize="inherit" style={{ color: 'green' }} />Order placed</p>
+                            <FiberManualRecordIcon fontSize="inherit" style={{ color: 'orange' }} />Order placed</p>
                     )
                 }
                 else if(rowData.status === 'Cancelled'){
@@ -88,6 +93,18 @@ export const OrderTable = (props) => {
                     return (
                         <p className="green">
                             Order Confirmed</p>
+                    )
+                }
+                else if(rowData.status === 'Completed'){
+                    return (
+                        <p style={completed}>
+                            Completed</p>
+                    )
+                }
+                else if(rowData.status === 'On Hold'){
+                    return (
+                        <p style={onHold}>
+                            On Hold</p>
                     )
                 }
             }
@@ -108,10 +125,6 @@ export const OrderTable = (props) => {
         ]
     
   
-    const subcolumn = [{ title: "Products", field: 'product.name' },
-    { title: "Quantity", field: 'quantity' },
-    { title: "Price", field: 'product.price' },
-    ]
     useEffect(()=>{
         
      // eslint-disable-next-line react-hooks/exhaustive-deps      
@@ -206,7 +219,6 @@ export const OrderTable = (props) => {
                         icon: 'settings',
                         tooltip: 'change status',
                         onClick: async (event, rowData) => {
-                            console.log(rowData)
                             setModalShow(true)
                             setValue(rowData.status)
                             setId({
