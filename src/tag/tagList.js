@@ -6,6 +6,7 @@ import TagModal from './tagModal'
 import NavBar from '../components/navBar'
 import Table from './../components/table'
 import SpinLoader from '../components/spinLoader'
+import Reload from '../components/reload'
 export const TagList = (props) => {
     const [tag, SetTag] = useState(null)
     const [modalShow, setModalShow] = useState(false)
@@ -120,16 +121,7 @@ export const TagList = (props) => {
                     </Snackbar>
                 </div>
                 : dbError ?
-                    <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
-
-                        <p style={{
-                            display: 'block', marginLeft: 'auto',
-                            marginRight: 'auto', textAlign: 'center'
-                        }}>Looks like Server Down!!
-   <br /><a href="/tags">
-                                Try Reloading the page
-</a></p>
-                    </div>
+                   <Reload href="/tags" />
                     :
                     <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
                         <SpinLoader />

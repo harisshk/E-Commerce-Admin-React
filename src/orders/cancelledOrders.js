@@ -4,6 +4,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import OrderTable from './../components/orderTable'
 import {getCancelledOrders} from './../services/orderService'
 import TabBar from './../components/tabBar'
+import Reload from '../components/reload'
 export const CancelledOrders = (props)=>{
     const [orders,SetOrders] = useState(null)
     const [dbError,setDbError] = useState(false)
@@ -32,9 +33,10 @@ export const CancelledOrders = (props)=>{
     },[props])
 
     return(
-        <div><TabBar></TabBar>
+        <div><TabBar />
             {orders ?
         <div>
+            
             <OrderTable {...props} orders={orders} refresh={()=>refresh()}  />
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
@@ -42,14 +44,7 @@ export const CancelledOrders = (props)=>{
     </Snackbar>
             </div>   :
     dbError ? 
-    <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
-    
-    <p style={{display:'block',marginLeft:'auto',
-    marginRight:'auto',textAlign:'center'}}>Looks like Server Down!!
-    <br/><a href="/orders">
-    Try Reloading the page
-    </a></p>
-    </div>
+   <Reload href="/orders/cancelledOrders" />
     :
     <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
     <SpinLoader />

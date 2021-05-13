@@ -10,22 +10,22 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import Typography from '@material-ui/core/Typography';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import { updateOrderStatus,sendMail } from '../services/orderService'
+import { updateOrderStatus, sendMail } from '../services/orderService'
 import SpinLoader from '../components/spinLoader'
 
 export const OrderDetails = (props) => {
     const order = props.location.state
-    const [note,setNote]=useState('')
+    const [note, setNote] = useState('')
     const [status, setStatus] = useState(null)
     const [validated, setValidated] = useState(false)
-    const [mailSending,setMailSending]= useState({loading:false,sent:false})
+    const [mailSending, setMailSending] = useState({ loading: false, sent: false })
     const orderDetails = {
         margin: "20px",
         marginLeft: "30px",
         backgroundColor: "#fff",
 
     }
-    const saveNote=(value)=>{
+    const saveNote = (value) => {
         setNote(value)
         setValidated(false)
     }
@@ -64,20 +64,22 @@ export const OrderDetails = (props) => {
         }
 
     }
-    const handleMail=async()=>{
-        if(note===''){
+    const handleMail = async () => {
+        if (note === '') {
             setValidated(true)
         }
-        else{
+        else {
             setMailSending({
-                loading:true,
-                sent:false})
-            const data = await sendMail(order.user.email,note)
-            if(!data.error){
+                loading: true,
+                sent: false
+            })
+            const data = await sendMail(order.user.email, note)
+            if (!data.error) {
                 setNote("")
                 setMailSending({
-                    loading:false,
-                    sent:true})
+                    loading: false,
+                    sent: true
+                })
             }
         }
     }
@@ -201,31 +203,33 @@ export const OrderDetails = (props) => {
                                     </Col>
                                 </Row>
                                 <Row><div style={{ margin: "10px" }}><Button>Refund</Button></div></Row>
-                            </Col> 
+                            </Col>
                         </Row>
 
                     </Col>
                     <Col xs={3}>
                         <Row style={{ margin: "20px 0 0 5px", padding: "10px", backgroundColor: "#fff" }}>
                             <Col><Row>Order actions <br /></Row>
-                                <Row><Form  noValidate validated={validated}>
+                                <Row><Form noValidate validated={validated}>
                                     <Form.Group as={Col}>
                                         <Form.Label>Note to customers</Form.Label>
-                                        <Form.Control required as="textarea" defaultValue='' value={note} onChange={(e)=>saveNote(e.target.value)}>
+                                        <Form.Control required as="textarea" defaultValue='' value={note} onChange={(e) => saveNote(e.target.value)}>
                                         </Form.Control>
 
                                     </Form.Group>
                                 </Form>
-                                    {!mailSending.sent && !mailSending.loading ? <Button  style={{ margin: "40px 0", height: "40px" }} onClick={()=>handleMail()}>Send Mail</Button>
-                                    :
-                                    !mailSending.sent && <SpinLoader />
+                                    {!mailSending.sent && !mailSending.loading ? <Button style={{ margin: "40px 0", height: "40px" }} onClick={() => handleMail()}>Send Mail</Button>
+                                        :
+                                        !mailSending.sent && <SpinLoader />
                                     }
                                     {mailSending.sent && <Button style={{ margin: "40px 0", height: "40px" }} disabled variant="success">Mail sent</Button>}
                                 </Row>
                                 <Button onClick={() => update()}>Update</Button><br />
                                 <Button onClick={() => { props.history.replace("/orders/totalOrders") }}>Back</Button><br />
-                                <Button onClick={() => {console.log(status)
-                                console.log(note)}}>View</Button></Col>
+                                <Button onClick={() => {
+                                    console.log(status)
+                                    console.log(note)
+                                }}>View</Button></Col>
                         </Row>
                         <Row style={{ margin: "20px 0 0 5px", padding: "10px", backgroundColor: "#fff" }}>
                             <Col>

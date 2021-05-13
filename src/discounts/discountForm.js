@@ -28,6 +28,7 @@ export const DiscountForm=(props)=>{
     const [validated,setValidated]=useState(false)
     const [isEdit,setIsEdit]=useState(false)
     const setField=(field,value)=>{
+        setValidated(false)
         setDiscount({
             ...discount,
             [field]:value
@@ -58,7 +59,9 @@ export const DiscountForm=(props)=>{
                 }
             }
         }
+       else{
         setValidated(true);
+       }
 
     }
     useEffect(() => {

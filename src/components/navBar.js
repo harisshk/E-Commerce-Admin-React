@@ -44,8 +44,12 @@ export const NavBar = (props) => {
                 <Button variant="primary" >
                 <FaPercent size={20} color='white'/>Tax</Button>
             </Link>
+            <Link to='/banner'>
+                <Button variant="primary" >
+                Banner</Button>
+            </Link>
             <div style={{position:"relative",marginLeft:"auto"}}>
-            <Link to='/'>
+            <Link to='/banner'>
                 <Button variant="primary" >
                 <GrLogout size={20} color=''/>Logout</Button>
             </Link>

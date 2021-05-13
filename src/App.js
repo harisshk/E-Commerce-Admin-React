@@ -22,7 +22,8 @@ import DiscountList from './discounts/discountList';
 import UserForm from './users/userForm'
 import TaxList from './tax/taxList'
 import OrderDetails from './orders/orderDetails'
-import BannerIndex from './banner/bannerIndex'
+import BannerList from './banner/bannerList'
+import BannerForm from './banner/bannerForm'
 function App() {
   // const [isLogin,setIsLogin] = useState(false)
   // const login =()=>{
@@ -53,7 +54,9 @@ function App() {
     <Route exact path='/product/add' component={VariantForm} />
     <Route exact path='/tax' component={TaxList} />
     <Route exact path='/order/orderDetails' component={OrderDetails} />
-    <BannerIndex />
+    <Route exact path='/banner' component={BannerList} />
+    <Route exact path='/banner/add' component={BannerForm} />
+
     </Switch>
     </BrowserRouter>
   );

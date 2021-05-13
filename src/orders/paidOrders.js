@@ -5,6 +5,7 @@ import OrderTable from './../components/orderTable'
 import {getActiveOrders} from './../services/orderService'
 import TabBar from './../components/tabBar'
 import ActiveOrderTab from './../components/activeOrderTab'
+import Reload from '../components/reload'
 export const PaidOrders = (props)=>{
     const [orders,SetOrders] = useState(null)
     const [dbError,setDbError] = useState(false)
@@ -32,10 +33,11 @@ export const PaidOrders = (props)=>{
     },[props])
 
     return(
-        <div><TabBar></TabBar>
-         <ActiveOrderTab />
+        <div>  <TabBar />
+              <ActiveOrderTab />
             {orders ?
         <div>
+         
             <OrderTable {...props} orders={orders} refresh={()=>refresh()}/>
     <Snackbar open={snackBarOpen} message="Successfully Deleted" 
     autoHideDuration={3500} onClose={handleCloseSnack}>
@@ -43,14 +45,7 @@ export const PaidOrders = (props)=>{
 </Snackbar>
             </div>   :
     dbError ? 
-    <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
-    
-    <p style={{display:'block',marginLeft:'auto',
-    marginRight:'auto',textAlign:'center'}}>Looks like Server Down!!
-    <br/><a href="/orders">
-    Try Reloading the page
-    </a></p>
-    </div>
+   <Reload href="/orders/paidOrders" />
     :
     <div style={{width:'100%',height:'100px',marginTop:'300px'}} >
     <SpinLoader />

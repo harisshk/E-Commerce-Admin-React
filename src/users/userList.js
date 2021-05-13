@@ -8,6 +8,7 @@ import NavBar from './../components/navBar'
 import dateFormat from 'dateformat';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import ResetPassword from '../components/resetPasswordModal';
+import Reload from '../components/reload';
 
 export const UserList=(props)=>{
     const [users,setUsers]=useState(null)
@@ -130,17 +131,7 @@ export const UserList=(props)=>{
                 </div>
                 :
                 dbError ?
-                    <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
-
-                        <p style={{
-                            display: 'block', marginLeft: 'auto',
-                            marginRight: 'auto', textAlign: 'center'
-                        }}>Looks like Server Down!!
-             <br /><a href="/product">
-                                Try Reloading the page
-</a></p>
-
-                    </div>
+                    <Reload href="/product" />
                     :
                     <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
                         <SpinLoader />

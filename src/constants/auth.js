@@ -1,7 +1,7 @@
 module.exports={
     url:'http://localhost:5050/api',
     // url:"https://organize-me-age.herokuapp.com/api",
-    userId : '60703d3736520febd350c14c',
-    jwt:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwM2QzNzM2NTIwZmViZDM1MGMxNGMiLCJpYXQiOjE2MTc5Njg4MDl9.UdQj7g7mpczwFTiHKZhKzjgby_nkUbgDGZBwMIAxRYY'
+    userId : "608ff4946eb6f200156c96d7",
+    jwt : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDhmZjQ5NDZlYjZmMjAwMTU2Yzk2ZDciLCJpYXQiOjE2MjAwNDcyMTh9.x98uYIhrBjVuHre9xlyLFsF_leN2mIaliZYpTh1t2pg"
 
 }

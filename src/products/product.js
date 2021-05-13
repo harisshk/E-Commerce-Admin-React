@@ -5,7 +5,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import NavBar from '../components/navBar';
 import Table from './../components/table'
 import SpinLoader from './../components/spinLoader'
-
+import Reload from '../components/reload'
 export const Product = (props) => {
     const [product, setProduct] = useState(null)
     const [barOpen, setBarOpen] = useState(false)
@@ -27,7 +27,6 @@ export const Product = (props) => {
     const editable = {
         onRowDelete: selectedRow => new Promise(async (resolve, reject) => {
             const id = selectedRow._id
-            console.log(id)
             const data = await deleteProduct(id)
             if (data) {
                 setBarOpen(true)
@@ -122,17 +121,7 @@ export const Product = (props) => {
                 </div>
                 :
                 dbError ?
-                    <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
-
-                        <p style={{
-                            display: 'block', marginLeft: 'auto',
-                            marginRight: 'auto', textAlign: 'center'
-                        }}>Looks like Server Down!!
-             <br /><a href="/product">
-                                Try Reloading the page
-</a></p>
-
-                    </div>
+                   <Reload href="/product" />
                     :
                     <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
                         <SpinLoader />

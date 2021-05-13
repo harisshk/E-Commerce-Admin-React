@@ -7,6 +7,7 @@ import CategoryForm from './categoryForm'
 import Snackbar from '@material-ui/core/Snackbar'
 import NavBar from './../components/navBar'
 import SpinLoader from '../components/spinLoader'
+import Reload from '../components/reload'
 export const CategoryList = (props) => {
     const [categoryList, setCategoryList] = useState(null)
     const [modalShow, setModalShow] = useState(false)
@@ -220,17 +221,7 @@ export const CategoryList = (props) => {
                 </div>
                 :
                 dbError ?
-                    <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
-
-                        <p style={{
-                            display: 'block', marginLeft: 'auto',
-                            marginRight: 'auto', textAlign: 'center'
-                        }}>Looks like Server Down!!
-<br /><a href="/category">
-                                Try Reloading the page
-</a></p>
-
-                    </div>
+                    <Reload href="/category" />
                     :
                     <div style={{ width: '100%', height: '100px', marginTop: '300px' }} >
                         <SpinLoader />

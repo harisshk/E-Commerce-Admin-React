@@ -58,7 +58,9 @@ export const TagModal = (props) => {
            
         }
         
-        setValidated(true)
+        else{
+            setValidated(true);
+           }
        
     }
     useEffect(()=>{

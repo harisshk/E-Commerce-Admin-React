@@ -29,7 +29,9 @@ export const TaxModal=(props)=>{
                 }
             }
         }
-        setValidated(true)
+        else{
+            setValidated(true);
+           }
     }
     const handleValue=(field,value)=>{
         setTaxDetails({

@@ -57,8 +57,9 @@ export const UserForm=(props)=>{
                 }
             }
         }
-        setValidated(true);
-
+        else{
+            setValidated(true);
+           }
     }
     useEffect(() => {
         console.log(props.location.state)
