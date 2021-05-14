@@ -19,7 +19,6 @@ export const UserList=(props)=>{
     const getUser=async()=>{
         const data = await getAllAdmin()
         if(!data.error){
-            console.log(data.data)
             setUsers(data.data)
         }
         else{

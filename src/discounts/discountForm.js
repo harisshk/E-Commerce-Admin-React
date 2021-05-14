@@ -38,7 +38,6 @@ export const DiscountForm=(props)=>{
         e.preventDefault();
         const form = e.currentTarget;
         if(form.checkValidity() === true){
-            console.log("=-=-=-==",discount)
             if(!isEdit){
                 const data = await addDiscount(discount)
                 if(!data.error){
@@ -65,7 +64,7 @@ export const DiscountForm=(props)=>{
 
     }
     useEffect(() => {
-        console.log(props.location.state)
+        
         if(props.location.state){
             setIsEdit(true)
             setDiscount({

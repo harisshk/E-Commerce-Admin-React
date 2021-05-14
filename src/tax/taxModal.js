@@ -10,7 +10,7 @@ export const TaxModal=(props)=>{
         const form = e.currentTarget;
         if (form.checkValidity() === true){
             if(props.isEdit.isEdit){
-                console.log("Update")
+            
                 const data= await updateTax(props.isEdit.id,taxDetails)
                 if(!data.error){
                     props.onHide()
@@ -41,7 +41,6 @@ export const TaxModal=(props)=>{
     }
     useEffect(()=>{
         if(props.isEdit.isEdit){
-            console.log(props.isEdit)
             setTaxDetails(props.isEdit.data)
         }
         else{

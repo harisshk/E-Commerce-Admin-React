@@ -62,7 +62,6 @@ export const TaxList = () => {
             const id = selectedRow._id
             const data = await deleteTax(id)
             if(!data.error){
-                console.log("deleted")
                 getTax()
                 resolve()
             }
@@ -71,7 +70,6 @@ export const TaxList = () => {
     }
     const getTax = async () => {
         const data = await getAllTax()
-        console.log(data)
         if (!data.error) {
             setTax(data.data)
         }

@@ -19,8 +19,7 @@ export const BannerList = (props)=>{
     const getBanner=async()=>{
         const data =await getAllBanner()
         if(!data.error){
-            console.log(data.data)
-            setBanner(data.data)
+             setBanner(data.data)
         }
         else{
             setDbError(true)

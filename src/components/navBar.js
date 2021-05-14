@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { FaHome ,FaGripVertical,FaShoppingCart,FaTags,FaPercent,FaUserAlt} from "react-icons/fa";
+import { FaHome ,FaGripVertical,FaShoppingCart,FaTags,FaPercent,FaUserAlt,FaRegImages} from "react-icons/fa";
 import { BiPackage } from "react-icons/bi";
 import './navBar.css';
 import { GrLogout } from "react-icons/gr";
@@ -46,10 +46,10 @@ export const NavBar = (props) => {
             </Link>
             <Link to='/banner'>
                 <Button variant="primary" >
-                Banner</Button>
+                <FaRegImages size={20} />Banner</Button>
             </Link>
             <div style={{position:"relative",marginLeft:"auto"}}>
-            <Link to='/banner'>
+            <Link to='/login' onClick={()=>localStorage.setItem("token","")} >
                 <Button variant="primary" >
                 <GrLogout size={20} color=''/>Logout</Button>
             </Link>

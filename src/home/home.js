@@ -25,8 +25,6 @@ export const Home = (props) => {
         const productsCount = await getProductsCount()
         const orderCount = await getOrdersCount()
         const discountCount = await getDiscountCount()
-        // console.log('-----------------',orderCount)
-        // console.log('=============',productsCount)
         if( !orderCount.error  && !productsCount.error && !discountCount.error){
             setData({
                 ...data,
@@ -45,9 +43,7 @@ export const Home = (props) => {
         }
         
     }
-    // const View=()=>{
-    //     console.log('-----',data)
-    // }
+
     useEffect(()=>{
        getValues()
      // eslint-disable-next-line react-hooks/exhaustive-deps      

@@ -43,7 +43,6 @@ export const deleteTax=async(id)=>{
     }
 }
 export const updateTax=async(id,taxDetails)=>{
-    console.log(id,taxDetails)
     try{
         const data = await axios.put(url+"/update/tax/"+id,taxDetails)
         if(!data.data.error){

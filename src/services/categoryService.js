@@ -79,7 +79,7 @@ export const addSubCategory=async(subCategory)=>{
     }
 }
 export const updateCategory=async(category)=>{
-   console.log('=-=-===',category)
+//    console.log('=-=-===',category)
     try{
         const data= await axios.put(url+'/update/category/'+userId+'/'+category.id,{
             name:category.name,
@@ -99,7 +99,7 @@ export const updateCategory=async(category)=>{
     }
 }
 export const updateSubCategory=async(subCategory,isActive,id)=>{
-    console.log('=-=-===',subCategory)
+    // console.log('=-=-===',subCategory)
      try{
          const data= await axios.put(url+'/update/subCategory/'+id,{
              name:subCategory.subCategoryName,

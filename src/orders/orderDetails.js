@@ -224,12 +224,10 @@ export const OrderDetails = (props) => {
                                     }
                                     {mailSending.sent && <Button style={{ margin: "40px 0", height: "40px" }} disabled variant="success">Mail sent</Button>}
                                 </Row>
-                                <Button onClick={() => update()}>Update</Button><br />
-                                <Button onClick={() => { props.history.replace("/orders/totalOrders") }}>Back</Button><br />
-                                <Button onClick={() => {
-                                    console.log(status)
-                                    console.log(note)
-                                }}>View</Button></Col>
+                                
+                                <Button style={{margin:"10px"}} onClick={() => update()}>Update</Button>
+                                <Button style={{margin:"10px"}} onClick={() => { props.history.replace("/orders/totalOrders") }}>Back</Button><br />
+                                </Col>
                         </Row>
                         <Row style={{ margin: "20px 0 0 5px", padding: "10px", backgroundColor: "#fff" }}>
                             <Col>

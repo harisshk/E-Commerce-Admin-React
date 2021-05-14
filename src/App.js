@@ -24,6 +24,27 @@ import TaxList from './tax/taxList'
 import OrderDetails from './orders/orderDetails'
 import BannerList from './banner/bannerList'
 import BannerForm from './banner/bannerForm'
+
+const authentication={
+  isLoggedIn:localStorage.getItem('token'),
+  getLoginStatus(){
+    if(this.isLoggedIn!==''){
+      return  true
+    }
+    else{
+      return false
+    }
+  }
+  
+}
+function SecuredRoute(props){
+  return(
+    <Route path={props.path} render={(data)=>authentication.getLoginStatus()?
+    <props.component {...data}></props.component>:
+    <Redirect to={{pathname:'/'}}></Redirect>
+    }></Route>
+  )
+}
 function App() {
   // const [isLogin,setIsLogin] = useState(false)
   // const login =()=>{
@@ -33,29 +54,29 @@ function App() {
     <BrowserRouter>
     <Switch>
     <Redirect exact from='/' to='/login' component={LoginPage} />
-    <Route path='/category/addSubCategory' component={SubCategoryForm} />
+    <SecuredRoute path='/category/addSubCategory' component={SubCategoryForm} />
     <Route  path='/login' component={LoginPage} />
-    <Route exact path='/home' component={Home} />
-    <Route exact path='/users' component={UserList} />
-    <Route exact path='/users/add' component={UserForm} />
-    <Route exact path='/product' component={Product} />
-    <Route exact path='/discount' component={DiscountList} />
-    <Route exact path='/discount/add' component={DiscountForm} />
-    <Route exact path='/orders/totalOrders' component={orderList} />
-    <Route exact path='/orders/activeOrders' component={ActiveOrders} />
-    <Route exact path='/orders/paidOrders' component={PaidOrders} />
-    <Route exact path='/orders/unpaidOrders' component={UnPaidOrders} />
-    <Route exact path='/orders/actionPendingOrders' component={ActionPendingOrders} />
-    <Route exact path='/category' component={CategoryList} />
-    <Route exact path='/orders/cancelledOrders' component={CancelledOrders} />
-    <Route exact path='/orders/deliveredOrders' component={DeliveredOrders} />
-    <Route exact path='/product/add' component={ProductForm} />
-    <Route exact path='/tags' component={TagList} />
-    <Route exact path='/product/add' component={VariantForm} />
-    <Route exact path='/tax' component={TaxList} />
-    <Route exact path='/order/orderDetails' component={OrderDetails} />
-    <Route exact path='/banner' component={BannerList} />
-    <Route exact path='/banner/add' component={BannerForm} />
+    <SecuredRoute exact path='/home' component={Home} />
+    <SecuredRoute exact path='/users' component={UserList} />
+    <SecuredRoute exact path='/users/add' component={UserForm} />
+    <SecuredRoute exact path='/product' component={Product} />
+    <SecuredRoute exact path='/discount' component={DiscountList} />
+    <SecuredRoute exact path='/discount/add' component={DiscountForm} />
+    <SecuredRoute exact path='/orders/totalOrders' component={orderList} />
+    <SecuredRoute exact path='/orders/activeOrders' component={ActiveOrders} />
+    <SecuredRoute exact path='/orders/paidOrders' component={PaidOrders} />
+    <SecuredRoute exact path='/orders/unpaidOrders' component={UnPaidOrders} />
+    <SecuredRoute exact path='/orders/actionPendingOrders' component={ActionPendingOrders} />
+    <SecuredRoute exact path='/category' component={CategoryList} />
+    <SecuredRoute exact path='/orders/cancelledOrders' component={CancelledOrders} />
+    <SecuredRoute exact path='/orders/deliveredOrders' component={DeliveredOrders} />
+    <SecuredRoute exact path='/product/add' component={ProductForm} />
+    <SecuredRoute exact path='/tags' component={TagList} />
+    <SecuredRoute exact path='/product/add' component={VariantForm} />
+    <SecuredRoute exact path='/tax' component={TaxList} />
+    <SecuredRoute exact path='/order/orderDetails' component={OrderDetails} />
+    <SecuredRoute exact path='/banner' component={BannerList} />
+    <SecuredRoute exact path='/banner/add' component={BannerForm} />
 
     </Switch>
     </BrowserRouter>

@@ -14,7 +14,7 @@ export const getAllBanner=async()=>{
         return{error:true}    }
 }
 export const updateBanner=async(bannerDetails)=>{
-    console.log(bannerDetails)
+    // console.log(bannerDetails)
     try{
         const data = await axios.put(url+"/update/banner/"+userId+"/"+bannerDetails._id,{...bannerDetails,jwtToken:jwt})
         if(!data.data.error){
@@ -28,7 +28,7 @@ export const updateBanner=async(bannerDetails)=>{
         return{error:true}    }
 }
 export const addBanner=async(bannerDetails)=>{
-    console.log(bannerDetails)
+    // console.log(bannerDetails)
     try{
         const data = await axios.post(url+"/add/banner/"+userId,bannerDetails)
         if(!data.data.error){
@@ -49,7 +49,6 @@ export const addBanner=async(bannerDetails)=>{
 export const deleteBanner=async(bannerId)=>{
     try{
         const data = await axios.put(url+"/delete/banner/"+userId+"/"+bannerId)
-        console.log(data)
         if(!data.data.error){
             return { error:false}
         }

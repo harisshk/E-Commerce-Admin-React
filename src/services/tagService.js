@@ -37,8 +37,8 @@ export const getAllTag = async()=>{
         }
     }
     catch(error){
-        console.log(error)
-    }
+        return false
+        }
 }
 export const deleteTag=async(tagId)=>{
     console.log(tagId)
@@ -59,7 +59,7 @@ export const deleteTag=async(tagId)=>{
     }
 }
 export const updateTag=async(tag)=>{
-    console.log(tag)
+
     try{
         const data = await axios.put(url+'/update/tag/'+userId+'/'+tag._id,{
             "jwtToken": jwt,
@@ -75,6 +75,5 @@ export const updateTag=async(tag)=>{
         }
     }
     catch(error){
-        console.log(error)
-    }
+return false    }
 }

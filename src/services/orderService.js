@@ -62,21 +62,18 @@ export const getCancelledOrders = async (isCancelled) => {
 export const getDeliveredOrders = async (isDelivered) => {
     try {
         const data = await axios.get(url + '/get/all/delivered/orders/' + userId + '/' + isDelivered)
-        // console.log(data.data)
+        
         if (!data.data.error) {
             return data.data.orders
         }
     }
     catch (error) {
-        // console.log(error)
+        
         return false
     }
 }
 
 export const updateOrderStatus = async (status, id) => {
-    console.log('------', status)
-    console.log('------', id)
-
     try {
         const data = await axios.put(url + '/update/status/order/' + id.userId + '/' + id.orderId, status)
         if (!data.data.error) {
@@ -115,7 +112,7 @@ export const updateOrderStatus = async (status, id) => {
         }
     }
     catch (error) {
-        // console.log(error)
+        
         return { error: true }
     }
 }
