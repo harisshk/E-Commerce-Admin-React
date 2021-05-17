@@ -1,10 +1,14 @@
 import React from 'react'
 import NavBar from '../components/navBar'
-export const Profile =()=>{
-    return(
-        <div>
-            <NavBar/>
-        </div>
-    )
+import jwt_decode from "jwt-decode";
+
+export default function Profile(props){
+  var decoded = jwt_decode(localStorage.getItem("token"));
+  console.log(decoded)
+
+  return(
+    <div>
+      <NavBar />
+    </div>
+  )
 }
-export default Profile

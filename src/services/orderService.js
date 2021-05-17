@@ -105,6 +105,21 @@ export const updateOrderStatus = async (status, id) => {
                     return { error: false }
                 }
             }
+            else if (status.status === "Completed") {
+                console.log("[[[[[[[[[[")
+                await axios.post(url + '/email/'+id.email,{
+                   message:"Your order has been Delivered.Thank you for shopping in AGE Store"
+               })
+               const data = await axios.post(url + '/push/nofication/' + id.userId,
+
+                   {
+                       title: "Order Delivered ",
+                       body: "Order is delivered"
+                   })
+               if (!data.data.error) {
+                   return { error: false }
+               }
+           }
             else {
                 return { error: false }
             }

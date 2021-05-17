@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navbar, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { FaHome ,FaSortDown,FaGripVertical,FaShoppingCart,FaTags,FaPercent,FaUserAlt,FaRegImages} from "react-icons/fa";
+import { FaHome ,FaGripVertical,FaShoppingCart,FaTags,FaPercent,FaUserAlt,FaRegImages} from "react-icons/fa";
 import { BiPackage } from "react-icons/bi";
 import './navBar.css';
 import { CgProfile } from "react-icons/cg";
@@ -23,7 +23,7 @@ export const NavBar = (props) => {
         height: "50px",
         position: "relative",
         borderRadius: "100%",
-        margin:"4px 0px 0px 10px",
+        margin:"0px 0px 0px 5px",
         padding:"0"
     }
     const icon={
@@ -32,7 +32,7 @@ export const NavBar = (props) => {
     }
     return (
       <div>
-            <Navbar bg="primary" style={{height:"70px"}}>
+            <Navbar bg="primary" style={{margin:"0px",padding:"0px",height:"70px"}}>
             <Link  to='/home'>
                 <Button variant="primary">
                     <FaHome size={30} color='white'></FaHome>

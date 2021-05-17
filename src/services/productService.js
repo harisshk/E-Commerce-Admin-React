@@ -113,6 +113,22 @@ export const addProduct = async (formf, gallery, tagId) => {
     }
     // console.log('final', final)
 }
+export const addCSVProduct=async(product)=>{
+    try {
+        const data = await axios.post(url + '/add/product/' + userId,{ ...product,"jwtToken": jwt,})
+        console.log("-----",data)
+        if (!data.data.error) {
+
+            return true
+        }
+    }
+    catch (error) {
+        if (error) {
+            return false
+        }
+        // console.log(error)
+    }
+}
 //Deleting a product
 export const deleteProduct = async (id) => {
     try {

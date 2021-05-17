@@ -6,10 +6,14 @@ import NavBar from '../components/navBar';
 import Table from './../components/table'
 import SpinLoader from './../components/spinLoader'
 import Reload from '../components/reload'
+import AddCSVModal from './addCSV';
+import ExportCSVModal from './exportCSV'
+
 export const Product = (props) => {
     const [product, setProduct] = useState(null)
     const [barOpen, setBarOpen] = useState(false)
     const [dbError, setDbError] = useState(false)
+    const [exportModal,setExportModal]=useState(false)
     const getProduct = async () => {
         const data = await getAllProducts()
         // console.log('p',data)
@@ -99,21 +103,38 @@ export const Product = (props) => {
         }
     },
     ]
+    const [modalShow,setModalShow]=useState(false)
+    const onHide=()=>{
+        getProduct()
+        setTimeout(() => {
+            setModalShow(false)
+        }, 1000);
+        
+    }
     useEffect(() => {
         getProduct()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    const onExportHide=()=>{
+        setExportModal(false)
+    }
+   
+    
     return (
 
         <div >
             <NavBar {...props}></NavBar>
-
-
             {product ?
                 <div>
                     <div style={{ margin: '10px 20px' }}>
-                        <Button onClick={() => { props.history.push('/product/add') }}>Add Product</Button>
+                       
+                       <Button  onClick={()=>setExportModal(true)}>Export as CSV</Button>
+                   
+                        <Button  style={{margin:"10px",padding:"10px"}}onClick={() => { props.history.push('/product/add') }}>Add Product</Button>
+                        
+      <Button style={{margin:"10px",padding:"10px"}} onClick={()=>setModalShow(true)}>Add Product (CSV)</Button>
+      
 
                     </div>
                     <Table actions={actions} data={product} columns={columns} title="Products"
@@ -136,6 +157,8 @@ export const Product = (props) => {
             <Snackbar open={barOpen} message="Successfully Deleted" autoHideDuration={3500} onClose={handleClose}>
 
             </Snackbar>
+            <AddCSVModal  onHide={()=>onHide()} show={modalShow} />
+            <ExportCSVModal  onHide={()=>onExportHide()} show={exportModal} products={product} />
         </div>
 
     )
