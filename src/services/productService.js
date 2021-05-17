@@ -1,17 +1,17 @@
 import * as axios from 'axios'
 import { url, jwt, userId } from './../constants/auth'
-// axios.interceptors.request.use(
-//     config => {
-//         config.headers.authorization = `Bearer ${localStorage.getItem("token")}`
-//         return config
-//     },
-//     error =>{
-//         return Promise.reject(error)
-//     }
-// )
+axios.interceptors.request.use(
+    config => {
+        config.headers.authorization = `Bearer ${localStorage.getItem("token")}`
+        return config
+    },
+    error =>{
+        return Promise.reject(error)
+    }
+)
 //Get all Products.
 export const getAllProducts = async () => {
-    // axios.defaults.headers.common['Authorization'] = localStorage.getItem("token");
+    
 
     try {
         const data = await axios.get(url + '/all/product/60703d3736520febd350c14c')

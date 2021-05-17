@@ -24,22 +24,11 @@ import TaxList from './tax/taxList'
 import OrderDetails from './orders/orderDetails'
 import BannerList from './banner/bannerList'
 import BannerForm from './banner/bannerForm'
+import Profile from './profile/profile'
 
-const authentication={
-  isLoggedIn:localStorage.getItem('token'),
-  getLoginStatus(){
-    if(this.isLoggedIn!==''){
-      return  true
-    }
-    else{
-      return false
-    }
-  }
-  
-}
 function SecuredRoute(props){
   return(
-    <Route path={props.path} render={(data)=>authentication.getLoginStatus()?
+    <Route path={props.path} render={(data)=>localStorage.getItem('token')!==null?
     <props.component {...data}></props.component>:
     <Redirect to={{pathname:'/'}}></Redirect>
     }></Route>
@@ -77,7 +66,7 @@ function App() {
     <SecuredRoute exact path='/order/orderDetails' component={OrderDetails} />
     <SecuredRoute exact path='/banner' component={BannerList} />
     <SecuredRoute exact path='/banner/add' component={BannerForm} />
-
+    <SecuredRoute exact path='/profile' component={Profile} />
     </Switch>
     </BrowserRouter>
   );

@@ -2,11 +2,11 @@ import React from 'react';
 import { Navbar, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import NavBar from '../components/navBar'
-export default function TabBar() {
+export default function TabBar(props) {
 
   return (
     <div >
-      <NavBar />
+      <NavBar  {...props}/>
       <Navbar bg="light">
             <Link  to='/orders/totalOrders'>
                 <Button variant="primary">

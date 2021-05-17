@@ -50,7 +50,7 @@ export const Home = (props) => {
     },[props])
     return (
         <div className='body'>
-            <NavBar props={props}></NavBar>
+            <NavBar {...props} />
             <div></div>
           {  data.loaded ?
             

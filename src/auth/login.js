@@ -38,8 +38,8 @@ export const  LoginPage = (props) => {
     if(form.checkValidity() === true){
       const data = await Login({email,password})
       setSuccess(data)
+      console.log(data)
       if(data){
-        console.log("------------")
         props.history.push('/home')
       }
     }

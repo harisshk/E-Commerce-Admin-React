@@ -1,4 +1,4 @@
-import {url, userId,jwt} from '../constants/auth'
+import {url, userId} from '../constants/auth'
 import axios from 'axios'
 export const getAllBanner=async()=>{
     try{
@@ -16,7 +16,7 @@ export const getAllBanner=async()=>{
 export const updateBanner=async(bannerDetails)=>{
     // console.log(bannerDetails)
     try{
-        const data = await axios.put(url+"/update/banner/"+userId+"/"+bannerDetails._id,{...bannerDetails,jwtToken:jwt})
+        const data = await axios.put(url+"/update/banner/"+userId+"/"+bannerDetails._id,bannerDetails)
         if(!data.data.error){
             return({
                 error:false,
