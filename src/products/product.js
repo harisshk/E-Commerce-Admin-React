@@ -105,10 +105,9 @@ export const Product = (props) => {
     ]
     const [modalShow,setModalShow]=useState(false)
     const onHide=()=>{
+        setProduct(null)
         getProduct()
-        setTimeout(() => {
-            setModalShow(false)
-        }, 1000);
+        setModalShow(false)
         
     }
     useEffect(() => {
@@ -128,13 +127,11 @@ export const Product = (props) => {
             {product ?
                 <div>
                     <div style={{ margin: '10px 20px' }}>
-                       
-                       <Button  onClick={()=>setExportModal(true)}>Export as CSV</Button>
-                   
+                            
                         <Button  style={{margin:"10px",padding:"10px"}}onClick={() => { props.history.push('/product/add') }}>Add Product</Button>
                         
       <Button style={{margin:"10px",padding:"10px"}} onClick={()=>setModalShow(true)}>Add Product (CSV)</Button>
-      
+      <Button style={{margin:"10px",padding:"10px"}}  onClick={()=>setExportModal(true)}>Export as CSV</Button>
 
                     </div>
                     <Table actions={actions} data={product} columns={columns} title="Products"

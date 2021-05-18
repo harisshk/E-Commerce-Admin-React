@@ -116,15 +116,14 @@ export const addProduct = async (formf, gallery, tagId) => {
 export const addCSVProduct=async(product)=>{
     try {
         const data = await axios.post(url + '/add/product/' + userId,{ ...product,"jwtToken": jwt,})
-        console.log("-----",data)
-        if (!data.data.error) {
-
-            return true
-        }
+            return {error:false,
+            data:data.data.product.name,
+            message:data.data.message}
     }
     catch (error) {
         if (error) {
-            return false
+            return  {error:true,
+                message:"DB error"}
         }
         // console.log(error)
     }
